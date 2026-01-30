@@ -7,11 +7,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "holyhell:candleholder",
+          "name": "holyhell:kratos_statue",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "holyhell:candleholder",
+              "block": "holyhell:kratos_statue",
               "properties": {
                 "half": "lower"
               }

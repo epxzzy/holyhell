@@ -34,6 +34,15 @@ public class HolyhellTags {
         public static final TagKey<Block> DOME_CLEARS_OUT =
                 createTag("dome_clears_out");
 
+        public static final TagKey<Block> MARBLE =
+                createTag("marble");
+
+        public static final TagKey<Block> STATUE =
+                createTag("statue");
+
+        public static final TagKey<Block> LIGHTING_BLOCKS =
+                createTag("lighting_blocks");
+
         private static TagKey<Block> createTag(String name) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, name));
         }

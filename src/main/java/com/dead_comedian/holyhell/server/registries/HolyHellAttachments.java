@@ -80,6 +80,8 @@ public class HolyHellAttachments {
     );
 
 
+
+
     public static final Supplier<AttachmentType<PlayerCoffinStatus>> COFFIN_STATUS = ATTACHMENT_TYPES.register(
             "coffin_status",
             () -> AttachmentType.builder(PlayerCoffinStatus::new)

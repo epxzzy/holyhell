@@ -91,14 +91,12 @@ public class CherubEntity extends Monster implements FlyingAnimal {
                 Mob mob = null;
                 int mobIndex = this.level().getRandom().nextInt(0, 3);
 
-                switch (mobIndex) {
-                    case 0:
-                        mob = new AngelEntity(HolyHellEntities.ANGEL.get(), level());
-                    case 1:
-                        mob = new KamikazeEntity(HolyHellEntities.KAMIKAZE.get(), level());
-                    case 2:
-                        mob = new HereticEntity(HolyHellEntities.HERETIC.get(), level());
-                }
+                mob = switch (mobIndex) {
+                    case 0 -> new AngelEntity(HolyHellEntities.ANGEL.get(), level());
+                    case 1 -> new KamikazeEntity(HolyHellEntities.KAMIKAZE.get(), level());
+                    case 2 -> new HereticEntity(HolyHellEntities.HERETIC.get(), level());
+                    default -> mob;
+                };
 
                 current = current + mobSpawnIndex[mobIndex];
 
@@ -145,7 +143,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
             ((ServerLevel) this.level()).sendParticles(HolyhellParticles.SOUND_RING.get(), this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
         }
 
-        damageMultiplier = pAmount;
+        damageMultiplier = pAmount* random.nextFloat();
 
 
         return super.hurt(pSource, pAmount);

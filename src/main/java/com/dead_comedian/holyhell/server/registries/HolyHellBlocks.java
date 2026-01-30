@@ -58,6 +58,7 @@ public class HolyHellBlocks {
                     .strength(3F)
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
+                    .pushReaction(PushReaction.DESTROY)
                     .sound(SoundType.STONE)));
 
 
@@ -70,6 +71,7 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(HolyHellSounds.CANDELABRA_SOUNDS)
+                    .pushReaction(PushReaction.DESTROY)
                     .lightLevel(CandelabraBlock.LIGHT_EMISSION), ParticleTypes.FLAME));
 
     public static final Supplier<Block> TALL_CANDELABRA = registerCandleHolder("tall_candelabra",
@@ -81,6 +83,7 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(HolyHellSounds.CANDELABRA_SOUNDS)
+                    .pushReaction(PushReaction.DESTROY)
                     .lightLevel(TallCandelabraBlock.LIGHT_EMISSION), ParticleTypes.FLAME));
 
     public static final Supplier<Block> CANDLEHOLDER = registerCandleHolder("candleholder",
@@ -92,6 +95,7 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(HolyHellSounds.CANDELABRA_SOUNDS)
+                    .pushReaction(PushReaction.DESTROY)
                     .lightLevel(CandleholderBlock.LIGHT_EMISSION), ParticleTypes.FLAME));
 
     public static final Supplier<Block> TALL_CANDLEHOLDER = registerCandleHolder("tall_candleholder",
@@ -103,6 +107,7 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(HolyHellSounds.CANDELABRA_SOUNDS)
+                    .pushReaction(PushReaction.DESTROY)
                     .lightLevel(TallCandleholderBlock.LIGHT_EMISSION), ParticleTypes.FLAME));
 
     public static final Supplier<Block> CHANDELIER = register("chandelier",
@@ -114,6 +119,7 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(HolyHellSounds.CANDELABRA_SOUNDS)
+                    .pushReaction(PushReaction.DESTROY)
                     .lightLevel(ChandelierBlock.LIGHT_EMISSION), ParticleTypes.FLAME));
 
 
@@ -273,6 +279,7 @@ public class HolyHellBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)) {
             });
+
     public static final Supplier<Block> KRATOS_STATUE = register("kratos_statue",
             () -> new MarbleStatueBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE)
@@ -280,6 +287,7 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
+                    .pushReaction(PushReaction.DESTROY)
                     .isViewBlocking(HolyHellBlocks::never).dynamicShape()) {
             });
 
@@ -291,6 +299,7 @@ public class HolyHellBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
                     .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)
                     .isViewBlocking(HolyHellBlocks::never)) {
             });
 
@@ -302,6 +311,7 @@ public class HolyHellBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
                     .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)
                     .isViewBlocking(HolyHellBlocks::never)) {
             });
 
@@ -313,6 +323,7 @@ public class HolyHellBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
                     .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)
                     .isViewBlocking(HolyHellBlocks::never)) {
             });
     public static final Supplier<Block> DOOMSLAYER_STATUE = register("doomslayer_statue",
@@ -323,6 +334,7 @@ public class HolyHellBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
                     .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)
                     .isViewBlocking(HolyHellBlocks::never)) {
             });
 
@@ -334,6 +346,7 @@ public class HolyHellBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
                     .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)
                     .isViewBlocking(HolyHellBlocks::never)) {
             });
 
@@ -347,7 +360,8 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .lightLevel(BoneChandelierBlock.LIGHT_EMISSION)
-                    .pushReaction(PushReaction.DESTROY),ParticleTypes.FLAME));
+                    .pushReaction(PushReaction.DESTROY),
+                    ParticleTypes.FLAME));
 
     public static final Supplier<Block> CARVED_PUMPKIN_EYE = carvedPumpkinEye("carved_pumpkin_eye",
             () -> new EquipableCarvedPumpkinBlock(BlockBehaviour.Properties.of()
@@ -396,31 +410,30 @@ public class HolyHellBlocks {
                     .sound(SoundType.BONE_BLOCK)));
 
 
-
-
-
-
-
     private static <T extends Block> Supplier<T> registerCoffin(String name, Supplier<T> block) {
         Supplier<T> toReturn = BLOCKS.register(name, block);
         coffinItem(name, toReturn);
         return toReturn;
     }
+
     private static <T extends Block> Supplier<T> carvedPumpkinEye(String name, Supplier<T> block) {
         Supplier<T> toReturn = BLOCKS.register(name, block);
         carvedPumpkinEyeItem(name, toReturn);
         return toReturn;
     }
+
     private static <T extends Block> Supplier<T> carvedPumpkinCross(String name, Supplier<T> block) {
         Supplier<T> toReturn = BLOCKS.register(name, block);
         carvedPumpkinCrossItem(name, toReturn);
         return toReturn;
     }
+
     private static <T extends Block> Supplier<T> jackOLanternEye(String name, Supplier<T> block) {
         Supplier<T> toReturn = BLOCKS.register(name, block);
         jackOLanternEyeItem(name, toReturn);
         return toReturn;
     }
+
     private static <T extends Block> Supplier<T> jackOLanternCross(String name, Supplier<T> block) {
         Supplier<T> toReturn = BLOCKS.register(name, block);
         jackOLanternCrossItem(name, toReturn);
@@ -447,17 +460,14 @@ public class HolyHellBlocks {
     }
 
 
-
-
-
-
-
     private static <T extends Block> DeferredHolder<Item, Item> coffinItem(String name, Supplier<T> block) {
         return HolyHellItems.ITEMS.register(name, () -> new CoffinItem(block.get(), new Item.Properties()));
     }
+
     private static <T extends Block> DeferredHolder<Item, Item> carvedPumpkinEyeItem(String name, Supplier<T> block) {
         return HolyHellItems.ITEMS.register(name, () -> new CarvedPumpkinEyeItem(block.get(), new Item.Properties()));
     }
+
     private static <T extends Block> DeferredHolder<Item, Item> carvedPumpkinCrossItem(String name, Supplier<T> block) {
         return HolyHellItems.ITEMS.register(name, () -> new CarvedPumpkinCrossItem(block.get(), new Item.Properties()));
     }
@@ -465,21 +475,22 @@ public class HolyHellBlocks {
     private static <T extends Block> DeferredHolder<Item, Item> jackOLanternEyeItem(String name, Supplier<T> block) {
         return HolyHellItems.ITEMS.register(name, () -> new JackOLanternEyeItem(block.get(), new Item.Properties()));
     }
+
     private static <T extends Block> DeferredHolder<Item, Item> jackOLanternCrossItem(String name, Supplier<T> block) {
         return HolyHellItems.ITEMS.register(name, () -> new JackOLanternCrossItem(block.get(), new Item.Properties()));
     }
+
     private static <T extends Block> DeferredHolder<Item, Item> registerCrossBlockItem(String name, Supplier<T> block) {
         return HolyHellItems.ITEMS.register(name, () -> new StoneCrossItem(block.get(), new Item.Properties()));
     }
+
     private static <T extends Block> DeferredHolder<Item, Item> registerCandleHolderItem(String name, Supplier<T> block) {
         return HolyHellItems.ITEMS.register(name, () -> new CandleHolderItem(block.get(), new Item.Properties()));
     }
+
     private static <T extends Block> void registerItem(String name, Supplier<T> block) {
         HolyHellItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
-
-
-
 
 
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {

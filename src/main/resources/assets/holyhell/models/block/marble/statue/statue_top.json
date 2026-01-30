@@ -1,4 +1,7 @@
 {
-	"format_version": "1.9.0",
-	"credit": "Made with Blockbench"
+  "format_version": "1.9.0",
+  "credit": "Made with Blockbench",
+  "textures": {
+    "particle": "holyhell:block/marble/statue"
+  }
 }

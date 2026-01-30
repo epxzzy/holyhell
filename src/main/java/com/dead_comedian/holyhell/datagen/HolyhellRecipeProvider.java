@@ -2,10 +2,12 @@ package com.dead_comedian.holyhell.datagen;
 
 
 import com.dead_comedian.holyhell.server.registries.HolyHellBlocks;
+import com.dead_comedian.holyhell.server.registries.HolyHellItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 
 import java.util.concurrent.CompletableFuture;
@@ -63,6 +65,23 @@ public class HolyhellRecipeProvider extends RecipeProvider implements ICondition
 
         stonecutterResultFromBase(recipeOutput,RecipeCategory.BUILDING_BLOCKS, HolyHellBlocks.MARBLE_COLLUMN.get(),HolyHellBlocks.COBBLED_MARBLE.get());
 
+
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HolyHellBlocks.TALL_CANDLEHOLDER.get())
+                .pattern("BBB")
+                .pattern("XBX")
+                .pattern(" B ")
+                .define('B', HolyHellItems.BAPTIZED_PLATE.get())
+                .define('X', Blocks.CANDLE)
+                .unlockedBy("has_ingredient", has(Blocks.CANDLE)).save(recipeOutput);
+
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, HolyHellBlocks.CHANDELIER.get())
+                .pattern("XBX")
+                .pattern("BBB")
+                .define('B', HolyHellItems.BAPTIZED_PLATE.get())
+                .define('X', Blocks.CANDLE)
+                .unlockedBy("has_ingredient", has(HolyHellBlocks.COBBLED_MARBLE_SLAB.get())).save(recipeOutput);
 
     }
 

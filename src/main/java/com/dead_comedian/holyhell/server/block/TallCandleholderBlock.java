@@ -1,7 +1,6 @@
 package com.dead_comedian.holyhell.server.block;
 
 
-
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -55,9 +55,9 @@ public class TallCandleholderBlock extends Block {
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        if(state.getValue(PIECE)>0){
+        if (state.getValue(PIECE) > 0) {
             return belowState.getBlock() == this;
-        }else {
+        } else {
             return belowState.isSolid();
         }
     }
@@ -98,7 +98,7 @@ public class TallCandleholderBlock extends Block {
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         super.animateTick(pState, pLevel, pPos, pRandom);
-        if (pState.getValue(LIT) && pState.getValue(PIECE)==1) {
+        if (pState.getValue(LIT) && pState.getValue(PIECE) == 1) {
             double d = pPos.getX();
             double e = pPos.getY();
             double f = pPos.getZ();
@@ -111,7 +111,6 @@ public class TallCandleholderBlock extends Block {
             double d3;
             double e3;
             double f3;
-
 
 
             if (pState.getValue(LIT)) {
@@ -135,7 +134,7 @@ public class TallCandleholderBlock extends Block {
                 pLevel.addParticle(this.particle, d1, e1, f1, 0.0, 0.0, 0.0);
                 pLevel.addParticle(this.particle, d2, e2, f2, 0.0, 0.0, 0.0);
                 pLevel.addParticle(this.particle, d3, e3, f3, 0.0, 0.0, 0.0);
-                    }
+            }
             pLevel.addParticle(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
             pLevel.addParticle(this.particle, d, e, f, 0.0, 0.0, 0.0);
 
@@ -143,37 +142,41 @@ public class TallCandleholderBlock extends Block {
         }
     }
 
-
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide && (player.isCreative() || !player.hasCorrectToolForDrops(state, level, pos))) {
-            preventDropFromBottomPart(level, pos, state, player);
-        }
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         if (state.getValue(PIECE) == 1) {
-            level.removeBlock(pos.above(), false);
-            level.removeBlock(pos.below(), false);
+            level.destroyBlock(pos.above(), true);
+            level.destroyBlock(pos.below(), true);
 
         } else if (state.getValue(PIECE) == 2) {
-            level.removeBlock(pos.below(), false);
-            level.removeBlock(pos.below().below(), false);
+            level.destroyBlock(pos.below(), true);
+            level.destroyBlock(pos.below().below(), true);
 
         } else if (state.getValue(PIECE) == 0) {
-            level.removeBlock(pos.above(), false);
-            level.removeBlock(pos.above().above(), false);
+            level.destroyBlock(pos.above(), true);
+            level.destroyBlock(pos.above().above(), true);
         }
-        return super.playerWillDestroy(level, pos, state, player);
+
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
-    protected static void preventDropFromBottomPart(Level level, BlockPos pos, BlockState state, Player player) {
-        int value = state.getValue(PIECE);
-        if (value == 2) {
-            BlockPos belowPos = pos.below();
-            BlockState belowState = level.getBlockState(belowPos);
-            if (belowState.is(state.getBlock()) && belowState.getValue(PIECE) == 2) {
-                BlockState postDestroyState = belowState.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-                level.setBlock(belowPos, postDestroyState, 35);
-                level.levelEvent(player, 2001, belowPos, Block.getId(belowState));
-            }
+    @Override
+    public void onDestroyedByPushReaction(BlockState state, Level level, BlockPos pos, Direction pushDirection, FluidState fluid) {
+        if (state.getValue(PIECE) == 1) {
+            level.destroyBlock(pos, true);
+            level.destroyBlock(pos.above(), true);
+            level.destroyBlock(pos.below(), true);
+
+        } else if (state.getValue(PIECE) == 2) {
+            level.destroyBlock(pos, true);
+            level.destroyBlock(pos.below(), true);
+            level.destroyBlock(pos.below().below(), true);
+
+        } else if (state.getValue(PIECE) == 0) {
+            level.destroyBlock(pos, true);
+            level.destroyBlock(pos.above(), true);
+            level.destroyBlock(pos.above().above(), true);
         }
+        super.onDestroyedByPushReaction(state, level, pos, pushDirection, fluid);
     }
 }

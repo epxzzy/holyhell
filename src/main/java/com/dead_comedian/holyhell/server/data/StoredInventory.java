@@ -3,6 +3,7 @@ package com.dead_comedian.holyhell.server.data;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,16 +28,22 @@ public class StoredInventory {
             ).apply(inst, (items, armor, offhand) -> {
                 StoredInventory inv = new StoredInventory();
 
-                for (int i = 0; i < Math.min(items.size(), inv.items.length); i++) {
-                    inv.items[i] = items.get(i);
+                for (int i = 1; i < Math.min(items.size(), inv.items.length); i++) {
+                    if (items.get(i) != Items.AIR.getDefaultInstance()) {
+                        inv.items[i] = items.get(i);
+                    }
                 }
 
-                for (int i = 0; i < Math.min(armor.size(), inv.armor.length); i++) {
-                    inv.armor[i] = armor.get(i);
+                for (int i = 1; i < Math.min(armor.size(), inv.armor.length); i++) {
+                    if (armor.get(i) != Items.AIR.getDefaultInstance()) {
+                        inv.items[i] = armor.get(i);
+                    }
                 }
 
-                for (int i = 0; i < Math.min(offhand.size(), inv.offhand.length); i++) {
-                    inv.offhand[i] = offhand.get(i);
+                for (int i = 1; i < Math.min(offhand.size(), inv.offhand.length); i++) {
+                    if (offhand.get(i) != Items.AIR.getDefaultInstance()) {
+                        inv.offhand[i] = offhand.get(i);
+                    }
                 }
 
                 return inv;

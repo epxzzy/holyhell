@@ -71,37 +71,7 @@ public class HolyHellEventBusEvents {
         return null;
     }
 
-    @SubscribeEvent
-    public static void onDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
-        ServerLevel level = player.serverLevel();
-
-        PlayerCoffinStatus status = player.getData(HolyHellAttachments.COFFIN_STATUS);
-
-        BlockEntity blockEntity = level.getBlockEntity(status.coffinPos);
-
-        if (!(blockEntity instanceof CoffinBlockEntity entity)) return;
-        if (!status.active) return;
-
-        entity.setStoredPlayer(player.getUUID());
-
-        StoredInventory data = player.getData(HolyHellAttachments.STORED_INVENTORY);
-
-        for (int i = 0; i < 36; i++)
-            data.items[i] = player.getInventory().items.get(i).copyAndClear();
-
-        for (int i = 0; i < 4; i++)
-            data.armor[i] = player.getInventory().armor.get(i).copyAndClear();
-
-        data.offhand[0] = player.getInventory().offhand.get(0).copyAndClear();
-
-
-        player.getInventory().clearContent();
-
-        status.update(false, status.coffinPos);
-        entity.postDeathHook();
-    }
 
     @SubscribeEvent
     public static void changePumpkinFace(PlayerInteractEvent.RightClickBlock event) {
@@ -205,7 +175,6 @@ public class HolyHellEventBusEvents {
 
                     ServerLevel targetLevel = serverLevel.getServer().getLevel(HolyhellDimensions.ANGEL);
                     if (targetLevel != null) {
-                        System.out.println("BOMBOCLAT");
                         player.removeEffect(HolyHellEffects.ANGELIC_VISION);
                         player.changeDimension(new DimensionTransition(targetLevel, new Vec3(20, 12, 0), player.getDeltaMovement(), Direction.EAST.toYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)));
 //                        player.setData(HolyHellAttachments.CAN_TP_TO_ANGEL, false);
@@ -267,7 +236,6 @@ public class HolyHellEventBusEvents {
 
         if (player.getData(HolyHellAttachments.SHOULD_EXPLODE) && player.hasEffect(HolyHellEffects.JESISTANCE)) {
 
-            System.out.println(player.getData(HolyHellAttachments.DAMAGE_ABSORBED));
             if (player.getData(HolyHellAttachments.DAMAGE_ABSORBED) < 5.0 && player.getData(HolyHellAttachments.DAMAGE_ABSORBED)>0) {
                 explosionMagnitude = 2;
             } else if (player.getData(HolyHellAttachments.DAMAGE_ABSORBED) < 10.0) {

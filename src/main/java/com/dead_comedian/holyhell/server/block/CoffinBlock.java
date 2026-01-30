@@ -75,18 +75,18 @@ public class CoffinBlock extends BaseEntityBlock {
 
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             switch (state.getValue(FACING)) {
-                case NORTH -> level.removeBlock(pos.north(), false);
-                case SOUTH -> level.removeBlock(pos.south(), false);
-                case EAST -> level.removeBlock(pos.east(), false);
-                case WEST -> level.removeBlock(pos.west(), false);
+                case NORTH -> level.destroyBlock(pos.north(), true);
+                case SOUTH -> level.destroyBlock(pos.south(), true);
+                case EAST -> level.destroyBlock(pos.east(), true);
+                case WEST -> level.destroyBlock(pos.west(), true);
             }
         }
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
             switch (state.getValue(FACING)) {
-                case NORTH -> level.removeBlock(pos.south(), false);
-                case SOUTH -> level.removeBlock(pos.north(), false);
-                case EAST -> level.removeBlock(pos.west(), false);
-                case WEST -> level.removeBlock(pos.east(), false);
+                case NORTH -> level.destroyBlock(pos.south(), true);
+                case SOUTH -> level.destroyBlock(pos.north(), true);
+                case EAST -> level.destroyBlock(pos.west(), true);
+                case WEST -> level.destroyBlock(pos.east(), true );
             }
         }
 
@@ -198,7 +198,7 @@ public class CoffinBlock extends BaseEntityBlock {
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
         super.playerDestroy(level, player, pos, state, pBlockEntity, pTool);
         if (!level.isClientSide && (player.isCreative() || !player.hasCorrectToolForDrops(state))) {
-            preventDropFromBottomPart(level, pos, state, player);
+//            preventDropFromBottomPart(level, pos, state, player);
         }
     }
 

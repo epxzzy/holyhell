@@ -113,8 +113,6 @@ public class CoffinBlockEntity extends RandomizableContainerBlockEntity {
     protected AbstractContainerMenu createMenu(int id, Inventory inv) {
         if (storedPlayer != null && level instanceof ServerLevel) {
             loadStoredPlayerInventory(storedPlayer);
-
-
         }
 
         level.playSound(null, worldPosition,
@@ -147,15 +145,18 @@ public class CoffinBlockEntity extends RandomizableContainerBlockEntity {
 
         boolean active = topRender && leftRender && midRender && rightRender && bottomRender;
 
-        if (!level.isClientSide && level instanceof ServerLevel server && storedPlayer != null) {
+
+        if (level instanceof ServerLevel server && storedPlayer != null) {
             updateBlockState(state, CoffinBlock.ACTIVATED, active);
             setChanged();
 
-            PlayerCoffinStatus status =
-                    server.getPlayerByUUID(storedPlayer)
-                            .getData(HolyHellAttachments.COFFIN_STATUS);
+            if (server.getPlayerByUUID(storedPlayer) != null) {
+                PlayerCoffinStatus status =
+                        server.getPlayerByUUID(storedPlayer)
+                                .getData(HolyHellAttachments.COFFIN_STATUS);
 
-            status.update(active, pos);
+                status.update(active, pos);
+            }
         }
     }
 
@@ -196,18 +197,17 @@ public class CoffinBlockEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag,HolderLookup.Provider registries) {
-        super.saveAdditional(tag,registries);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         tag.put("Inventory", itemStackHandler.serializeNBT(registries));
     }
-
 
 
     @Override
 
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag,registries);
-        itemStackHandler.deserializeNBT(registries,tag.getCompound("Inventory"));
+        super.loadAdditional(tag, registries);
+        itemStackHandler.deserializeNBT(registries, tag.getCompound("Inventory"));
     }
 
     private NonNullList<ItemStack> items = NonNullList.withSize(59, ItemStack.EMPTY);

@@ -109,27 +109,4 @@ public class TallCandelabraBlock extends Block {
             pLevel.addParticle(this.particle, d, e, f, 0.0, 0.0, 0.0);
         }
     }
-
-    @Override
-    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide && (player.isCreative() || !player.hasCorrectToolForDrops(state, level, pos))) {
-            preventDropFromBottomPart(level, pos, state, player);
-        }
-
-        return super.playerWillDestroy(level, pos, state, player);
-    }
-
-    protected static void preventDropFromBottomPart(Level level, BlockPos pos, BlockState state, Player player) {
-        DoubleBlockHalf half = state.getValue(HALF);
-        if (half == DoubleBlockHalf.UPPER) {
-            BlockPos belowPos = pos.below();
-            BlockState belowState = level.getBlockState(belowPos);
-            if (belowState.is(state.getBlock()) && belowState.getValue(HALF) == DoubleBlockHalf.LOWER) {
-                BlockState postDestroyState = belowState.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-                level.setBlock(belowPos, postDestroyState, 35);
-                level.levelEvent(player, 2001, belowPos, Block.getId(belowState));
-            }
-        }
-    }
-
 }

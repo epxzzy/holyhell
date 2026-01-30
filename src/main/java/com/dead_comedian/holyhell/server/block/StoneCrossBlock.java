@@ -145,7 +145,7 @@ public class StoneCrossBlock extends HorizontalDirectionalBlock {
             default -> pPos;
         };
 
-        level.removeBlock(targetPos, false);
+        level.destroyBlock(targetPos, true);
     }
 
     private record BlockRemovalPattern(int[] firstColumn, int[] secondColumn) {

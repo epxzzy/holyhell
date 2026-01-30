@@ -2,6 +2,6 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
   "textures": {
-    "particle": "holyhell:block/coffin"
+    "particle": "holyhell:block/coffin/coffin"
   }
 }
