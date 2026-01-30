@@ -28,7 +28,7 @@ public class HolyhellArmorMaterials {
                 attribute.put(ArmorItem.Type.CHESTPLATE, 9);
                 attribute.put(ArmorItem.Type.HELMET, 5);
                 attribute.put(ArmorItem.Type.BODY, 11);
-            }), 16, 2f, 0.1f, () -> HolyHellItems.BAPTIZED_PLATE.get());
+            }), 16, 2f, 0.1f, HolyHellItems.BAPTIZED_PLATE);
 
 
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> typeProtection,

@@ -64,13 +64,13 @@ public class HolyHellItems {
 
 
     public static final Supplier<EvangelistArmorItem> EVANGELIST_HELMET = ITEMS.register("evangelist_helmet", () -> new
-            EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.HELMET, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(5))));
+            EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.HELMET, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(40))));
     public static final Supplier<EvangelistArmorItem> EVANGELIST_CHESTPLATE = ITEMS.register( "evangelist_chestplate", () -> new
-            EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.CHESTPLATE, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(5))));
+            EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.CHESTPLATE, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(40))));
     public static final Supplier<EvangelistArmorItem> EVANGELIST_LEGGINGS = ITEMS.register( "evangelist_leggings", () ->
-            new EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.LEGGINGS, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(5))));
+            new EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.LEGGINGS, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(40))));
     public static final Supplier<EvangelistArmorItem> EVANGELIST_BOOTS = ITEMS.register( "evangelist_boots", () -> new
-            EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.BOOTS, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(5))));
+            EvangelistArmorItem(HolyhellArmorMaterials.EVANGELIST, ArmorItem.Type.BOOTS, (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(40))));
 
 
     public static void register(IEventBus eventBus) {
