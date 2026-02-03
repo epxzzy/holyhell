@@ -69,7 +69,6 @@ public class EndTextOverlay {
             extraGraceTime--;
             if (player != null) {
 
-                System.out.println(player.getData(HolyHellAttachments.CAN_TP_TO_ANGEL));
                 player.setData(HolyHellAttachments.CAN_TP_TO_ANGEL, true);
                 if (extraGraceTime == 0) {
 

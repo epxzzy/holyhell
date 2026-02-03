@@ -21,6 +21,7 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraft.world.level.pathfinder.PathType;
@@ -87,7 +88,25 @@ public class CherubEntity extends Monster implements FlyingAnimal {
 
         if (damageMultiplier != 0) {
             do {
-                BlockPos blockPos = this.blockPosition();
+                double angle = (2 * Math.PI / capacity * damageMultiplier) * current;
+                int radius = 8;
+                boolean bool = true;
+                BlockPos blockPos;
+
+
+                do {
+                    double x = this.blockPosition().getX() + (Math.cos(angle) * radius);
+                    double z = this.blockPosition().getZ() + (Math.sin(angle) * radius);
+                    double y = this.blockPosition().getY() + 0.4; // flat circl
+                    blockPos = new BlockPos((int) x, (int) (y), (int) z);
+                    if (!level().getBlockState(blockPos).is(Blocks.AIR)) {
+                        radius--;
+                    } else {
+                        bool = false;
+                    }
+
+                }
+                while (bool);
                 Mob mob = null;
                 int mobIndex = this.level().getRandom().nextInt(0, 3);
 
@@ -106,7 +125,6 @@ public class CherubEntity extends Monster implements FlyingAnimal {
                     mob.moveTo(blockPos, mob.getYRot(), mob.getXRot());
                 }
 
-                System.out.println("goog");
 
             }
             while (
@@ -143,7 +161,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
             ((ServerLevel) this.level()).sendParticles(HolyhellParticles.SOUND_RING.get(), this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
         }
 
-        damageMultiplier = pAmount* random.nextFloat();
+        damageMultiplier = pAmount * random.nextFloat();
 
 
         return super.hurt(pSource, pAmount);
