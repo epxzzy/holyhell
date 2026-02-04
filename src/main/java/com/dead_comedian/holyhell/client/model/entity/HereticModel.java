@@ -67,7 +67,7 @@ public class HereticModel<T extends HereticEntity> extends HierarchicalModel<T> 
 		this.applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 		this.animateWalk(ModAnimations.HERETIC_WALK, limbSwing, limbSwingAmount, 2f, 2.5f);
 
-		this.animate(entity.attackAnimationState, ModAnimations.HERETIC_ATTACK, ageInTicks, 1f);
+		this.animate(entity.attackAnimationState, ModAnimations.HERETIC_ATTACK, ageInTicks, 2f);
 
 	}
 

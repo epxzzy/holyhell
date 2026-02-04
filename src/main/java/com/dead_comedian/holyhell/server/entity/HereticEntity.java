@@ -78,7 +78,7 @@ public class HereticEntity extends Monster {
                 .add(Attributes.MOVEMENT_SPEED, 0.4f)
                 .add(Attributes.ARMOR, 1.7f)
                 .add(Attributes.ATTACK_DAMAGE, 8)
-                .add(Attributes.FOLLOW_RANGE, 10);
+                .add(Attributes.FOLLOW_RANGE, 15);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class HereticEntity extends Monster {
 
 
         if (this.isAggressive() && attackAnimationTimeout <= 0) {
-            attackAnimationTimeout = 45;
+            attackAnimationTimeout = 22;
             attackAnimationState.startIfStopped(this.tickCount);
 
 
@@ -128,8 +128,8 @@ public class HereticEntity extends Monster {
 
     public static class AttackGoal extends MeleeAttackGoal {
         private final HereticEntity entity;
-        private int attackDelay = 20;
-        private int ticksUntilNextAttack = 20;
+        private int attackDelay = 10;
+        private int ticksUntilNextAttack = 10;
         private boolean shouldCountTillNextAttack = false;
 
         public AttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
@@ -140,8 +140,8 @@ public class HereticEntity extends Monster {
         @Override
         public void start() {
             super.start();
-            attackDelay = 20;
-            ticksUntilNextAttack = 20;
+            attackDelay = 10;
+            ticksUntilNextAttack = 10;
         }
 
         @Override
@@ -187,7 +187,7 @@ public class HereticEntity extends Monster {
             return pDistToEnemySqr <= this.getAttackReachSqr(pEnemy);
         }
         protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-            return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + pAttackTarget.getBbWidth());
+            return (double)(this.mob.getBbWidth() * 3.0F * this.mob.getBbWidth() * 3.0F + pAttackTarget.getBbWidth());
         }
         protected void resetAttackCooldown() {
             this.ticksUntilNextAttack = this.adjustedTickDelay(attackDelay * 2);
