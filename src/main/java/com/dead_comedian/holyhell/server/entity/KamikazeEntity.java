@@ -34,6 +34,7 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -114,7 +115,7 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
         this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 4f));
         this.goalSelector.addGoal(1, new KamikazeAngelWanderAroundGoal());
-        this.goalSelector.addGoal(2, new KamikazeExplodeGoal(this, 1, true));
+        this.goalSelector.addGoal(2, new KamikazeExplodeGoal(this, 1));
 
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -124,8 +125,7 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
                 .add(Attributes.FLYING_SPEED, 1)
                 .add(Attributes.MOVEMENT_SPEED, 0.7)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
-                .add(Attributes.FOLLOW_RANGE, 15.0)
-                .add(Attributes.FOLLOW_RANGE, 10);
+                .add(Attributes.FOLLOW_RANGE, 30);
 
     }
 
@@ -204,10 +204,24 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
     }
 
 
-    ///////////////
+    /// ////////////
     // EXPLOSION //
 
     /// ////////////
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+
+        if (source.isCreativePlayer() || source.getEntity() instanceof Projectile || source.is(DamageTypes.GENERIC_KILL)) {
+            return super.hurt(source, amount);
+        } else if (source.getEntity() instanceof Player) {
+            this.knockback(2, 1, 1);
+            return false;
+        }else {
+            return false;
+        }
+
+    }
 
 
     @Override
@@ -287,20 +301,14 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
         private int timeSinceAttack;
         private double speednt;
         private final PathNavigation navigation;
-        @Nullable
-        protected LivingEntity targetHostileEntity;
         protected TargetingConditions targetPredicate;
 
-
-        public KamikazeExplodeGoal(PathfinderMob mob, double speed, boolean pauseWhenMobIdle) {
-
+        public KamikazeExplodeGoal(PathfinderMob mob, double speed) {
             entity = ((KamikazeEntity) mob);
             speednt = speed;
             this.navigation = mob.getNavigation();
             this.targetPredicate = TargetingConditions.forCombat().range(this.entity.getAttributeValue(Attributes.FOLLOW_RANGE)).selector((Predicate<LivingEntity>) targetPredicate);
-
         }
-
 
         @Override
         public boolean canUse() {
@@ -313,33 +321,27 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
             timeSinceAttack = 0;
         }
 
-        public void findClosestTarget() {
-            this.targetHostileEntity = this.entity.level().getNearestEntity(this.entity.level().getEntitiesOfClass(Monster.class, this.getSearchBox(this.entity.getAttributeValue(Attributes.FOLLOW_RANGE)), (livingEntity) -> true), this.targetPredicate, this.entity, this.entity.getX(), this.entity.getEyeY(), this.entity.getZ());
-        }
-
-        protected AABB getSearchBox(double distance) {
-            return this.entity.getBoundingBox().inflate(distance, 1.0, distance);
-        }
-
-        public boolean startMovingTo(Entity entity, double speed) {
-            Path path = this.navigation.createPath(this.targetHostileEntity.getBlockX() + random.nextInt(1), this.targetHostileEntity.getBlockY() + 2, this.targetHostileEntity.getBlockZ() + random.nextInt(1), 1);
-            return path != null && this.navigation.moveTo(path, speed);
-        }
-
         @Override
         public void tick() {
             super.tick();
-            this.findClosestTarget();
-            if (timeSinceAttack < 50 && this.targetHostileEntity != null && !(targetHostileEntity instanceof KamikazeEntity)) {
+            if (this.entity.getTarget() != null) {
+                if (entity.distanceTo(this.entity.getTarget()) > 8) {
 
-                this.startMovingTo(this.targetHostileEntity, this.speednt * 0.8);
-                timeSinceAttack++;
 
-            } else {
-                this.navigation.moveTo(this.entity.getTarget(), this.speednt * 2);
-                if (this.entity.getIsHit()) {
-                    setIsHit(false);
-                    this.timeSinceAttack = 0;
+
+                    if (navigation.isDone()) {
+                        this.navigation.moveTo(this.entity.getTarget().getX() + random.nextInt(-4, 4),
+                                this.entity.getTarget().getY() + 3,
+                                this.entity.getTarget().getZ() + random.nextInt(-3, 3),
+                                this.speednt * 0.8);
+                    }
+                } else {
+                    entity.lookAt(this.entity.getTarget(), 90, 90);
+                    entity.addDeltaMovement(entity.getLookAngle().scale(0.25));
+                    if (this.entity.getIsHit()) {
+                        setIsHit(false);
+                        this.timeSinceAttack = 0;
+                    }
                 }
             }
         }
