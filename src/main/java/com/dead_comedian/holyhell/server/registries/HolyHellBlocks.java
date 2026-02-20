@@ -49,7 +49,7 @@ public class HolyHellBlocks {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.WOOD)
-                    .ignitedByLava()));
+                    .ignitedByLava().randomTicks()));
 
     public static final Supplier<Block> STONE_CROSS = registerCrossBlock("stone_cross",
             () -> new StoneCrossBlock(BlockBehaviour.Properties.of()

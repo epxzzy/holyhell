@@ -6,6 +6,7 @@ import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
 import com.dead_comedian.holyhell.client.event.EndTextOverlay;
 import com.dead_comedian.holyhell.server.data.PlayerCoffinStatus;
 import com.dead_comedian.holyhell.server.data.StoredInventory;
+import com.dead_comedian.holyhell.server.data.TableLootData;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.client.Minecraft;
@@ -45,6 +46,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
@@ -314,5 +316,6 @@ public class HolyHellEventBusEvents {
         event.put(HolyHellEntities.HOLY_SPIRIT.get(), HolySpiritEntity.createAttributes().build());
         event.put(HolyHellEntities.KAMIKAZE.get(), KamikazeEntity.createAttributes().build());
     }
+
 
 }

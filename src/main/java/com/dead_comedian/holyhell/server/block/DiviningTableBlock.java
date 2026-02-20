@@ -8,9 +8,13 @@ import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -26,6 +30,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DiviningTableBlock extends BaseEntityBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -33,6 +40,7 @@ public class DiviningTableBlock extends BaseEntityBlock implements EntityBlock {
     public DiviningTableBlock(Properties p_54120_) {
         super(p_54120_);
     }
+
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
@@ -62,14 +70,13 @@ public class DiviningTableBlock extends BaseEntityBlock implements EntityBlock {
             CherubEntity cherubEntity = new CherubEntity(HolyHellEntities.CHERUB.get(), level);
             level.addFreshEntity(cherubEntity);
             cherubEntity.moveTo(pos.offset(0, 1, 0), cherubEntity.getYRot(), cherubEntity.getXRot());
-
+            cherubEntity.setBlockPos(pos);
             ((DiviningTableBlockEntity) level.getBlockEntity(pos)).setTimer(1);
 
             return ItemInteractionResult.SUCCESS;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
-
 
 
     @Nullable

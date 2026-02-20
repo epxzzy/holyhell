@@ -47,6 +47,7 @@ public class HolyHellEntities {
     public static final Supplier<EntityType<CherubEntity>> CHERUB =
             ENTITY_TYPES.register("cherub", () -> EntityType.Builder.of(CherubEntity::new, MobCategory.CREATURE)
                     .sized(0.8f, 1.1f).build("cherub"));
+
     public static final Supplier<EntityType<HolyCowEntity>> HOLY_COW =
             ENTITY_TYPES.register("holy_cow", () -> EntityType.Builder.of(HolyCowEntity::new, MobCategory.CREATURE)
                     .sized(0.8f, 1.1f).build("holy_cow"));

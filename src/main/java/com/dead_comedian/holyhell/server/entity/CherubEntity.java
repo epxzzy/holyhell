@@ -1,6 +1,8 @@
 package com.dead_comedian.holyhell.server.entity;
 
 
+import com.dead_comedian.holyhell.server.block.DiviningTableBlock;
+import com.dead_comedian.holyhell.server.block.entity.DiviningTableBlockEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -28,13 +31,18 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 
 public class CherubEntity extends Monster implements FlyingAnimal {
     ///////////////
     // VARIABLES //
     /// ////////////
+
+    @Nullable
+    private List<Entity> trackedEntities = new ArrayList<>();
 
     public boolean hasSpawnedBab;
     public int flutterLoop = 24;
@@ -45,6 +53,16 @@ public class CherubEntity extends Monster implements FlyingAnimal {
     float damageMultiplier = 0;
     int current = 0;
 
+    private BlockPos blockPos;
+
+
+    public BlockPos getBlockPos() {
+        return blockPos;
+    }
+
+    public void setBlockPos(BlockPos blockPos) {
+        this.blockPos = blockPos;
+    }
 
     /*
      * 0 = Kamikaze
@@ -59,6 +77,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
 
     /// ///////
 
+
     public CherubEntity(EntityType<? extends Monster> entityType, Level world) {
         super(entityType, world);
         this.hasSpawnedBab = false;
@@ -69,6 +88,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
         this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
         this.setPathfindingMalus(PathType.COCOA, -1.0F);
         this.setPathfindingMalus(PathType.FENCE, -1.0F);
+
     }
 
     @Override
@@ -123,6 +143,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
                 if (mob != null) {
                     this.level().addFreshEntity(mob);
                     mob.moveTo(blockPos, mob.getYRot(), mob.getXRot());
+                    trackedEntities.add(mob);
                 }
 
 
@@ -133,9 +154,19 @@ public class CherubEntity extends Monster implements FlyingAnimal {
 
 
             if (current > capacity) {
+
+                this.playSound(HolyHellSounds.BELL_RING.get(), 1F, 1F);
+                if (blockPos != null) {
+
+                    if (this.level().getBlockEntity(blockPos) instanceof DiviningTableBlockEntity) {
+                        ((DiviningTableBlockEntity) (Object) this.level().getBlockEntity(blockPos)).setTrackedEntities(trackedEntities);
+                        int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
+                        ((DiviningTableBlockEntity) (Object) this.level().getBlockEntity(blockPos)).setDifficulty(difficulty);
+
+                    }
+                }
                 current = 0;
                 damageMultiplier = 0;
-                this.playSound(HolyHellSounds.BELL_RING.get(), 1F, 1F);
                 this.discard();
             }
         }
