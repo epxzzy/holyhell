@@ -30,7 +30,7 @@ import java.util.Objects;
 
 public class DiviningTableBlockEntity extends BlockEntity {
 
-    public int timer = 0;
+    public int timer;
 
     private int difficulty;
 
@@ -42,26 +42,27 @@ public class DiviningTableBlockEntity extends BlockEntity {
     private boolean canDropLoot = false;
     private boolean readyToSpawn = false;
 
-    public void enableCooldown(boolean cooldown) {
+    public boolean getReadyToSpawn() {
+        return readyToSpawn;
+    }
+
+    public void enableCooldown() {
         canDropLoot = false;
         readyToSpawn = false;
-        this.cooldown = cooldown;
+        cooldown = true;
+        timer = 0;
     }
 
-    public void enableReadyToSpawn(boolean readyToSpawn) {
+    public void enableReadyToSpawn() {
         canDropLoot = false;
         cooldown = false;
-        this.readyToSpawn = readyToSpawn;
+        readyToSpawn = true;
     }
 
-    public void enableCanDropLoot(boolean canDropLoot) {
+    public void enableCanDropLoot() {
         cooldown = false;
         readyToSpawn = false;
-        this.canDropLoot = canDropLoot;
-    }
-
-    public void setTimer(int timer1) {
-        timer = timer1;
+        canDropLoot = true;
     }
 
 
@@ -84,16 +85,16 @@ public class DiviningTableBlockEntity extends BlockEntity {
                 int randomInt = level.getRandom().nextInt(1, 5);
                 switch (randomInt) {
                     case 1:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1, 2, 1));
+                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1.5, 2, 1.5));
                         break;
                     case 2:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1, 2, 1));
+                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1.5, 2, 1.5));
                         break;
                     case 3:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1, 2, -1));
+                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1.5, 2, -1.5));
                         break;
                     case 4:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1, 2, -1));
+                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1.5, 2, -1.5));
                         break;
                 }
             }
@@ -105,15 +106,15 @@ public class DiviningTableBlockEntity extends BlockEntity {
         if (block instanceof DiviningTableBlock) {
 
             if (this.getTrackedEntities().stream().allMatch(Entity::isRemoved) && !this.getTrackedEntities().isEmpty()) {
-                enableCanDropLoot(true);
+                enableCanDropLoot();
                 if (level instanceof ServerLevel serverLevel && canDropLoot) {
-                    for (int i = 0; i < Math.pow(1.2,difficulty)+3; i++) {
+                    for (int i = 0; i < Math.pow(1.2, difficulty) + 3; i++) {
                         ejectReward(serverLevel, pos, ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "spawners/divining_table/divining_table")));
-                        if(i == (int)Math.pow(1.2,difficulty)+2){
-                            enableCooldown(true);
+                        if (i == (int) Math.pow(1.2, difficulty) + 2) {
+                            enableCooldown();
                             this.getTrackedEntities().clear();
                         }
-                    } 
+                    }
                 }
             }
             this.getTrackedEntities().removeIf(Objects::isNull);
@@ -121,7 +122,7 @@ public class DiviningTableBlockEntity extends BlockEntity {
 
         }
 
-        if (timer >= 1 && timer <= 1501) {
+        if (cooldown) {
             timer++;
         }
         if (world instanceof ServerLevel) {
@@ -139,15 +140,14 @@ public class DiviningTableBlockEntity extends BlockEntity {
             }
             if (timer >= 1500) {
                 ((ServerLevel) world).sendParticles(HolyhellParticles.EYE3.get(), pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
+                enableReadyToSpawn();
             }
-        }
-    }
 
-    public int getTimer() {
-        return timer;
+        }
     }
 
     public DiviningTableBlockEntity(BlockPos pos, BlockState state) {
         super(HolyHellBlockEntities.DIVINING_TABLE_BLOCK_ENTITY.get(), pos, state);
+        timer=1500;
     }
 }

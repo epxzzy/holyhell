@@ -61,8 +61,7 @@ public class DiviningTableBlock extends BaseEntityBlock implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 
-        if (((DiviningTableBlockEntity) level.getBlockEntity(pos)).getTimer() >= 1500 ||
-                ((DiviningTableBlockEntity) level.getBlockEntity(pos)).getTimer() <= 0) {
+        if (((DiviningTableBlockEntity) level.getBlockEntity(pos)).getReadyToSpawn()) {
 
 
             level.playLocalSound(pos, HolyHellSounds.DIVINING_TABLE_INTERACT.get(), SoundSource.BLOCKS, 1, 1 + level.random.nextInt(), false);
@@ -71,7 +70,7 @@ public class DiviningTableBlock extends BaseEntityBlock implements EntityBlock {
             level.addFreshEntity(cherubEntity);
             cherubEntity.moveTo(pos.offset(0, 1, 0), cherubEntity.getYRot(), cherubEntity.getXRot());
             cherubEntity.setBlockPos(pos);
-            ((DiviningTableBlockEntity) level.getBlockEntity(pos)).setTimer(1);
+            ((DiviningTableBlockEntity) level.getBlockEntity(pos)).enableCooldown();
 
             return ItemInteractionResult.SUCCESS;
         }
