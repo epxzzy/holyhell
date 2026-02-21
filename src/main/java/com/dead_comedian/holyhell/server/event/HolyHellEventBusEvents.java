@@ -50,8 +50,8 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.dead_comedian.holyhell.Holyhell.LOGGER;
 
@@ -142,6 +142,7 @@ public class HolyHellEventBusEvents {
             List<? extends AllSeerEntity> list = getEyes(level);
 
             if (list != null) {
+                list.removeIf(Objects::isNull);
                 if (list.isEmpty()) {
 
                     if (level.dimension() == HolyhellDimensions.ANGEL) {

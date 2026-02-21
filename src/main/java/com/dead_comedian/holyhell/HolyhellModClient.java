@@ -141,7 +141,7 @@ public class HolyhellModClient {
                     }
                 }
 
-                list.removeAll(list);
+                list.clear();
 
             }
         }
@@ -170,7 +170,7 @@ public class HolyhellModClient {
                     }
                 }
 
-                list.removeAll(list);
+                list.clear();
 
             }
         }

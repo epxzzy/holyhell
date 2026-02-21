@@ -163,6 +163,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
                         int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
                         ((DiviningTableBlockEntity) (Object) this.level().getBlockEntity(blockPos)).setDifficulty(difficulty);
 
+                        this.trackedEntities.clear();
                     }
                 }
                 current = 0;
