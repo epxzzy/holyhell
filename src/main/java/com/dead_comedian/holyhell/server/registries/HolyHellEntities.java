@@ -68,9 +68,9 @@ public class HolyHellEntities {
             ENTITY_TYPES.register("blinding_bomb", () -> EntityType.Builder.<BlindingBombEntity>of(BlindingBombEntity::new, MobCategory.MISC)
                     .sized(0.5f, 0.7f).build("blinding_bomb"));
 
-    public static final Supplier<EntityType<FireBallEntity>> FIREBALL =
-            ENTITY_TYPES.register("fireball", () -> EntityType.Builder.<FireBallEntity>of(FireBallEntity::new, MobCategory.MISC)
-                    .sized(0.5f, 0.3f).build("fireball"));
+    public static final Supplier<EntityType<AngelProjectileEntity>> ANGEL_PROJECTILE =
+            ENTITY_TYPES.register("angel_projectile", () -> EntityType.Builder.<AngelProjectileEntity>of(AngelProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.9F, 0.9F).build("angel_projectile"));
 
 
     public static void register(IEventBus eventBus) {

@@ -17,10 +17,6 @@ import java.util.function.Consumer;
 public class KamikazeExplosionParticle extends TextureSheetParticle {
 
 
-    private static final Vector3f field_38334 = (new Vector3f(0.5F, 0.5F, 0.5F)).normalize();
-    private static final Vector3f field_38335 = new Vector3f(-1.0F, -1.0F, 0.0F);
-
-
     public KamikazeExplosionParticle(ClientLevel world, double xCoord, double yCoord, double zCoord,
                                      SpriteSet spriteSet, double xd, double yd, double zd) {
         super(world, xCoord, yCoord, zCoord, xd, yd, zd);

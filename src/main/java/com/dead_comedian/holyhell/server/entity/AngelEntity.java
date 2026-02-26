@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.entity;
 
 
-import com.dead_comedian.holyhell.server.entity.non_living.FireBallEntity;
+import com.dead_comedian.holyhell.server.entity.non_living.AngelProjectileEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import net.minecraft.core.BlockPos;
@@ -12,14 +12,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -69,7 +72,7 @@ public class AngelEntity extends Monster implements RangedAttackMob {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new RangedAttackGoala(this, 1.25, 5, 4.0F));
+        this.goalSelector.addGoal(1, new RangedAttackGoala(this, 1.25, 5, 10F));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
@@ -118,32 +121,54 @@ public class AngelEntity extends Monster implements RangedAttackMob {
 
     @Override
     public void performRangedAttack(LivingEntity target, float distanceFactor) {
-//
-//        int projectileCount = 12;
-//        double speed = 0.6;
-//
-//        for (int i = 0; i < projectileCount; i++) {
-//
-//            double angle = (2 * Math.PI / projectileCount) * i;
-//
-//            double xVel = Math.cos(angle) * speed;
-//            double zVel = Math.sin(angle) * speed;
-//            double yVel = 0.4; // flat circle
-//
-//            FireBallEntity fireBallEntity = new FireBallEntity(HolyHellEntities.FIREBALL.get(), this.level());
-//
-//            this.playSound(SoundEvents.FIRECHARGE_USE, 0.4F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-//
-//            fireBallEntity.setPos(
-//                    this.getX(),
-//                    this.getY() + 1.2, // spawn height (adjust for your mob)
-//                    this.getZ()
-//            );
-//
-//            this.level().addFreshEntity(fireBallEntity);
-//            fireBallEntity.shoot(xVel, yVel , zVel, 1.6F, 8F);
-//
-//        }
+
+        double radius = 1.5;           // distance from angel center
+        double sideShootStrength = 0.9; // how hard it shoots outward
+
+        // Get forward direction
+        Vec3 forward = this.getLookAngle();
+        Vec3 flatForward = new Vec3(forward.x, 0, forward.z);
+
+        if (flatForward.lengthSqr() < 0.001) {
+            flatForward = new Vec3(0, 0, 1);
+        }
+
+        flatForward = flatForward.normalize();
+
+        // Horizontal right vector (90° rotated)
+        Vec3 right = new Vec3(-flatForward.z, 0, flatForward.x).normalize();
+
+        // ===== LEFT PROJECTILE =====
+        Vec3 leftOffset = right.scale(-radius);
+        Vec3 leftSpawn = this.position()
+                .add(leftOffset)
+                .add(0, this.getBbHeight() * 0.6, 0);
+
+        AngelProjectileEntity leftProjectile =
+                new AngelProjectileEntity(this.level(), this, target);
+
+        leftProjectile.setPos(leftSpawn);
+        leftProjectile.setDeltaMovement(right.scale(-sideShootStrength));
+
+        this.level().addFreshEntity(leftProjectile);
+
+        // ===== RIGHT PROJECTILE =====
+        Vec3 rightOffset = right.scale(radius);
+        Vec3 rightSpawn = this.position()
+                .add(rightOffset)
+                .add(0, this.getBbHeight() * 0.6, 0);
+
+        AngelProjectileEntity rightProjectile =
+                new AngelProjectileEntity(this.level(), this, target);
+
+        rightProjectile.setPos(rightSpawn);
+        rightProjectile.setDeltaMovement(right.scale(sideShootStrength));
+
+        this.level().addFreshEntity(rightProjectile);
+
+        this.playSound(SoundEvents.FIRECHARGE_USE,
+                0.4F,
+                0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 
 
@@ -232,9 +257,9 @@ public class AngelEntity extends Monster implements RangedAttackMob {
                 float f = (float) Math.sqrt(d0) / this.attackRadius;
                 float f1 = Mth.clamp(f, 0.1F, 1.0F);
                 this.rangedAttackMob.performRangedAttack(this.target, f1);
-                this.attackTime = Mth.floor(f * (float) (this.attackIntervalMax - this.attackIntervalMin) + (float) this.attackIntervalMin);
+                this.attackTime = 100 + Mth.floor(f * (float) (this.attackIntervalMax - this.attackIntervalMin) + (float) this.attackIntervalMin);
             } else if (this.attackTime < 0) {
-                this.attackTime = 10    + Mth.floor(Mth.lerp(Math.sqrt(d0) / (double) this.attackRadius, (double) this.attackIntervalMin, (double) this.attackIntervalMax));
+                this.attackTime = 100 + Mth.floor(Mth.lerp(Math.sqrt(d0) / (double) this.attackRadius, (double) this.attackIntervalMin, (double) this.attackIntervalMax));
             }
         }
     }

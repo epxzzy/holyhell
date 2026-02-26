@@ -21,7 +21,7 @@ public class HolyHellModelLayers {
     public static final ModelLayerLocation ALL_SEER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "all_seer"), "main");
 
 
-    public static final ModelLayerLocation FIREBALL = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "fireball"), "main");
+    public static final ModelLayerLocation ANGEL_PROJECTILE = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "angel_projectile"), "main");
     public static final ModelLayerLocation GLOBULAR_DOME = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "globular_dome"), "main");
 
 

@@ -2,7 +2,7 @@ package com.dead_comedian.holyhell.client.event;
 
 import com.dead_comedian.holyhell.Holyhell;
 import com.dead_comedian.holyhell.client.model.entity.*;
-import com.dead_comedian.holyhell.client.model.entity.non_living.FireBallModel;
+import com.dead_comedian.holyhell.client.model.entity.non_living.AngelProjectileModel;
 import com.dead_comedian.holyhell.client.model.entity.non_living.GlobularDomeModel;
 import com.dead_comedian.holyhell.client.renderer.render_layer.LowerRingRenderLayer;
 import com.dead_comedian.holyhell.client.renderer.render_layer.UpperRingRenderLayer;
@@ -54,7 +54,7 @@ public class HolyhellClientRegistries {
 
 
         event.registerLayerDefinition(HolyHellModelLayers.GLOBULAR_DOME, GlobularDomeModel::createBodyLayer);
-        event.registerLayerDefinition(HolyHellModelLayers.FIREBALL, FireBallModel::createBodyLayer);
+        event.registerLayerDefinition(HolyHellModelLayers.ANGEL_PROJECTILE, AngelProjectileModel::createBodyLayer);
 
         event.registerLayerDefinition(HolyHellModelLayers.ALL_SEER, AllSeerModel::createBodyLayer);
 
