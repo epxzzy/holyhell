@@ -17,6 +17,18 @@ public class HolyHellAttachments {
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Holyhell.MOD_ID);
 
 
+
+    public static final Supplier<AttachmentType<Boolean>> RENDER_RINGS = ATTACHMENT_TYPES.register(
+            "render_rings",
+            () -> AttachmentType.builder(() -> false)
+                    .serialize(Codec.BOOL)
+                    .sync(ByteBufCodecs.BOOL)
+                    .copyOnDeath()
+                    .build()
+    );
+
+
+
     public static final Supplier<AttachmentType<Boolean>> CAN_TP_TO_ANGEL = ATTACHMENT_TYPES.register(
             "can_tp_to_angel",
             () -> AttachmentType.builder(() -> false)

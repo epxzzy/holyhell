@@ -5,7 +5,7 @@ import com.dead_comedian.holyhell.client.model.entity.*;
 import com.dead_comedian.holyhell.client.model.entity.non_living.AngelProjectileModel;
 import com.dead_comedian.holyhell.client.model.entity.non_living.GlobularDomeModel;
 import com.dead_comedian.holyhell.client.renderer.render_layer.LowerRingRenderLayer;
-import com.dead_comedian.holyhell.client.renderer.render_layer.UpperRingRenderLayer;
+
 import com.dead_comedian.holyhell.client.screen.CoffinScreen;
 import com.dead_comedian.holyhell.particle.KamikazeExplosionParticle;
 import com.dead_comedian.holyhell.particle.LightRingParticle;
@@ -28,6 +28,8 @@ import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
 import com.dead_comedian.holyhell.server.registries.HolyHellScreens;
 import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
 import net.minecraft.client.particle.AttackSweepParticle;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.PlayerSkin;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -36,10 +38,23 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
-@EventBusSubscriber(modid = Holyhell.MOD_ID,value = Dist.CLIENT)
+@EventBusSubscriber(modid = Holyhell.MOD_ID, value = Dist.CLIENT)
 public class HolyhellClientRegistries {
 
 
+    @SubscribeEvent
+    public static void registerKey(EntityRenderersEvent.AddLayers event) {
+        for (PlayerSkin.Model skin : event.getSkins()) {
+            PlayerRenderer renderer = event.getSkin(skin);
+
+            renderer.addLayer(
+                    new LowerRingRenderLayer<>(
+                            renderer,
+                            event.getEntityModels()
+                    )
+            );
+        }
+    }
 
     @SubscribeEvent
     public static void registerKey(RegisterKeyMappingsEvent event) {
@@ -49,7 +64,6 @@ public class HolyhellClientRegistries {
 
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(HolyHellModelLayers.RELIGIOUS_RINGSV, UpperRingRenderLayer::getTexturedModelData);
         event.registerLayerDefinition(HolyHellModelLayers.RELIGIOUS_RINGS, LowerRingRenderLayer::getTexturedModelData);
 
 

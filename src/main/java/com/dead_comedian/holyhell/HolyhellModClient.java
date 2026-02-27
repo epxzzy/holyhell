@@ -5,7 +5,6 @@ import com.dead_comedian.holyhell.client.renderer.*;
 import com.dead_comedian.holyhell.client.renderer.non_living.AngelProjectileRenderer;
 import com.dead_comedian.holyhell.client.renderer.non_living.GlobularDomeRenderer;
 import com.dead_comedian.holyhell.client.renderer.render_layer.LowerRingRenderLayer;
-import com.dead_comedian.holyhell.client.renderer.render_layer.UpperRingRenderLayer;
 import com.dead_comedian.holyhell.networking.ServerboundAngelShaderAbilityPacket;
 import com.dead_comedian.holyhell.networking.ServerboundExplosionShaderAbilityPacket;
 import com.dead_comedian.holyhell.server.registries.*;
@@ -97,18 +96,8 @@ public class HolyhellModClient {
     }
 
 
-    @SubscribeEvent
-    public static void renderRing(RenderPlayerEvent.Post event) {
-        event.getRenderer().addLayer(new LowerRingRenderLayer<>(event.getRenderer(), Minecraft.getInstance().getEntityModels()));
-        event.getRenderer().addLayer(new UpperRingRenderLayer<>(event.getRenderer(), Minecraft.getInstance().getEntityModels()));
-    }
 
 
-    @SubscribeEvent
-    public static void renderRing(RenderLivingEvent.Post event) {
-        event.getRenderer().addLayer(new LowerRingRenderLayer<>(event.getRenderer(), Minecraft.getInstance().getEntityModels()));
-        event.getRenderer().addLayer(new UpperRingRenderLayer<>(event.getRenderer(), Minecraft.getInstance().getEntityModels()));
-    }
 
     @SubscribeEvent
     public static void playAmbientSounds(ClientTickEvent.Post event) {
