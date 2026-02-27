@@ -2,14 +2,9 @@ package com.dead_comedian.holyhell.server.event;
 
 
 import com.dead_comedian.holyhell.Holyhell;
-import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
 import com.dead_comedian.holyhell.client.event.EndTextOverlay;
-import com.dead_comedian.holyhell.server.data.PlayerCoffinStatus;
-import com.dead_comedian.holyhell.server.data.StoredInventory;
-import com.dead_comedian.holyhell.server.data.TableLootData;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -19,21 +14,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Cow;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
@@ -42,11 +30,10 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
@@ -72,7 +59,6 @@ public class HolyHellEventBusEvents {
         }
         return null;
     }
-
 
 
     @SubscribeEvent
@@ -232,31 +218,19 @@ public class HolyHellEventBusEvents {
         }
     }
 
-
     @SubscribeEvent
-    public static void shouldExplode(PlayerTickEvent.Pre event) {
-        Player player = event.getEntity();
+    public static void jesistence(LivingDamageEvent.Pre event) {
+        LivingEntity entity = event.getEntity();
 
-        if (player.getData(HolyHellAttachments.SHOULD_EXPLODE) && player.hasEffect(HolyHellEffects.JESISTANCE)) {
+        if (entity.getEffect(HolyHellEffects.JESISTANCE) != null) {
+            int duration = entity.getEffect(HolyHellEffects.JESISTANCE).getDuration();
+            int amp = entity.getEffect(HolyHellEffects.JESISTANCE).getAmplifier();
 
-            if (player.getData(HolyHellAttachments.DAMAGE_ABSORBED) < 5.0 && player.getData(HolyHellAttachments.DAMAGE_ABSORBED)>0) {
-                explosionMagnitude = 2;
-            } else if (player.getData(HolyHellAttachments.DAMAGE_ABSORBED) < 10.0) {
-                explosionMagnitude = 4;
-            } else if (player.getData(HolyHellAttachments.DAMAGE_ABSORBED) < 15.0) {
-                explosionMagnitude = 6;
-            } else if (player.getData(HolyHellAttachments.DAMAGE_ABSORBED) < 20.0) {
-                explosionMagnitude = 8;
-            }
-
-            event.getEntity().level().explode(player, player.getX(), player.getY(), player.getZ(), explosionMagnitude, Level.ExplosionInteraction.MOB);
-            player.setData(HolyHellAttachments.DAMAGE_ABSORBED, 0F);
-            player.setData(HolyHellAttachments.SHOULD_EXPLODE, false);
-
-            player.removeEffect(HolyHellEffects.JESISTANCE);
+            event.setNewDamage((float) (event.getOriginalDamage() - (event.getOriginalDamage() * (entity.getEffect(HolyHellEffects.JESISTANCE).getAmplifier() + 1) * 0.25)));
+            entity.removeEffect(HolyHellEffects.JESISTANCE);
+            entity.addEffect(new MobEffectInstance(HolyHellEffects.JESISTANCE, duration - (int) event.getNewDamage()*10, amp   ));
         }
     }
-
 
     /// ////////////////////////
 

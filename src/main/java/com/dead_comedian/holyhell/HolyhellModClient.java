@@ -6,7 +6,7 @@ import com.dead_comedian.holyhell.client.renderer.non_living.AngelProjectileRend
 import com.dead_comedian.holyhell.client.renderer.non_living.GlobularDomeRenderer;
 import com.dead_comedian.holyhell.client.renderer.render_layer.LowerRingRenderLayer;
 import com.dead_comedian.holyhell.networking.ServerboundAngelShaderAbilityPacket;
-import com.dead_comedian.holyhell.networking.ServerboundExplosionShaderAbilityPacket;
+
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -172,9 +172,6 @@ public class HolyhellModClient {
 
             Minecraft.getInstance().level.playLocalSound(Minecraft.getInstance().player, HolyHellSounds.BLINK.get(),SoundSource.PLAYERS,1,1);
             PacketDistributor.sendToServer(new ServerboundAngelShaderAbilityPacket());
-        }
-        if (HolyHellKeyBinds.RING_ABILITY_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(new ServerboundExplosionShaderAbilityPacket());
         }
     }
 }

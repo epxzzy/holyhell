@@ -59,7 +59,6 @@ public class HolyhellClientRegistries {
     @SubscribeEvent
     public static void registerKey(RegisterKeyMappingsEvent event) {
         event.register(HolyHellKeyBinds.VISION_ABILITY_KEY);
-        event.register(HolyHellKeyBinds.RING_ABILITY_KEY);
     }
 
     @SubscribeEvent

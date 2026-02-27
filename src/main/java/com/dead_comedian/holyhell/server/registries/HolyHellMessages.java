@@ -2,7 +2,6 @@ package com.dead_comedian.holyhell.server.registries;
 
 import com.dead_comedian.holyhell.Holyhell;
 import com.dead_comedian.holyhell.networking.ServerboundAngelShaderAbilityPacket;
-import com.dead_comedian.holyhell.networking.ServerboundExplosionShaderAbilityPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -22,11 +21,6 @@ public class HolyHellMessages {
                 ServerboundAngelShaderAbilityPacket::handle
         );
 
-        registrar.playToServer(
-                ServerboundExplosionShaderAbilityPacket.TYPE,
-                ServerboundExplosionShaderAbilityPacket.STREAM_CODEC,
-                ServerboundExplosionShaderAbilityPacket::handle
-        );
 
     }
 

@@ -18,8 +18,6 @@ public class JesistenceEffect extends MobEffect {
 
     @Override
     public void onMobRemoved(LivingEntity livingEntity, int amplifier, Entity.RemovalReason reason) {
-        livingEntity.setData(HolyHellAttachments.DAMAGE_ABSORBED.get(), 0F);
-        livingEntity.setData(HolyHellAttachments.SHOULD_EXPLODE.get(), false);
         livingEntity.setData(HolyHellAttachments.RENDER_RINGS, false);
         super.onMobRemoved(livingEntity, amplifier, reason);
     }

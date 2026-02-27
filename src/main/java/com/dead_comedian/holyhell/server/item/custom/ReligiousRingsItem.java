@@ -1,7 +1,6 @@
 package com.dead_comedian.holyhell.server.item.custom;
 
 import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
-
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,8 +18,11 @@ public class ReligiousRingsItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         if (!world.isClientSide()) {
-
-            user.addEffect(new MobEffectInstance(HolyHellEffects.JESISTANCE, 2000, 1));
+            if (user.hasEffect(HolyHellEffects.JESISTANCE) && user.getEffect(HolyHellEffects.JESISTANCE).getAmplifier() < 2) {
+                user.addEffect(new MobEffectInstance(HolyHellEffects.JESISTANCE, 2000, user.getEffect(HolyHellEffects.JESISTANCE).getAmplifier() + 1));
+            } else if (!user.hasEffect(HolyHellEffects.JESISTANCE)) {
+                user.addEffect(new MobEffectInstance(HolyHellEffects.JESISTANCE, 2000, 0));
+            }
             return InteractionResultHolder.success(user.getItemInHand(hand));
         }
         if (!user.isCreative()) {

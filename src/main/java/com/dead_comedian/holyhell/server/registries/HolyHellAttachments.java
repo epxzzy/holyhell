@@ -46,24 +46,6 @@ public class HolyHellAttachments {
                     .copyOnDeath()
                     .build()
     );
-    public static final Supplier<AttachmentType<Float>> DAMAGE_ABSORBED = ATTACHMENT_TYPES.register(
-            "damage_absorbed",
-            () -> AttachmentType.builder(() -> 0F)
-                    .serialize(Codec.FLOAT)
-                    .sync(ByteBufCodecs.FLOAT)
-                    .copyOnDeath()
-                    .build()
-    );
-
-    public static final Supplier<AttachmentType<Boolean>> SHOULD_EXPLODE = ATTACHMENT_TYPES.register(
-            "should_explode",
-            () -> AttachmentType.builder(() -> false)
-                    .serialize(Codec.BOOL)
-                    .sync(ByteBufCodecs.BOOL)
-                    .copyOnDeath()
-                    .build()
-    );
-
     public static final Supplier<AttachmentType<Boolean>> SHOULD_DISPLAY_TEXT = ATTACHMENT_TYPES.register(
             "should_display_text",
             () -> AttachmentType.builder(() -> false)
