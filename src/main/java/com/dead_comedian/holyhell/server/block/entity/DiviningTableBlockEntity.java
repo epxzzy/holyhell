@@ -2,7 +2,10 @@ package com.dead_comedian.holyhell.server.block.entity;
 
 import com.dead_comedian.holyhell.Holyhell;
 import com.dead_comedian.holyhell.server.block.DiviningTableBlock;
+import com.dead_comedian.holyhell.server.entity.BabOneEntity;
+import com.dead_comedian.holyhell.server.entity.BabTwoEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
+import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -13,6 +16,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -86,15 +90,59 @@ public class DiviningTableBlockEntity extends BlockEntity {
                 switch (randomInt) {
                     case 1:
                         DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1.5, 2, 1.5));
+                        for (int i = 0; i < 6; i++) {
+                            double x =   Vec3.atBottomCenterOf(pos).add(1.5, 2, 1.5).x();
+                            double y =   Vec3.atBottomCenterOf(pos).add(1.5, 2- (double) i /3, 1.5).y();
+                            double z =   Vec3.atBottomCenterOf(pos).add(1.5, 2, 1.5).z();
+
+                            level.addParticle(
+                                    HolyhellParticles.FIREBALL_TRAIL.get(),
+                                    x,y,z,
+                                    0, 0, 0
+                            );
+                        }
                         break;
                     case 2:
                         DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1.5, 2, 1.5));
+                        for (int i = 0; i < 6; i++) {
+                            double x =   Vec3.atBottomCenterOf(pos).add(-1.5, 2, 1.5).x();
+                            double y =   Vec3.atBottomCenterOf(pos).add(-1.5, 2- (double) i /3, 1.5).y();
+                            double z =   Vec3.atBottomCenterOf(pos).add(-1.5, 2, 1.5).z();
+
+                            level.addParticle(
+                                    HolyhellParticles.FIREBALL_TRAIL.get(),
+                                    x,y,z,
+                                    0, 0, 0
+                            );
+                        }
                         break;
                     case 3:
                         DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1.5, 2, -1.5));
+                        for (int i = 0; i < 6; i++) {
+                            double x =   Vec3.atBottomCenterOf(pos).add(-1.5, 2, -1.5).x();
+                            double y =   Vec3.atBottomCenterOf(pos).add(-1.5, 2- (double) i /3, -1.5).y();
+                            double z =   Vec3.atBottomCenterOf(pos).add(-1.5, 2, -1.5).z();
+
+                            level.addParticle(
+                                    HolyhellParticles.FIREBALL_TRAIL.get(),
+                                    x,y,z,
+                                    0, 0, 0
+                            );
+                        }
                         break;
                     case 4:
                         DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1.5, 2, -1.5));
+                        for (int i = 0; i < 6; i++) {
+                            double x =   Vec3.atBottomCenterOf(pos).add(1.5, 2, -1.5).x();
+                            double y =   Vec3.atBottomCenterOf(pos).add(1.5, 2- (double) i /3, -1.5).y();
+                            double z =   Vec3.atBottomCenterOf(pos).add(1.5, 2, -1.5).z();
+
+                            level.addParticle(
+                                    HolyhellParticles.FIREBALL_TRAIL.get(),
+                                    x,y,z,
+                                    0, 0, 0
+                            );
+                        }
                         break;
                 }
             }
@@ -104,7 +152,6 @@ public class DiviningTableBlockEntity extends BlockEntity {
     public void tick(Level world, BlockPos pos, BlockState state) {
         Block block = world.getBlockState(pos).getBlock();
         if (block instanceof DiviningTableBlock) {
-
             if (this.getTrackedEntities().stream().allMatch(Entity::isRemoved) && !this.getTrackedEntities().isEmpty()) {
                 enableCanDropLoot();
                 if (level instanceof ServerLevel serverLevel && canDropLoot) {
@@ -112,6 +159,9 @@ public class DiviningTableBlockEntity extends BlockEntity {
                         ejectReward(serverLevel, pos, ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "spawners/divining_table/divining_table")));
                         if (i == (int) Math.pow(1.2, difficulty) + 2) {
                             enableCooldown();
+                            BabOneEntity babOneEntity = new BabOneEntity(HolyHellEntities.BAB_ONE.get(), world);
+                            world.addFreshEntity(babOneEntity);
+                            babOneEntity.moveTo(pos.above(), babOneEntity.getYRot(), babOneEntity.getXRot());
                             this.getTrackedEntities().clear();
                         }
                     }
@@ -148,6 +198,6 @@ public class DiviningTableBlockEntity extends BlockEntity {
 
     public DiviningTableBlockEntity(BlockPos pos, BlockState state) {
         super(HolyHellBlockEntities.DIVINING_TABLE_BLOCK_ENTITY.get(), pos, state);
-        timer=1500;
+        timer = 1500;
     }
 }

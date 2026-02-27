@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 
 
 public class CherubEntity extends Monster implements FlyingAnimal {
@@ -41,7 +42,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
     // VARIABLES //
     /// ////////////
 
-    @Nullable
+
     private List<Entity> trackedEntities = new ArrayList<>();
 
     public boolean hasSpawnedBab;
@@ -159,11 +160,9 @@ public class CherubEntity extends Monster implements FlyingAnimal {
                 if (blockPos != null) {
 
                     if (this.level().getBlockEntity(blockPos) instanceof DiviningTableBlockEntity) {
-                        ((DiviningTableBlockEntity) (Object) this.level().getBlockEntity(blockPos)).setTrackedEntities(trackedEntities);
+                        ((DiviningTableBlockEntity) (Object) Objects.requireNonNull(this.level().getBlockEntity(blockPos))).setTrackedEntities(trackedEntities);
                         int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
-                        ((DiviningTableBlockEntity) (Object) this.level().getBlockEntity(blockPos)).setDifficulty(difficulty);
-
-                        this.trackedEntities.clear();
+                        ((DiviningTableBlockEntity) (Object) Objects.requireNonNull(this.level().getBlockEntity(blockPos))).setDifficulty(difficulty);
                     }
                 }
                 current = 0;
@@ -171,6 +170,12 @@ public class CherubEntity extends Monster implements FlyingAnimal {
                 this.discard();
             }
         }
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        trackedEntities.clear();
+        super.die(damageSource);
     }
 
     @Override

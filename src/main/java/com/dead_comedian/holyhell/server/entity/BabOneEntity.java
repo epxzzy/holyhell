@@ -93,7 +93,7 @@ public class BabOneEntity extends TamableAnimal {
         for (Entity i : entityBelow) {
             if (i instanceof BabOneEntity) {
                 if (this.isTame() && (this.getOwner() == ((BabOneEntity) i).getOwner() || !((BabOneEntity) i).isTame())) {
-                    if (this.canCollideWith(i)) {
+                    if (this.canCollideWith(i) && this.getOwner()!=null) {
 
                         if (this.getOwner() instanceof ServerPlayer) {
                             HolyHellCriteriaTriggers.BAB_MERGE.get().trigger(((ServerPlayer) (Object) this.getOwner()));
@@ -275,7 +275,3 @@ public class BabOneEntity extends TamableAnimal {
         return false;
     }
 }
-
-
-
-

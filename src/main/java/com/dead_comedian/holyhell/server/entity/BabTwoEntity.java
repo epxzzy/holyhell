@@ -129,7 +129,7 @@ public class BabTwoEntity extends TamableAnimal {
         for (Entity i : entityBelow) {
             if (i instanceof BabTwoEntity) {
                 if (this.isTame() && (this.getOwner() == ((BabTwoEntity) i).getOwner() || !((BabTwoEntity) i).isTame())) {
-                    if (this.canCollideWith(i)) {
+                    if (this.canCollideWith(i) && this.getOwner()!=null) {
 
                         BlockPos blockPos = this.blockPosition();
                         BabThreeEntity babThreeEntity = new BabThreeEntity(HolyHellEntities.BAB_THREE.get(), this.level());
