@@ -137,7 +137,6 @@ public class HolyHellBlocks {
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE)
                     .strength(3F)
-                    .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)) {
             });
@@ -172,7 +171,6 @@ public class HolyHellBlocks {
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE)
                     .strength(3F)
-                    .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)) {
             });
