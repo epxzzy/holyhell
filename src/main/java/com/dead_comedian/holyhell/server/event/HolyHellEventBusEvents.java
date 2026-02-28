@@ -3,6 +3,7 @@ package com.dead_comedian.holyhell.server.event;
 
 import com.dead_comedian.holyhell.Holyhell;
 import com.dead_comedian.holyhell.client.event.EndTextOverlay;
+import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.core.BlockPos;
@@ -34,8 +35,10 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Objects;
@@ -236,26 +239,30 @@ public class HolyHellEventBusEvents {
 
     private static boolean isAprilFools() {
         LocalDate localdate = LocalDate.now();
-        int i = localdate.get(ChronoField.DAY_OF_MONTH);
-        int j = localdate.get(ChronoField.MONTH_OF_YEAR);
-        return j == 4 && i <= 2;
+
+        Month j = localdate.getMonth();
+        return j.equals(Month.APRIL );
     }
 
     @SubscribeEvent
     public static void spawnHolyCow(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof Cow cow) {
+        if (event.getEntity() instanceof Cow cow && !(event.getEntity() instanceof HolyCowEntity)) {
             if (isAprilFools()) {
-                cow.discard();
                 BlockPos blockPos = cow.blockPosition();
-                HolyCowEntity holyCowEntity = new HolyCowEntity(HolyHellEntities.HOLY_COW.get(), cow.level());
-                cow.level().addFreshEntity(holyCowEntity);
+                HolyCowEntity holyCowEntity  = new HolyCowEntity(HolyHellEntities.HOLY_COW.get(), event.getLevel());
+                event.getLevel().addFreshEntity(holyCowEntity);
                 holyCowEntity.moveTo(blockPos, holyCowEntity.getYRot(), holyCowEntity.getXRot());
+                cow.discard();
             }
         }
     }
 
     /// /////////////////////
+    @SubscribeEvent
+    public static void datapackRegistry(DataPackRegistryEvent.NewRegistry event) {
+        event.dataPackRegistry(HolyHellCodecs.STATUES, StatueData.FullStatueCodec.CODEC, StatueData.FullStatueCodec.CODEC);
 
+    }
 
     @SubscribeEvent
     public static void triggerFallingCrossAchievement(LivingDeathEvent event) {

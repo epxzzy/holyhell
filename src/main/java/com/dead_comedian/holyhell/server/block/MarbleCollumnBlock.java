@@ -1,8 +1,14 @@
 package com.dead_comedian.holyhell.server.block;
 
+import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlocks;
+import com.dead_comedian.holyhell.server.registries.HolyHellCodecs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -19,6 +25,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
+
+import java.util.List;
+import java.util.Optional;
 
 public class MarbleCollumnBlock extends Block {
 
@@ -54,18 +63,57 @@ public class MarbleCollumnBlock extends Block {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (stack.is(ItemTags.PICKAXES)) {
+
+
+            Registry<StatueData.FullStatueCodec> registry = level.registryAccess().registryOrThrow(HolyHellCodecs.STATUES);
+
+            Optional<StatueData.FullStatueCodec> data =
+                    registry.getOptional(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "statue_pairs"));
+
+            if (data.isPresent()) {
+                List<StatueData.StatueCodec> statueCodec = data.get().statuePairs();
+                for (StatueData.StatueCodec codec : statueCodec) {
+                    if (codec.top().equals(level.getBlockState(pos.above()).getBlock())) {
+
+                        Block statue = codec.statue();
+
+                        if (statue instanceof MarbleStatueBlock) {
+                            level.setBlock(pos, statue
+                                    .defaultBlockState().setValue(MarbleStatueBlock.HALF, DoubleBlockHalf.LOWER)
+                                    .setValue(MarbleStatueBlock.FACING, player.getDirection().getOpposite()), 11);
+
+                            level.setBlock(pos.above(), statue
+                                    .defaultBlockState().setValue(MarbleStatueBlock.HALF, DoubleBlockHalf.UPPER)
+                                    .setValue(MarbleStatueBlock.FACING, player.getDirection().getOpposite()), 11);
+
+                            for (int i = 0; i < 30; i++) {
+                                level.addParticle(ParticleTypes.DUST_PLUME, pos.getX()+level.getRandom().nextFloat(), pos.getY()+level.getRandom().nextFloat(), pos.getZ()+level.getRandom().nextFloat(), 0, 0, 0);
+                                level.addParticle(ParticleTypes.DUST_PLUME, pos.getX()+level.getRandom().nextFloat(), pos.above().getY()+level.getRandom().nextFloat(), pos.getZ()+level.getRandom().nextFloat(), 0, 0, 0);
+                            }
+                            return ItemInteractionResult.SUCCESS;
+                        } else {
+                            Holyhell.LOGGER.warn("Block is either not instance of MarbleStatueBlock or does not exist", codec.statue());
+                        }
+
+
+                    }
+                }
+
+            }
+
+
             if (level.getBlockState(pos.above()).is(HolyHellBlocks.MARBLE.get())) {
-                level.removeBlock(pos,false);
-                level.removeBlock(pos.above(),false);
-                level.setBlock(pos,HolyHellBlocks.ATLAS_STATUE.get()
+                level.removeBlock(pos, false);
+                level.removeBlock(pos.above(), false);
+                level.setBlock(pos, HolyHellBlocks.ATLAS_STATUE.get()
                         .defaultBlockState().setValue(MarbleStatueBlock.HALF, DoubleBlockHalf.LOWER)
-                        .setValue(MarbleStatueBlock.FACING, player.getDirection().getOpposite()),11 );
+                        .setValue(MarbleStatueBlock.FACING, player.getDirection().getOpposite()), 11);
 
-                level.setBlock(pos.above(),HolyHellBlocks.ATLAS_STATUE.get()
+                level.setBlock(pos.above(), HolyHellBlocks.ATLAS_STATUE.get()
                         .defaultBlockState().setValue(MarbleStatueBlock.HALF, DoubleBlockHalf.UPPER)
-                        .setValue(MarbleStatueBlock.FACING, player.getDirection().getOpposite()),11 );
+                        .setValue(MarbleStatueBlock.FACING, player.getDirection().getOpposite()), 11);
 
-                level.playSound(player,pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS,1,1);
+                level.playSound(player, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1, 1);
                 return ItemInteractionResult.SUCCESS;
             }
 

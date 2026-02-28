@@ -1,0 +1,28 @@
+{
+  "statue_pairs": [
+    {
+      "top": "holyhell:cobbled_marble",
+      "statue": "holyhell:atlas_statue"
+    },
+    {
+      "top": "holyhell:marble",
+      "statue": "holyhell:baphomet_statue"
+    },
+    {
+      "top": "holyhell:marble_bricks",
+      "statue": "holyhell:icarus_statue"
+    },
+    {
+      "top": "holyhell:cracked_marble_bricks",
+      "statue": "holyhell:doomslayer_statue"
+    },
+    {
+      "top": "holyhell:cobbled_marble_stairs",
+      "statue": "holyhell:kratos_statue"
+    },
+    {
+      "top": "holyhell:marble_brick_stairs",
+      "statue": "holyhell:v1_statue"
+    }
+  ]
+}
