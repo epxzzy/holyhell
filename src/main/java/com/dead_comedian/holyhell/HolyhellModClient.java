@@ -66,6 +66,9 @@ public class HolyhellModClient {
         EntityRenderers.register(HolyHellEntities.BLINDING_BOMB.get(), ThrownItemRenderer::new);
         EntityRenderers.register(HolyHellEntities.ANGEL_PROJECTILE.get(), AngelProjectileRenderer::new);
         EntityRenderers.register(HolyHellEntities.GLOBULAR_DOME.get(), GlobularDomeRenderer::new);
+
+        EntityRenderers.register(HolyHellEntities.REVENANT.get(), RevenantRenderer::new);
+
     }
 
 

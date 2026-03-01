@@ -20,12 +20,13 @@ public class HolyHellModelLayers {
 
     public static final ModelLayerLocation ALL_SEER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "all_seer"), "main");
 
+    public static final ModelLayerLocation REVENANT = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "revenant"), "main");
+
 
     public static final ModelLayerLocation ANGEL_PROJECTILE = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "angel_projectile"), "main");
     public static final ModelLayerLocation GLOBULAR_DOME = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "globular_dome"), "main");
 
 
     public static final ModelLayerLocation RELIGIOUS_RINGS = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "religious_rings"), "main");
-    public static final ModelLayerLocation RELIGIOUS_RINGSV = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "religious_ringsv"), "main");
 
 }

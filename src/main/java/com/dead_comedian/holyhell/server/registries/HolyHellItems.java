@@ -52,6 +52,9 @@ public class HolyHellItems {
             DeferredSpawnEggItem(HolyHellEntities.BAB_ONE, 0xe2d8c0, 0xd6bf9d, new Item.Properties()));
     public static final Supplier<Item> CHERUB_SPAWN_EGG = ITEMS.register("cherub_spawn_egg", () -> new
             DeferredSpawnEggItem(HolyHellEntities.CHERUB, 0x92813d, 0x991c2e, new Item.Properties()));
+    public static final Supplier<Item> REVENANT_SPAWN_EGG = ITEMS.register("revenant_spawn_egg", () -> new
+            DeferredSpawnEggItem(HolyHellEntities.REVENANT,  0x6b6f6c, 0xe3d8c1, new Item.Properties()));
+
 
     public static final Supplier<Item> HOLY_TEAR = ITEMS.register("holy_tear", () -> new
             Item(new Item.Properties()));

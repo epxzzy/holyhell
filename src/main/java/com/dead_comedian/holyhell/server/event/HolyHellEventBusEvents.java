@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -34,12 +35,12 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Objects;
 
@@ -257,12 +258,31 @@ public class HolyHellEventBusEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onBlockBroken(BlockEvent.BreakEvent event) {
+
+        if (event.getLevel().getBlockState(event.getPos()).is(HolyhellTags.Blocks.REVENANT_PROTECTS)) {
+            Player player = event.getPlayer();
+            List<RevenantEntity> nearbyRevenant = event.getLevel()
+                    .getEntitiesOfClass(RevenantEntity.class,
+                            new AABB(player.getX() + 20, player.getY() + 4, player.getZ() + 20, player.getX() - 20, player.getY() - 4, player.getZ() - 20));
+
+            for (RevenantEntity entity : nearbyRevenant) {
+                if (!player.isCreative() && !player.isSpectator()) {
+                    entity.setTarget(player);
+                }
+            }
+
+        }
+    }
+
     /// /////////////////////
     @SubscribeEvent
     public static void datapackRegistry(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(HolyHellCodecs.STATUES, StatueData.FullStatueCodec.CODEC, StatueData.FullStatueCodec.CODEC);
 
     }
+
 
     @SubscribeEvent
     public static void triggerFallingCrossAchievement(LivingDeathEvent event) {
@@ -297,6 +317,8 @@ public class HolyHellEventBusEvents {
         event.put(HolyHellEntities.HOLY_COW.get(), HolyCowEntity.createAttributes().build());
         event.put(HolyHellEntities.HOLY_SPIRIT.get(), HolySpiritEntity.createAttributes().build());
         event.put(HolyHellEntities.KAMIKAZE.get(), KamikazeEntity.createAttributes().build());
+        event.put(HolyHellEntities.REVENANT.get(), RevenantEntity.createAttributes().build());
+
     }
 
 

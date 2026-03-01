@@ -57,7 +57,9 @@ public class HolyHellEntities {
             ENTITY_TYPES.register("all_seer", () -> EntityType.Builder.of(AllSeerEntity::new, MobCategory.CREATURE)
                     .sized(60f, 30f).build("all_seer"));
 
-
+    public static final Supplier<EntityType<RevenantEntity>> REVENANT =
+            ENTITY_TYPES.register("revenant", () -> EntityType.Builder.of(RevenantEntity::new, MobCategory.CREATURE)
+                    .sized(1f, 2.5f).build("revenant"));
 
     // NON LIVING
 

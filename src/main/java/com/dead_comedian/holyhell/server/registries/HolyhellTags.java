@@ -20,6 +20,8 @@ public class HolyhellTags {
         public static final TagKey<EntityType<?>> MINIBOSS =
                 createTag("miniboss");
 
+        public static final TagKey<EntityType<?>> REVENANT_TRANSCENDS =
+                createTag("revenant_transcends");
 
         public static final TagKey<EntityType<?>> BOSS =
                 createTag("boss");
@@ -42,6 +44,9 @@ public class HolyhellTags {
 
         public static final TagKey<Block> LIGHTING_BLOCKS =
                 createTag("lighting_blocks");
+
+        public static final TagKey<Block> REVENANT_PROTECTS =
+                createTag("revenant_protects");
 
         private static TagKey<Block> createTag(String name) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, name));

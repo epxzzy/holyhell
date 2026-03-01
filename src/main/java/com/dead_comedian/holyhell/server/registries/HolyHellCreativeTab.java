@@ -50,6 +50,7 @@ public class HolyHellCreativeTab {
                         pOutput.accept(HolyHellItems.HERETIC_SPAWN_EGG.get());
                         pOutput.accept(HolyHellItems.BAB_SPAWN_EGG.get());
                         pOutput.accept(HolyHellItems.CHERUB_SPAWN_EGG.get());
+                        pOutput.accept(HolyHellItems.REVENANT_SPAWN_EGG.get());
 
                         pOutput.accept(HolyHellBlocks.COBBLED_MARBLE.get());
                         pOutput.accept(HolyHellBlocks.COBBLED_MARBLE_WALL.get());

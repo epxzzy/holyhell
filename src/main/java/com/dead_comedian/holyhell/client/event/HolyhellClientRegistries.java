@@ -81,6 +81,7 @@ public class HolyhellClientRegistries {
         event.registerLayerDefinition(HolyHellModelLayers.HOLY_SPIRIT, HolySpiritModel::getTexturedModelData);
         event.registerLayerDefinition(HolyHellModelLayers.CHERUB, CherubModel::createBodyLayer);
         event.registerLayerDefinition(HolyHellModelLayers.HOLY_COW, HolyCowModel::createBodyLayer);
+        event.registerLayerDefinition(HolyHellModelLayers.REVENANT, RevenantModel::createBodyLayer);
 
     }
 
