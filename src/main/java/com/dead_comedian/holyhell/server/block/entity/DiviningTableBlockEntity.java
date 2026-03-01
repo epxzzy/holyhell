@@ -3,6 +3,7 @@ package com.dead_comedian.holyhell.server.block.entity;
 import com.dead_comedian.holyhell.Holyhell;
 import com.dead_comedian.holyhell.server.block.DiviningTableBlock;
 import com.dead_comedian.holyhell.server.entity.BabOneEntity;
+import com.dead_comedian.holyhell.server.helper.SpawnEnemyWaveHelper;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
@@ -18,6 +19,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -35,6 +38,8 @@ public class DiviningTableBlockEntity extends BlockEntity {
     public int timer;
 
     private int difficulty;
+
+    private int signalPower=0;
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
@@ -78,6 +83,23 @@ public class DiviningTableBlockEntity extends BlockEntity {
         this.trackedEntities = trackedEntities;
     }
 
+    protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
+        return this.getInputSignal(level, pos, state) > 0 && this.getReadyToSpawn();
+    }
+
+    protected int getInputSignal(Level level, BlockPos pos, BlockState state) {
+        Direction direction = state.getValue(DiviningTableBlock.FACING);
+        BlockPos blockpos = pos.relative(direction);
+        signalPower = level.getSignal(blockpos, direction);
+        if (signalPower >= 15) {
+            return signalPower;
+        } else {
+            BlockState blockstate = level.getBlockState(blockpos);
+            return Math.max(signalPower, blockstate.is(Blocks.REDSTONE_WIRE) ? blockstate.getValue(RedStoneWireBlock.POWER) : 0);
+        }
+    }
+
+
     public void ejectReward(ServerLevel level, BlockPos pos, ResourceKey<LootTable> lootTable) {
         LootTable loottable = level.getServer().reloadableRegistries().getLootTable(lootTable);
         LootParams lootparams = new LootParams.Builder(level).create(LootContextParamSets.EMPTY);
@@ -104,6 +126,13 @@ public class DiviningTableBlockEntity extends BlockEntity {
     }
 
     public void tick(Level world, BlockPos pos, BlockState state) {
+
+        if(this.shouldTurnOn(world,pos,state)){
+            SpawnEnemyWaveHelper spawnEnemyWaveHelper = new SpawnEnemyWaveHelper();
+            spawnEnemyWaveHelper.spawnMobs(signalPower*2,pos,world,pos);
+            this.enableCooldown();
+        }
+
         Block block = world.getBlockState(pos).getBlock();
         if (block instanceof DiviningTableBlock) {
             if (this.getTrackedEntities().stream().allMatch(Entity::isRemoved) && !this.getTrackedEntities().isEmpty()) {
