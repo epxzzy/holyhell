@@ -834,7 +834,6 @@ public class RevenantEntity extends Monster {
                 }
             }
             if (this.anticipation >= 1 && this.anticipation <= 6) {
-                System.out.println(anticipation);
                 this.anticipation++;
                 revenantEntity.getNavigation().stop();
                 revenantEntity.getLookControl().setLookAt(this.targetEntity);

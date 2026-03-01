@@ -136,9 +136,10 @@ public class CoffinBlock extends BaseEntityBlock {
         }
 
         BlockEntity pBlockEntity = level.getBlockEntity(pos);
+
         if (!level.isClientSide() && pBlockEntity instanceof CoffinBlockEntity cbe) {
             UUID id = cbe.getStoredPlayer();
-            if (id != null) {
+            if (id != null && level.getPlayerByUUID(id)!=null) {
                 PlayerCoffinStatus status = level.getPlayerByUUID(id).getData(HolyHellAttachments.COFFIN_STATUS);
 
                 status.update(false, pos);

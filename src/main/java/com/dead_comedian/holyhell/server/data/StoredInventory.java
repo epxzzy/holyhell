@@ -22,25 +22,25 @@ public class StoredInventory {
 
     public static final Codec<StoredInventory> CODEC =
             RecordCodecBuilder.create(inst -> inst.group(
-                    ItemStack.CODEC.listOf().fieldOf("items").forGetter(i -> List.of(i.items)),
-                    ItemStack.CODEC.listOf().fieldOf("armor").forGetter(i -> List.of(i.armor)),
-                    ItemStack.CODEC.listOf().fieldOf("offhand").forGetter(i -> List.of(i.offhand))
+                    ItemStack.CODEC.listOf().fieldOf("items").forGetter(i -> Arrays.asList(i.items)),
+                    ItemStack.CODEC.listOf().fieldOf("armor").forGetter(i -> Arrays.asList(i.armor)),
+                    ItemStack.CODEC.listOf().fieldOf("offhand").forGetter(i -> Arrays.asList(i.offhand))
             ).apply(inst, (items, armor, offhand) -> {
                 StoredInventory inv = new StoredInventory();
 
-                for (int i = 1; i < Math.min(items.size(), inv.items.length); i++) {
+                for (int i = 0; i < Math.min(items.size(), inv.items.length); i++) {
                     if (items.get(i) != Items.AIR.getDefaultInstance()) {
                         inv.items[i] = items.get(i);
                     }
                 }
 
-                for (int i = 1; i < Math.min(armor.size(), inv.armor.length); i++) {
+                for (int i = 0; i < Math.min(armor.size(), inv.armor.length); i++) {
                     if (armor.get(i) != Items.AIR.getDefaultInstance()) {
-                        inv.items[i] = armor.get(i);
+                        inv.armor[i] = armor.get(i);
                     }
                 }
 
-                for (int i = 1; i < Math.min(offhand.size(), inv.offhand.length); i++) {
+                for (int i = 0; i < Math.min(offhand.size(), inv.offhand.length); i++) {
                     if (offhand.get(i) != Items.AIR.getDefaultInstance()) {
                         inv.offhand[i] = offhand.get(i);
                     }

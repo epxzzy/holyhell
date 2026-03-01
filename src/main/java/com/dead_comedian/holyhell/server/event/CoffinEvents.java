@@ -11,6 +11,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+
+import java.util.Arrays;
 
 @EventBusSubscriber(modid = Holyhell.MOD_ID)
 public class CoffinEvents {
@@ -31,18 +34,39 @@ public class CoffinEvents {
 
         StoredInventory data = player.getData(HolyHellAttachments.STORED_INVENTORY);
 
-        for (int i = 0; i < 36; i++)
-            data.items[i] = player.getInventory().items.get(i).copyAndClear();
+        for (int i = 0; i < 36; i++) {
+            data.items[i] = player.getInventory().items.get(i).copy();
+        }
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) {
             data.armor[i] = player.getInventory().armor.get(i).copyAndClear();
+        }
 
         data.offhand[0] = player.getInventory().offhand.get(0).copyAndClear();
-
 
         player.getInventory().clearContent();
 
         status.update(false, status.coffinPos);
         entity.postDeathHook();
+    }
+
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (!(event.getEntity() instanceof ServerPlayer newPlayer)) return;
+        if (!(event.getOriginal() instanceof ServerPlayer oldPlayer)) return;
+
+        // Only copy if death caused the clone
+        if (!event.isWasDeath()) return;
+
+        StoredInventory oldData =
+                oldPlayer.getData(HolyHellAttachments.STORED_INVENTORY);
+
+        StoredInventory newData =
+                newPlayer.getData(HolyHellAttachments.STORED_INVENTORY);
+
+        newData.items = oldData.items.clone();
+        newData.armor = oldData.armor.clone();
+        newData.offhand = oldData.offhand.clone();
     }
 }

@@ -1,9 +1,7 @@
 package com.dead_comedian.holyhell.server.entity;
 
 
-import com.dead_comedian.holyhell.server.block.DiviningTableBlock;
-import com.dead_comedian.holyhell.server.block.entity.DiviningTableBlockEntity;
-import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
+import com.dead_comedian.holyhell.server.helper.SpawnEnemyWaveHelper;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
 import net.minecraft.core.BlockPos;
@@ -13,20 +11,21 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
-import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 
 
 public class CherubEntity extends Monster implements FlyingAnimal {
@@ -45,14 +43,11 @@ public class CherubEntity extends Monster implements FlyingAnimal {
 
     private List<Entity> trackedEntities = new ArrayList<>();
 
-    public boolean hasSpawnedBab;
     public int flutterLoop = 24;
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
 
-    double capacity = 5;
     float damageMultiplier = 0;
-    int current = 0;
 
     private BlockPos blockPos;
 
@@ -81,15 +76,12 @@ public class CherubEntity extends Monster implements FlyingAnimal {
 
     public CherubEntity(EntityType<? extends Monster> entityType, Level world) {
         super(entityType, world);
-        this.hasSpawnedBab = false;
-
         this.moveControl = new FlyingMoveControl(this, 20, true);
         this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
         this.setPathfindingMalus(PathType.WATER, -1.0F);
         this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
         this.setPathfindingMalus(PathType.COCOA, -1.0F);
         this.setPathfindingMalus(PathType.FENCE, -1.0F);
-
     }
 
     @Override
@@ -107,69 +99,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
             flutterLoop = 24;
         }
 
-        if (damageMultiplier != 0) {
-            do {
-                double angle = (2 * Math.PI / capacity * damageMultiplier) * current;
-                int radius = 8;
-                boolean bool = true;
-                BlockPos blockPos;
 
-
-                do {
-                    double x = this.blockPosition().getX() + (Math.cos(angle) * radius);
-                    double z = this.blockPosition().getZ() + (Math.sin(angle) * radius);
-                    double y = this.blockPosition().getY() + 0.4; // flat circl
-                    blockPos = new BlockPos((int) x, (int) (y), (int) z);
-                    if (!level().getBlockState(blockPos).is(Blocks.AIR)) {
-                        radius--;
-                    } else {
-                        bool = false;
-                    }
-
-                }
-                while (bool);
-                Mob mob = null;
-                int mobIndex = this.level().getRandom().nextInt(0, 3);
-
-                mob = switch (mobIndex) {
-                    case 0 -> new AngelEntity(HolyHellEntities.ANGEL.get(), level());
-                    case 1 -> new KamikazeEntity(HolyHellEntities.KAMIKAZE.get(), level());
-                    case 2 -> new HereticEntity(HolyHellEntities.HERETIC.get(), level());
-                    default -> mob;
-                };
-
-                current = current + mobSpawnIndex[mobIndex];
-
-
-                if (mob != null) {
-                    this.level().addFreshEntity(mob);
-                    mob.moveTo(blockPos, mob.getYRot(), mob.getXRot());
-                    trackedEntities.add(mob);
-                }
-
-
-            }
-            while (
-                    current < capacity * damageMultiplier
-            );
-
-
-            if (current > capacity) {
-
-                this.playSound(HolyHellSounds.BELL_RING.get(), 1F, 1F);
-                if (blockPos != null) {
-
-                    if (this.level().getBlockEntity(blockPos) instanceof DiviningTableBlockEntity) {
-                        ((DiviningTableBlockEntity) (Object) Objects.requireNonNull(this.level().getBlockEntity(blockPos))).setTrackedEntities(trackedEntities);
-                        int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
-                        ((DiviningTableBlockEntity) (Object) Objects.requireNonNull(this.level().getBlockEntity(blockPos))).setDifficulty(difficulty);
-                    }
-                }
-                current = 0;
-                damageMultiplier = 0;
-                this.discard();
-            }
-        }
     }
 
     @Override
@@ -199,8 +129,12 @@ public class CherubEntity extends Monster implements FlyingAnimal {
         }
 
         damageMultiplier = pAmount * random.nextFloat();
+        int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
 
+        SpawnEnemyWaveHelper spawnEnemyWaveEvent = new SpawnEnemyWaveHelper();
+        spawnEnemyWaveEvent.spawnMobs(difficulty, this.blockPosition(), this.level(), this.getBlockPos());
 
+        this.discard();
         return super.hurt(pSource, pAmount);
 
     }
