@@ -146,10 +146,24 @@
   "sounds.holyhell.bab_die": "Bab Die",
   "sounds.holyhell.bab_hurt": "Bab Hurts",
   "sounds.holyhell.bab_2_attack": "Bab Attacks",
-  "sounds.holyhell.bab_3_attack": "Bab Sumons",
+  "sounds.holyhell.bab_3_attack": "Bab Summons",
   "sounds.holyhell.bab_tame": "Bab Tames",
   "sounds.holyhell.bab_merge": "Bab Merges",
   "sounds.holyhell.bab_idle": "Bab Idles",
+
+
+  "sounds.holyhell.revenant_walk": "Revenant Walks",
+  "sounds.holyhell.revenant_rise": "Revenant Changes State",
+  "sounds.holyhell.metal_hurt": "Metal is Hit",
+  "sounds.holyhell.revenant_attack": "Revenant Thrusts",
+
+  "sounds.holyhell.ululu": "Ululu",
+  "sounds.holyhell.mob_passes": "Mob Passes To The Afterlife",
+  "sounds.holyhell.perish": "Mob gets sent to the gulag",
+  "sounds.holyhell.dissapear": "Mob gets sent to the gulag but fancy",
+
+  "sounds.holyhell.coffin_lid": "Lid is moved",
+
 
   "sounds.holyhell.bell_ring": "Bell Rings",
   "sounds.holyhell.cherub_flutter": "Cherub Or Kamikaze Flies",
@@ -157,15 +171,8 @@
   "sounds.holyhell.holy_spirit_death": "Holy Spirit Dies",
   "sounds.holyhell.stun": "Entity Is Stunned",
 
-
   "sounds.holyhell.static_ambient": "Weird Static Sounds",
   "sounds.holyhell.blink": "Player shifts plane of reality",
-
-  "sounds.holyhell.heavens_voice": "Heavens Voice -Keta",
-
-
-
-
 
   "advancements.holyhell.blinding_bomb": "Obtain Blinding Bomb",
   "advancements.holyhell.falling_cross": "Get killed by a Falling Cross",
