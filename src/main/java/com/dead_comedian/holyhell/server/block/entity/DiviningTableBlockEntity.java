@@ -133,14 +133,15 @@ public class DiviningTableBlockEntity extends BlockEntity {
             this.enableCooldown();
         }
 
+
         Block block = world.getBlockState(pos).getBlock();
         if (block instanceof DiviningTableBlock) {
             if (this.getTrackedEntities().stream().allMatch(Entity::isRemoved) && !this.getTrackedEntities().isEmpty()) {
                 enableCanDropLoot();
                 if (level instanceof ServerLevel serverLevel && canDropLoot) {
-                    for (int i = 0; i < Math.pow(1.2, difficulty) + 3; i++) {
+                    for (int i = 0; i < 7.5*Math.log(difficulty)/2 + 1; i++) {
                         ejectReward(serverLevel, pos, ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "spawners/divining_table/divining_table")));
-                        if (i == (int) Math.pow(1.2, difficulty) + 2) {
+                        if (i == (int) 7.5*Math.log(difficulty)/2) {
                             enableCooldown();
                             BabOneEntity babOneEntity = new BabOneEntity(HolyHellEntities.BAB_ONE.get(), world);
                             world.addFreshEntity(babOneEntity);

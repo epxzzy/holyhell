@@ -105,6 +105,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
     @Override
     public void die(DamageSource damageSource) {
         trackedEntities.clear();
+
         super.die(damageSource);
     }
 
@@ -127,9 +128,9 @@ public class CherubEntity extends Monster implements FlyingAnimal {
         if (this.level() instanceof ServerLevel) {
             ((ServerLevel) this.level()).sendParticles(HolyhellParticles.SOUND_RING.get(), this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
         }
-
-        damageMultiplier = pAmount * random.nextFloat();
+        damageMultiplier = Math.clamp(pAmount,0,100) * random.nextFloat();
         int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
+        System.out.println(pAmount);
 
         SpawnEnemyWaveHelper spawnEnemyWaveEvent = new SpawnEnemyWaveHelper();
         spawnEnemyWaveEvent.spawnMobs(difficulty, this.blockPosition(), this.level(), this.getBlockPos());
