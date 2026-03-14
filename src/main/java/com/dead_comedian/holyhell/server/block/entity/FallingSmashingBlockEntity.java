@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -33,7 +34,7 @@ public class FallingSmashingBlockEntity extends BlockEntity {
 
     public void tick(Level world, BlockPos pos, BlockState state) {
         for (Entity entity : getEntitiesOnBlock(world, pos)) {
-            if (world.getBlockState(pos.below()).isAir() && pos.getY() >= world.getMinBuildHeight() && entity instanceof LivingEntity) {
+            if (world.getBlockState(pos.below()).isAir() && pos.getY() >= world.getMinBuildHeight() && (entity instanceof LivingEntity && !(entity instanceof Player) || (entity instanceof Player && !((Player)entity).isCreative()) )) {
                 FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(world, pos, state);
                 getEntitiesOnBlock(world, pos).removeAll(getEntitiesOnBlock(world, pos));
             }

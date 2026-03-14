@@ -3,11 +3,13 @@ package com.dead_comedian.holyhell.server.block.entity;
 import com.dead_comedian.holyhell.Holyhell;
 import com.dead_comedian.holyhell.server.block.DiviningTableBlock;
 import com.dead_comedian.holyhell.server.entity.BabOneEntity;
-import com.dead_comedian.holyhell.server.helper.SpawnEnemyWaveHelper;
+import com.dead_comedian.holyhell.server.helper.WaveSpawner;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
+
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -32,22 +34,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class DiviningTableBlockEntity extends BlockEntity {
 
     public int timer;
 
     private int difficulty;
+    private int signalPower = 0;
 
-    private int signalPower=0;
+    private boolean cooldown = false;
+    private boolean canDropLoot = false;
+    private boolean readyToSpawn = false;
+
+    private List<Entity> trackedEntities = new ArrayList<>();
+
+    public DiviningTableBlockEntity(BlockPos pos, BlockState state) {
+        super(HolyHellBlockEntities.DIVINING_TABLE_BLOCK_ENTITY.get(), pos, state);
+        timer = 1500;
+    }
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 
-    private boolean cooldown = false;
-    private boolean canDropLoot = false;
-    private boolean readyToSpawn = false;
+    public List<Entity> getTrackedEntities() {
+        return trackedEntities;
+    }
+
+    public void setTrackedEntities(List<Entity> trackedEntities) {
+        this.trackedEntities = trackedEntities;
+    }
 
     public boolean getReadyToSpawn() {
         return readyToSpawn;
@@ -72,116 +87,148 @@ public class DiviningTableBlockEntity extends BlockEntity {
         canDropLoot = true;
     }
 
-
-    private List<Entity> trackedEntities = new ArrayList<>();
-
-    public List<Entity> getTrackedEntities() {
-        return trackedEntities;
-    }
-
-    public void setTrackedEntities(List<Entity> trackedEntities) {
-        this.trackedEntities = trackedEntities;
-    }
-
     protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
         return this.getInputSignal(level, pos, state) > 0 && this.getReadyToSpawn();
     }
 
     protected int getInputSignal(Level level, BlockPos pos, BlockState state) {
+
         Direction direction = state.getValue(DiviningTableBlock.FACING);
+
         BlockPos blockpos = pos.relative(direction);
+
         signalPower = level.getSignal(blockpos, direction);
+
         if (signalPower >= 15) {
             return signalPower;
-        } else {
-            BlockState blockstate = level.getBlockState(blockpos);
-            return Math.max(signalPower, blockstate.is(Blocks.REDSTONE_WIRE) ? blockstate.getValue(RedStoneWireBlock.POWER) : 0);
         }
-    }
 
+        BlockState blockstate = level.getBlockState(blockpos);
 
-    public void ejectReward(ServerLevel level, BlockPos pos, ResourceKey<LootTable> lootTable) {
-        LootTable loottable = level.getServer().reloadableRegistries().getLootTable(lootTable);
-        LootParams lootparams = new LootParams.Builder(level).create(LootContextParamSets.EMPTY);
-        ObjectArrayList<ItemStack> objectarraylist = loottable.getRandomItems(lootparams);
-        if (!objectarraylist.isEmpty()) {
-            for (ItemStack itemstack : objectarraylist) {
-                int randomInt = level.getRandom().nextInt(1, 5);
-                switch (randomInt) {
-                    case 1:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1.5, 2, 1.5));
-                        break;
-                    case 2:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1.5, 2, 1.5));
-                        break;
-                    case 3:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(-1.5, 2, -1.5));
-                        break;
-                    case 4:
-                        DefaultDispenseItemBehavior.spawnItem(level, itemstack, 1, Direction.UP, Vec3.atBottomCenterOf(pos).add(1.5, 2, -1.5));
-                        break;
-                }
-            }
-        }
+        return Math.max(signalPower,
+                blockstate.is(Blocks.REDSTONE_WIRE)
+                        ? blockstate.getValue(RedStoneWireBlock.POWER)
+                        : 0);
     }
 
     public void tick(Level world, BlockPos pos, BlockState state) {
 
-        if(this.shouldTurnOn(world,pos,state)){
-            SpawnEnemyWaveHelper spawnEnemyWaveHelper = new SpawnEnemyWaveHelper();
-            spawnEnemyWaveHelper.spawnMobs(signalPower*2,pos,world,pos);
-            this.enableCooldown();
+        if (world.isClientSide) return;
+
+        if(this.shouldTurnOn(world,pos,state)) {
+
+            if(world instanceof ServerLevel server) {
+
+                difficulty = signalPower * 2;
+
+                List<Entity> wave = WaveSpawner.spawnWave(server,pos,difficulty);
+
+                setTrackedEntities(wave);
+
+                enableCooldown();
+            }
         }
 
-
         Block block = world.getBlockState(pos).getBlock();
+
         if (block instanceof DiviningTableBlock) {
-            if (this.getTrackedEntities().stream().allMatch(Entity::isRemoved) && !this.getTrackedEntities().isEmpty()) {
+
+            if (this.getTrackedEntities().stream().allMatch(Entity::isRemoved)
+                    && !this.getTrackedEntities().isEmpty()) {
+
                 enableCanDropLoot();
-                if (level instanceof ServerLevel serverLevel && canDropLoot) {
-                    for (int i = 0; i < 7.5*Math.log(difficulty)/2 + 1; i++) {
-                        ejectReward(serverLevel, pos, ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "spawners/divining_table/divining_table")));
-                        if (i == (int) 7.5*Math.log(difficulty)/2) {
+
+                if (world instanceof ServerLevel serverLevel && canDropLoot) {
+
+                    int rolls = (int)(3 + 4 * Math.log1p(difficulty));
+
+                    for (int i = 0; i < rolls; i++) {
+
+                        ejectReward(serverLevel,pos,
+                                ResourceKey.create(
+                                        Registries.LOOT_TABLE,
+                                        ResourceLocation.fromNamespaceAndPath(
+                                                Holyhell.MOD_ID,
+                                                "spawners/divining_table/divining_table"
+                                        )
+                                ));
+
+                        if (i == rolls - 1) {
+
                             enableCooldown();
-                            BabOneEntity babOneEntity = new BabOneEntity(HolyHellEntities.BAB_ONE.get(), world);
-                            world.addFreshEntity(babOneEntity);
-                            babOneEntity.moveTo(pos.above(), babOneEntity.getYRot(), babOneEntity.getXRot());
+
+                            BabOneEntity boss =
+                                    new BabOneEntity(HolyHellEntities.BAB_ONE.get(),world);
+
+                            world.addFreshEntity(boss);
+
+                            boss.moveTo(pos.above(),0,0);
+
                             this.getTrackedEntities().clear();
                         }
                     }
                 }
             }
+
             this.getTrackedEntities().removeIf(Objects::isNull);
-
-
         }
 
-        if (cooldown) {
-            timer++;
-        }
-        if (world instanceof ServerLevel) {
-            if (timer == 0) {
-                ((ServerLevel) world).sendParticles(HolyhellParticles.EYE3.get(), pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
-            }
-            if (timer == 2) {
-                ((ServerLevel) world).sendParticles(HolyhellParticles.EYE0.get(), pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
-            }
-            if (timer == 501) {
-                ((ServerLevel) world).sendParticles(HolyhellParticles.EYE1.get(), pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
-            }
-            if (timer == 1001) {
-                ((ServerLevel) world).sendParticles(HolyhellParticles.EYE2.get(), pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
-            }
+        if (cooldown) timer++;
+
+        if (world instanceof ServerLevel server) {
+
+            if (timer == 0)
+                server.sendParticles(HolyhellParticles.EYE3.get(),
+                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
+                        1,0,0,0,0);
+
+            if (timer == 2)
+                server.sendParticles(HolyhellParticles.EYE0.get(),
+                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
+                        1,0,0,0,0);
+
+            if (timer == 501)
+                server.sendParticles(HolyhellParticles.EYE1.get(),
+                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
+                        1,0,0,0,0);
+
+            if (timer == 1001)
+                server.sendParticles(HolyhellParticles.EYE2.get(),
+                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
+                        1,0,0,0,0);
+
             if (timer >= 1500) {
-                ((ServerLevel) world).sendParticles(HolyhellParticles.EYE3.get(), pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
+
+                server.sendParticles(HolyhellParticles.EYE3.get(),
+                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
+                        1,0,0,0,0);
+
                 enableReadyToSpawn();
             }
-
         }
     }
 
-    public DiviningTableBlockEntity(BlockPos pos, BlockState state) {
-        super(HolyHellBlockEntities.DIVINING_TABLE_BLOCK_ENTITY.get(), pos, state);
-        timer = 1500;
+    public void ejectReward(ServerLevel level, BlockPos pos, ResourceKey<LootTable> lootTable) {
+
+        LootTable loottable = level.getServer()
+                .reloadableRegistries()
+                .getLootTable(lootTable);
+
+        LootParams lootparams =
+                new LootParams.Builder(level)
+                        .create(LootContextParamSets.EMPTY);
+
+        ObjectArrayList<ItemStack> items = loottable.getRandomItems(lootparams);
+
+        for (ItemStack stack : items) {
+
+            DefaultDispenseItemBehavior.spawnItem(
+                    level,
+                    stack,
+                    1,
+                    Direction.UP,
+                    Vec3.atBottomCenterOf(pos).add(0,2,0)
+            );
+        }
     }
 }

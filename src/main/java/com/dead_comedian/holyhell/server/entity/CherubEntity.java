@@ -1,7 +1,8 @@
 package com.dead_comedian.holyhell.server.entity;
 
 
-import com.dead_comedian.holyhell.server.helper.SpawnEnemyWaveHelper;
+import com.dead_comedian.holyhell.server.block.entity.DiviningTableBlockEntity;
+import com.dead_comedian.holyhell.server.helper.WaveSpawner;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
 import net.minecraft.core.BlockPos;
@@ -124,21 +125,40 @@ public class CherubEntity extends Monster implements FlyingAnimal {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        if (this.level() instanceof ServerLevel) {
-            ((ServerLevel) this.level()).sendParticles(HolyhellParticles.SOUND_RING.get(), this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
-        }
-        damageMultiplier = Math.clamp(pAmount,0,100) * random.nextFloat();
-        int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
-        System.out.println(pAmount);
+    public boolean hurt(DamageSource source, float amount) {
 
-        SpawnEnemyWaveHelper spawnEnemyWaveEvent = new SpawnEnemyWaveHelper();
-        spawnEnemyWaveEvent.spawnMobs(difficulty, this.blockPosition(), this.level(), this.getBlockPos());
+        if (!(this.level() instanceof ServerLevel server)) {
+            return super.hurt(source, amount);
+        }
+
+        server.sendParticles(
+                HolyhellParticles.SOUND_RING.get(),
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                1,
+                0,0,0,0
+        );
+
+        float damageMultiplier = Math.clamp(amount,0,100) * random.nextFloat();
+
+        int difficulty = (int) damageMultiplier > 0 ? (int) damageMultiplier : 1;
+
+        List<Entity> wave =
+                WaveSpawner.spawnWave(server,this.blockPosition(),difficulty);
+
+        if(blockPos != null &&
+                server.getBlockEntity(blockPos) instanceof DiviningTableBlockEntity table) {
+
+            table.setTrackedEntities(wave);
+            table.setDifficulty(difficulty);
+        }
 
         this.discard();
-        return super.hurt(pSource, pAmount);
 
+        return super.hurt(source, amount);
     }
+
 
 
     ////////////////
