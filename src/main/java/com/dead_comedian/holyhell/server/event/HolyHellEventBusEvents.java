@@ -8,6 +8,7 @@ import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -90,7 +91,10 @@ public class HolyHellEventBusEvents {
 
 
         if (level.dimension() == HolyHellDimensions.ANGEL) {
+            player.getAbilities().mayBuild=false;
             player.setData(HolyHellAttachments.VISION_SHADER, false);
+        }else {
+            player.getAbilities().mayBuild=true;
         }
 
 
@@ -191,11 +195,13 @@ public class HolyHellEventBusEvents {
     @SubscribeEvent
     public static void onBlockBroken(BlockEvent.BreakEvent event) {
 
+        if (event.getPlayer().level().dimension().equals(HolyHellDimensions.ANGEL) && !event.getLevel().isClientSide()) {
+          event.setCanceled(true);
+        }
+
         if (event.getLevel().getBlockState(event.getPos()).is(HolyHellTags.Blocks.REVENANT_PROTECTS)) {
             Player player = event.getPlayer();
-            List<RevenantEntity> nearbyRevenant = event.getLevel()
-                    .getEntitiesOfClass(RevenantEntity.class,
-                            new AABB(player.getX() + 20, player.getY() + 4, player.getZ() + 20, player.getX() - 20, player.getY() - 4, player.getZ() - 20));
+            List<RevenantEntity> nearbyRevenant = event.getLevel().getEntitiesOfClass(RevenantEntity.class, new AABB(player.getX() + 20, player.getY() + 4, player.getZ() + 20, player.getX() - 20, player.getY() - 4, player.getZ() - 20));
 
             for (RevenantEntity entity : nearbyRevenant) {
                 if (!player.isCreative() && !player.isSpectator()) {
