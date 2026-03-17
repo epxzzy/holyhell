@@ -4,7 +4,7 @@ package com.dead_comedian.holyhell.server.entity;
 import com.dead_comedian.holyhell.server.block.CandleholderBlock;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlocks;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
-import com.dead_comedian.holyhell.server.registries.HolyhellTags;
+import com.dead_comedian.holyhell.server.registries.HolyHellTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -395,7 +395,7 @@ public class RevenantEntity extends Monster {
 
         @Override
         public boolean canUse() {
-            if (revenantEntity.getTarget() != null && !revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS)) {
+            if (revenantEntity.getTarget() != null && !revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS)) {
 
                 Level level = revenantEntity.level();
                 BlockPos mobPos = revenantEntity.blockPosition();
@@ -426,7 +426,7 @@ public class RevenantEntity extends Monster {
                     && revenantEntity.level().getBlockState(revenantEntity.getHolderPos()).is(targetBlock)
                     && !revenantEntity.isArmed()
                     && this.revenantEntity.getTarget() != null
-                    && !revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS);
+                    && !revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
         }
 
         @Override
@@ -525,7 +525,7 @@ public class RevenantEntity extends Monster {
         public boolean canUse() {
             return isArmed()
                     && ((revenantEntity.getTarget() == null
-                    || revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS)));
+                    || revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS)));
         }
 
         @Override
@@ -635,7 +635,7 @@ public class RevenantEntity extends Monster {
         public boolean canContinueToUse() {
             return !this.revenantEntity.isArmed()
                     && this.revenantEntity.getTarget() != null
-                    && this.revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS);
+                    && this.revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
         }
 
         @Override
@@ -694,7 +694,7 @@ public class RevenantEntity extends Monster {
             List<LivingEntity> candidates = this.revenantEntity.level().getEntitiesOfClass(
                     LivingEntity.class,
                     searchBox,
-                    e -> e.getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS)
+                    e -> e.getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS)
             );
 
             LivingEntity closest = null;
@@ -788,7 +788,7 @@ public class RevenantEntity extends Monster {
         public boolean canUse() {
             return revenantEntity.isArmed()
                     && revenantEntity.getTarget() != null
-                    && !revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS);
+                    && !revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
 
         }
 
@@ -796,7 +796,7 @@ public class RevenantEntity extends Monster {
         public boolean canContinueToUse() {
             return revenantEntity.isArmed()
                     && revenantEntity.getTarget() != null
-                    && !revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS);
+                    && !revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
         }
 
         @Override
@@ -870,14 +870,14 @@ public class RevenantEntity extends Monster {
         public boolean canUse() {
             return !this.revenantEntity.isArmed()
                     && this.revenantEntity.getTarget() != null
-                    && !this.revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS);
+                    && !this.revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
         }
 
         @Override
         public boolean canContinueToUse() {
             return !this.revenantEntity.isArmed()
                     && this.revenantEntity.getTarget() != null
-                    && !this.revenantEntity.getTarget().getType().is(HolyhellTags.Entities.REVENANT_TRANSCENDS);
+                    && !this.revenantEntity.getTarget().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
         }
 
         @Override

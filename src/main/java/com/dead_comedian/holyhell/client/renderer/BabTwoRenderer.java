@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.BabTwoModel;
 import com.dead_comedian.holyhell.server.entity.BabTwoEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class BabTwoRenderer extends MobRenderer<BabTwoEntity, BabTwoModel<BabTwoEntity>> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/bab/bab2.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/bab/bab2.png");
 
     public BabTwoRenderer(EntityRendererProvider.Context context) {
         super(context, new BabTwoModel<>(context.bakeLayer(HolyHellModelLayers.BAB1)), 0.6F);

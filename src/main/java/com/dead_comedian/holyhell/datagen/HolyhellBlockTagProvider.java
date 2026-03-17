@@ -1,9 +1,9 @@
 package com.dead_comedian.holyhell.datagen;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlocks;
-import com.dead_comedian.holyhell.server.registries.HolyhellTags;
+import com.dead_comedian.holyhell.server.registries.HolyHellTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class HolyhellBlockTagProvider extends BlockTagsProvider {
     public HolyhellBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, Holyhell.MOD_ID, existingFileHelper);
+        super(output, lookupProvider, HolyHell.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class HolyhellBlockTagProvider extends BlockTagsProvider {
                 .add(HolyHellBlocks.V1_STATUE.get());
 
 
-        tag(HolyhellTags.Blocks.MARBLE)
+        tag(HolyHellTags.Blocks.MARBLE)
                 .add(HolyHellBlocks.COBBLED_MARBLE.get())
                 .add(HolyHellBlocks.COBBLED_MARBLE_SLAB.get())
                 .add(HolyHellBlocks.COBBLED_MARBLE_STAIRS.get())
@@ -99,7 +99,7 @@ public class HolyhellBlockTagProvider extends BlockTagsProvider {
                 .add(HolyHellBlocks.V1_STATUE.get());
 
 
-        tag(HolyhellTags.Blocks.STATUE)
+        tag(HolyHellTags.Blocks.STATUE)
                 .add(HolyHellBlocks.ATLAS_STATUE.get())
                 .add(HolyHellBlocks.BAPHOMET_STATUE.get())
                 .add(HolyHellBlocks.DOOMSLAYER_STATUE.get())
@@ -107,7 +107,7 @@ public class HolyhellBlockTagProvider extends BlockTagsProvider {
                 .add(HolyHellBlocks.KRATOS_STATUE.get())
                 .add(HolyHellBlocks.V1_STATUE.get());
 
-        tag(HolyhellTags.Blocks.LIGHTING_BLOCKS)
+        tag(HolyHellTags.Blocks.LIGHTING_BLOCKS)
                 .add(HolyHellBlocks.CANDELABRA.get())
                 .add(HolyHellBlocks.TALL_CANDELABRA.get())
                 .add(HolyHellBlocks.CANDLEHOLDER.get())

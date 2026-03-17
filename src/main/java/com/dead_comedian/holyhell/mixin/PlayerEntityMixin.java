@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -114,7 +113,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         //Jesistence
         if (source.getEntity() != null) {
 
-            return source.getEntity().getType().is(HolyhellTags.Entities.MAGIC_DEALING_MOBS) || source.is(HolyhellTags.DamageTypes.MAGIC_DAMAGE) ? 0 : value;
+            return source.getEntity().getType().is(HolyHellTags.Entities.MAGIC_DEALING_MOBS) || source.is(HolyHellTags.DamageTypes.MAGIC_DAMAGE) ? 0 : value;
         }
 
         //Globular Dome
@@ -151,7 +150,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     private void modifyDamage(DamageSource damageSource, float f, CallbackInfoReturnable<Boolean> cir) {
 
         // Divine Prot
-        if (this.hasEffect(HolyHellEffects.DIVINE_PROTECTION) && !damageSource.is(HolyhellTags.DamageTypes.DIVINE_PROTECTION_IGNORE)) {
+        if (this.hasEffect(HolyHellEffects.DIVINE_PROTECTION) && !damageSource.is(HolyHellTags.DamageTypes.DIVINE_PROTECTION_IGNORE)) {
 
             switch (countArmorPieces(((Player) (Object) this), HolyhellArmorMaterials.EVANGELIST.value())) {
                 case 1:
@@ -173,7 +172,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
             }
             if (this.level() instanceof ServerLevel world) {
-                world.sendParticles(HolyhellParticles.LIGHT_RING.get(), this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0.1, 0, 0);
+                world.sendParticles(HolyHellParticles.LIGHT_RING.get(), this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0.1, 0, 0);
 
             }
 
@@ -189,9 +188,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 if (damageSource.getEntity() instanceof HereticEntity heretic && holyhell$blockingCounter <= 20) {
 
                     if (heretic.level() instanceof ServerLevel world) {
-                        world.sendParticles(HolyhellParticles.STUN.get(), heretic.getX(), heretic.getEyeY() + 0.3F, heretic.getZ() - 0.5, 1, 0, 0.1, 0, 1);
+                        world.sendParticles(HolyHellParticles.STUN.get(), heretic.getX(), heretic.getEyeY() + 0.3F, heretic.getZ() - 0.5, 1, 0, 0.1, 0, 1);
 
-                        world.sendParticles(HolyhellParticles.STUN2.get(), heretic.getX(), heretic.getEyeY() + 0.3F, heretic.getZ() + 0.5, 1, 0, 0.1, 0, 1);
+                        world.sendParticles(HolyHellParticles.STUN2.get(), heretic.getX(), heretic.getEyeY() + 0.3F, heretic.getZ() + 0.5, 1, 0, 0.1, 0, 1);
                     }
                     heretic.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 255));
                     heretic.playSound(HolyHellSounds.STUN.get(), 1F, 1F);
@@ -199,7 +198,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 
                 if (this.level() instanceof ServerLevel world) {
-                    world.sendParticles(HolyhellParticles.SOUND_RING.get(), this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0.1, 0, 0);
+                    world.sendParticles(HolyHellParticles.SOUND_RING.get(), this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0.1, 0, 0);
                 }
             }
         }

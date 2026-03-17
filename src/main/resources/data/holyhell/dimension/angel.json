@@ -4,10 +4,12 @@
     "type": "minecraft:flat",
     "settings": {
       "layers": [],
-      "biome": "minecraft:the_void",
+      "biome": "holyhell:angel",
       "features": false,
       "lakes": false,
-      "structure_overrides": []
+      "structure_overrides": [
+        "holyhell:covenant"
+      ]
     }
   }
 }

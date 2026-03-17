@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.HolyCowModel;
 import com.dead_comedian.holyhell.server.entity.HolyCowEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -19,7 +19,7 @@ public class HolyCowRenderer extends MobRenderer<HolyCowEntity, HolyCowModel<Hol
 
     @Override
     public ResourceLocation getTextureLocation(HolyCowEntity pEntity) {
-        return ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/holy_cow.png");
+        return ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/holy_cow.png");
     }
 
 

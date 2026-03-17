@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.client.event;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,7 +15,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
-@EventBusSubscriber(modid = Holyhell.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HolyHell.MOD_ID, value = Dist.CLIENT)
 public class EyeTransitionOverlay {
     private static final int ANIMATION_SPEED = 1;
     public static int eyeTransitionCounter = 12;
@@ -39,16 +39,16 @@ public class EyeTransitionOverlay {
 
 
     public static final ResourceLocation[] FRAME_TEXTURES = {
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_1.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_2.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_3.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_4.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_5.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_5.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_4.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_3.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_2.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_1.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_1.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_2.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_3.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_4.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_5.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_5.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_4.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_3.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_2.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/eye_overlay/eye_overlay_1.png"),
     };
 
 

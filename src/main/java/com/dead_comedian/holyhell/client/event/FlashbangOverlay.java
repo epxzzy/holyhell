@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.client.event;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
-@EventBusSubscriber(modid = Holyhell.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HolyHell.MOD_ID, value = Dist.CLIENT)
 public class FlashbangOverlay {
 
     public static int pluhTimer = 0;
@@ -45,7 +45,7 @@ public class FlashbangOverlay {
                 pluhTimer = 0;
         }
 
-        guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/flashbang.png"), 0, 0, -90, 0.0F, 0.0F, screenWidth, screenHeight, screenWidth, screenHeight);
+        guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/flashbang.png"), 0, 0, -90, 0.0F, 0.0F, screenWidth, screenHeight, screenWidth, screenHeight);
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();

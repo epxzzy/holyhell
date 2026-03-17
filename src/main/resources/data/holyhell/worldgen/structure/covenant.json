@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:jigsaw",
+  "start_pool": "holyhell:covenant/start_pool",
+  "size": 20,
+  "max_distance_from_center": 128,
+  "biomes": "holyhell:angel",
+  "step": "surface_structures",
+  "start_height": {
+    "absolute": 50
+  },
+  "terrain_adaptation": "none",
+  "use_expansion_hack": false,
+  "spawn_overrides": {
+  }
+}

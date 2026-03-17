@@ -1,14 +1,13 @@
 package com.dead_comedian.holyhell.client.renderer.non_living;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.non_living.AngelProjectileModel;
 import com.dead_comedian.holyhell.server.entity.non_living.AngelProjectileEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -18,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class AngelProjectileRenderer extends EntityRenderer<AngelProjectileEntity> {
 
-    private static final ResourceLocation TEXTURE1 = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/angel_projectile.png");
+    private static final ResourceLocation TEXTURE1 = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/angel_projectile.png");
     private final AngelProjectileModel<AngelProjectileEntity> model;
 
     public AngelProjectileRenderer(EntityRendererProvider.Context context) {

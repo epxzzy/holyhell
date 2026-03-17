@@ -27,12 +27,19 @@ public class AllSeerEntity extends Mob {
         super(type, world);
     }
 
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return false;
+    }
 
     @Override
-    public void tick() {
-        List<? extends Player> nearbyPlayers = this.level().getNearbyPlayers(TargetingConditions.forNonCombat().range(50), this, new AABB(50, 50, 50, -50, -50, -50));
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence();
+    }
 
-        super.tick();
+    @Override
+    public boolean isPersistenceRequired() {
+        return true;
     }
 
     @Override

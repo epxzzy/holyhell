@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.event;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
-@EventBusSubscriber(modid = Holyhell.MOD_ID)
+@EventBusSubscriber(modid = HolyHell.MOD_ID)
 public class SacrificialKatarEvents {
 
 

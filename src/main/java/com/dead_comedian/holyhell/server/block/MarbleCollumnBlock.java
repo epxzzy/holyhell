@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.block;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlocks;
 import com.dead_comedian.holyhell.server.registries.HolyHellCodecs;
@@ -68,7 +68,7 @@ public class MarbleCollumnBlock extends Block {
             Registry<StatueData.FullStatueCodec> registry = level.registryAccess().registryOrThrow(HolyHellCodecs.STATUES);
 
             Optional<StatueData.FullStatueCodec> data =
-                    registry.getOptional(ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "statue_pairs"));
+                    registry.getOptional(ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "statue_pairs"));
 
             if (data.isPresent()) {
                 List<StatueData.StatueCodec> statueCodec = data.get().statuePairs();
@@ -92,7 +92,7 @@ public class MarbleCollumnBlock extends Block {
                             }
                             return ItemInteractionResult.SUCCESS;
                         } else {
-                            Holyhell.LOGGER.warn("Block is either not instance of MarbleStatueBlock or does not exist", codec.statue());
+                            HolyHell.LOGGER.warn("Block is either not instance of MarbleStatueBlock or does not exist", codec.statue());
                         }
 
 

@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.client.renderer.glow_layer;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class GlowingSeerLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-    private static final ResourceLocation EMISSIVE_TEXTURE = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/all_seer.png");
+    private static final ResourceLocation EMISSIVE_TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/all_seer.png");
 
     public GlowingSeerLayer(RenderLayerParent<T, M> renderer) {
         super(renderer);

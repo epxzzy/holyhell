@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.AllSeerModel;
 import com.dead_comedian.holyhell.client.renderer.glow_layer.GlowingSeerLayer;
 import com.dead_comedian.holyhell.server.entity.AllSeerEntity;
@@ -20,7 +20,7 @@ public class AllSeerRenderer extends MobRenderer<AllSeerEntity, AllSeerModel<All
 
     @Override
     public ResourceLocation getTextureLocation(AllSeerEntity pEntity) {
-        return ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/all_seer.png");
+        return ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/all_seer.png");
     }
 
 

@@ -1,13 +1,13 @@
 package com.dead_comedian.holyhell.server.registries;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.networking.ServerboundAngelShaderAbilityPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-@EventBusSubscriber(modid = Holyhell.MOD_ID)
+@EventBusSubscriber(modid = HolyHell.MOD_ID)
 public class HolyHellMessages {
     private static final String PROTOCOL_VER = "1";
 

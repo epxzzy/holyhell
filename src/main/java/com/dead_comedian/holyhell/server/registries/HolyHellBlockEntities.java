@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.registries;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
 import com.dead_comedian.holyhell.server.block.entity.DiviningTableBlockEntity;
@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public class HolyHellBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Holyhell.MOD_ID);
+            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, HolyHell.MOD_ID);
 
     public static final Supplier<BlockEntityType<FallingSmashingBlockEntity>> FALLING_SMASHING_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("falling_smashing_block_entity", () -> BlockEntityType.Builder.of(

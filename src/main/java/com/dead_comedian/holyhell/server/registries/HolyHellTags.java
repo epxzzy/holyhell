@@ -2,7 +2,7 @@ package com.dead_comedian.holyhell.server.registries;
 
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import net.minecraft.core.registries.Registries;
 
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 
-public class HolyhellTags {
+public class HolyHellTags {
     public static class Entities{
 
         public static final TagKey<EntityType<?>> MAGIC_DEALING_MOBS =
@@ -27,7 +27,7 @@ public class HolyhellTags {
                 createTag("boss");
 
         private static TagKey<EntityType<?>> createTag(String name) {
-            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, name));
         }
     }
 
@@ -49,7 +49,7 @@ public class HolyhellTags {
                 createTag("revenant_protects");
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, name));
         }
     }
 
@@ -63,7 +63,7 @@ public class HolyhellTags {
 
 
         private static TagKey<DamageType> createTag(String name) {
-            return TagKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, name));
+            return TagKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, name));
         }
     }
 

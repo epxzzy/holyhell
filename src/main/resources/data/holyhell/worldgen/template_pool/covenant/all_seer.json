@@ -1,0 +1,15 @@
+{
+  "name": "holyhell:covenant/all_seer",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "holyhell:all_seer",
+        "processors": "holyhell:church_generic_degradation",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

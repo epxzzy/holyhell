@@ -4,9 +4,7 @@ import com.dead_comedian.holyhell.client.event.EyeTransitionOverlay;
 import com.dead_comedian.holyhell.client.renderer.*;
 import com.dead_comedian.holyhell.client.renderer.non_living.AngelProjectileRenderer;
 import com.dead_comedian.holyhell.client.renderer.non_living.GlobularDomeRenderer;
-import com.dead_comedian.holyhell.client.renderer.render_layer.LowerRingRenderLayer;
 import com.dead_comedian.holyhell.networking.ServerboundAngelShaderAbilityPacket;
-
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -25,23 +23,27 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
-@Mod(value = Holyhell.MOD_ID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = Holyhell.MOD_ID, value = Dist.CLIENT)
-public class HolyhellModClient {
+@Mod(value = HolyHell.MOD_ID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = HolyHell.MOD_ID, value = Dist.CLIENT)
+public class HolyHellModClient {
 
-    public static final ResourceLocation ANGEL_VISION_SHADER = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "shaders/post/angel_vision.json");
+    public static final ResourceLocation ANGEL_VISION_SHADER = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "shaders/post/angel_vision.json");
+    public static final ResourceLocation ANGEL_RINGS_SHADER = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "angel_rings");
+
     public static int loadShaderAttempt = 0;
     public static int staticTimer = 0;
 
 
-    public HolyhellModClient(ModContainer container) {
+    public HolyHellModClient(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
@@ -71,6 +73,16 @@ public class HolyhellModClient {
 
     }
 
+    @SubscribeEvent
+    public static void clientTickEvent(ClientTickEvent.Pre event) {
+        if (Minecraft.getInstance().level != null) {
+
+            if (Minecraft.getInstance().level.dimension().equals(HolyHellDimensions.ANGEL)) {
+                Minecraft.getInstance().options.bobView().set(false);
+            }
+        }
+    }
+
 
     @SubscribeEvent
     public static void renderShader(RenderLevelStageEvent event) {
@@ -79,8 +91,8 @@ public class HolyhellModClient {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             GameRenderer renderer = Minecraft.getInstance().gameRenderer;
             if (player.getData(HolyHellAttachments.VISION_SHADER)) {
-                HolyhellModClient.attemptLoadShader(HolyhellModClient.ANGEL_VISION_SHADER);
-            } else if (renderer.currentEffect() != null && HolyhellModClient.ANGEL_VISION_SHADER.toString().equals(renderer.currentEffect().getName())) {
+                HolyHellModClient.attemptLoadShader(HolyHellModClient.ANGEL_VISION_SHADER);
+            } else if (renderer.currentEffect() != null && HolyHellModClient.ANGEL_VISION_SHADER.toString().equals(renderer.currentEffect().getName())) {
                 renderer.checkEntityPostEffect(null);
             }
 
@@ -93,13 +105,10 @@ public class HolyhellModClient {
             renderer.loadEffect(effect);
             if (!ANGEL_VISION_SHADER.toString().equals((renderer.currentEffect().getName()))) {
                 loadShaderAttempt = 12000;
-                Holyhell.LOGGER.warn("Failed to load shader {}", effect);
+                HolyHell.LOGGER.warn("Failed to load shader {}", effect);
             }
         }
     }
-
-
-
 
 
     @SubscribeEvent
@@ -128,8 +137,8 @@ public class HolyhellModClient {
 
                 List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, userHitbox);
                 for (LivingEntity i : list) {
-                    if (i instanceof Monster && !i.getType().is(HolyhellTags.Entities.MINIBOSS) && !i.getType().is(HolyhellTags.Entities.BOSS)) {
-                        level.addParticle(HolyhellParticles.OBFUSCATION.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
+                    if (i instanceof Monster && !i.getType().is(HolyHellTags.Entities.MINIBOSS) && !i.getType().is(HolyHellTags.Entities.BOSS)) {
+                        level.addParticle(HolyHellParticles.OBFUSCATION.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
                     }
                 }
 
@@ -151,14 +160,14 @@ public class HolyhellModClient {
                 List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, userHitbox);
                 for (LivingEntity i : list) {
 
-                    if (i instanceof Monster && !i.getType().is(HolyhellTags.Entities.MINIBOSS) && !i.getType().is(HolyhellTags.Entities.BOSS)) {
-                        level.addParticle(HolyhellParticles.HOSTILE_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
-                    } else if (i.getType().is(HolyhellTags.Entities.BOSS) || i.getType().is(HolyhellTags.Entities.MINIBOSS)) {
-                        level.addParticle(HolyhellParticles.BOSS_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
+                    if (i instanceof Monster && !i.getType().is(HolyHellTags.Entities.MINIBOSS) && !i.getType().is(HolyHellTags.Entities.BOSS)) {
+                        level.addParticle(HolyHellParticles.HOSTILE_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
+                    } else if (i.getType().is(HolyHellTags.Entities.BOSS) || i.getType().is(HolyHellTags.Entities.MINIBOSS)) {
+                        level.addParticle(HolyHellParticles.BOSS_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
                     } else if (!(i instanceof Monster) && !(i instanceof Player)) {
-                        level.addParticle(HolyhellParticles.PEACEFUL_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
+                        level.addParticle(HolyHellParticles.PEACEFUL_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
                     } else if (i instanceof Player && i != player) {
-                        level.addParticle(HolyhellParticles.PLAYER_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
+                        level.addParticle(HolyHellParticles.PLAYER_LOCATOR.get(), i.getX(), i.getY() + i.getHitbox().getYsize() / 2, i.getZ(), 0, 0, 0);
                     }
                 }
 
@@ -173,7 +182,7 @@ public class HolyhellModClient {
         if (HolyHellKeyBinds.VISION_ABILITY_KEY.consumeClick()) {
             EyeTransitionOverlay.eyeTransitionCounter = 0;
 
-            Minecraft.getInstance().level.playLocalSound(Minecraft.getInstance().player, HolyHellSounds.BLINK.get(),SoundSource.PLAYERS,1,1);
+            Minecraft.getInstance().level.playLocalSound(Minecraft.getInstance().player, HolyHellSounds.BLINK.get(), SoundSource.PLAYERS, 1, 1);
             PacketDistributor.sendToServer(new ServerboundAngelShaderAbilityPacket());
         }
     }

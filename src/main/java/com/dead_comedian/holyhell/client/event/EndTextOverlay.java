@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.client.event;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,7 +15,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
-@EventBusSubscriber(modid = Holyhell.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HolyHell.MOD_ID, value = Dist.CLIENT)
 public class EndTextOverlay {
     private static final int ANIMATION_SPEED = 60;
     public static int textCounter = 185;
@@ -39,9 +39,9 @@ public class EndTextOverlay {
 
 
     public static final ResourceLocation[] FRAME_TEXTURES = {
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/end_text/text_1.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/end_text/text_2.png"),
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/misc/end_text/text_3.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/end_text/text_1.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/end_text/text_2.png"),
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/misc/end_text/text_3.png"),
     };
 
 

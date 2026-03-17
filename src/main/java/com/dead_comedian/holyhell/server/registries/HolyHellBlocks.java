@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.registries;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.block.*;
 
 import com.dead_comedian.holyhell.server.item.custom.block_item.*;
@@ -29,7 +29,7 @@ import java.util.function.Supplier;
 public class HolyHellBlocks {
 
     public static final DeferredRegister.Blocks BLOCKS =
-            DeferredRegister.createBlocks(Holyhell.MOD_ID);
+            DeferredRegister.createBlocks(HolyHell.MOD_ID);
 
     public static final Supplier<Block> COFFIN = registerCoffin("coffin",
             () -> new CoffinBlock(BlockBehaviour.Properties.of()

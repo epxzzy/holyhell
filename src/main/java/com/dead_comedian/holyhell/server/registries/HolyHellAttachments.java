@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.registries;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.data.PlayerCoffinStatus;
 import com.dead_comedian.holyhell.server.data.StoredInventory;
 import com.mojang.serialization.Codec;
@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public class HolyHellAttachments {
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
-            DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Holyhell.MOD_ID);
+            DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, HolyHell.MOD_ID);
 
 
 

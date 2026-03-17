@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.registries;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 
 public class HolyHellSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-            DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Holyhell.MOD_ID);
+            DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, HolyHell.MOD_ID);
 
 
     public static final Supplier<SoundEvent> HOLY_SHIELD_BLOCK = registerSoundEvents("holy_shield_block");
@@ -90,7 +90,7 @@ public class HolyHellSounds {
 
 
     private static Supplier<SoundEvent> registerSoundEvents(String name) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, name);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, name);
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
 

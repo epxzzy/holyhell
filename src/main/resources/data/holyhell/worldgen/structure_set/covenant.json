@@ -1,0 +1,12 @@
+{
+  "structures": [
+    {
+      "structure": "holyhell:covenant",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "holyhell:origin",
+    "salt": 1149102915
+  }
+}

@@ -1,12 +1,12 @@
 package com.dead_comedian.holyhell.server.block.entity;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.block.DiviningTableBlock;
 import com.dead_comedian.holyhell.server.entity.BabOneEntity;
 import com.dead_comedian.holyhell.server.helper.WaveSpawner;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
-import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
@@ -148,7 +148,7 @@ public class DiviningTableBlockEntity extends BlockEntity {
                                 ResourceKey.create(
                                         Registries.LOOT_TABLE,
                                         ResourceLocation.fromNamespaceAndPath(
-                                                Holyhell.MOD_ID,
+                                                HolyHell.MOD_ID,
                                                 "spawners/divining_table/divining_table"
                                         )
                                 ));
@@ -178,28 +178,28 @@ public class DiviningTableBlockEntity extends BlockEntity {
         if (world instanceof ServerLevel server) {
 
             if (timer == 0)
-                server.sendParticles(HolyhellParticles.EYE3.get(),
+                server.sendParticles(HolyHellParticles.EYE3.get(),
                         pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
                         1,0,0,0,0);
 
             if (timer == 2)
-                server.sendParticles(HolyhellParticles.EYE0.get(),
+                server.sendParticles(HolyHellParticles.EYE0.get(),
                         pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
                         1,0,0,0,0);
 
             if (timer == 501)
-                server.sendParticles(HolyhellParticles.EYE1.get(),
+                server.sendParticles(HolyHellParticles.EYE1.get(),
                         pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
                         1,0,0,0,0);
 
             if (timer == 1001)
-                server.sendParticles(HolyhellParticles.EYE2.get(),
+                server.sendParticles(HolyHellParticles.EYE2.get(),
                         pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
                         1,0,0,0,0);
 
             if (timer >= 1500) {
 
-                server.sendParticles(HolyhellParticles.EYE3.get(),
+                server.sendParticles(HolyHellParticles.EYE3.get(),
                         pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
                         1,0,0,0,0);
 

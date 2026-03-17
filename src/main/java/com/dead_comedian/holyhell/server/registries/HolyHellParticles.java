@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.registries;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,9 +9,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class HolyhellParticles {
+public class HolyHellParticles {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
-            DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Holyhell.MOD_ID);
+            DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, HolyHell.MOD_ID);
 
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FIREBALL_TRAIL  =
             PARTICLE_TYPES.register("fireball_trail", () -> new SimpleParticleType(true));

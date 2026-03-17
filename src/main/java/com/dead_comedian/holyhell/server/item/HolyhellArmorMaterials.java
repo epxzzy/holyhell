@@ -2,7 +2,7 @@ package com.dead_comedian.holyhell.server.item;
 
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellItems;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
@@ -34,7 +34,7 @@ public class HolyhellArmorMaterials {
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> typeProtection,
                                                   int enchantability, float toughness, float knockbackResistance,
                                                   Supplier<Item> ingredientItem) {
-        ResourceLocation location = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, name);
+        ResourceLocation location = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, name);
         Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_NETHERITE;
         Supplier<Ingredient> ingredient = () -> Ingredient.of(ingredientItem.get());
         List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(location));

@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.registries;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.menu.CoffinMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class HolyHellScreens {
 
     public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(Registries.MENU, Holyhell.MOD_ID);
+            DeferredRegister.create(Registries.MENU, HolyHell.MOD_ID);
 
 
     public static final DeferredHolder<MenuType<?>,MenuType<CoffinMenu>> COFFIN_MENU =

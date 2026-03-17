@@ -1,9 +1,8 @@
 package com.dead_comedian.holyhell.client.renderer.render_layer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
-import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -22,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
 public class LowerRingRenderLayer<T extends LivingEntity> extends RenderLayer<T, PlayerModel<T>> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/religious_rings.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/religious_rings.png");
     private final ModelPart bb_main;
     private final ModelPart bb_main1;
 

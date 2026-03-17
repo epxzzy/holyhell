@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.registries;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.PlayerTrigger;
@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class HolyHellCriteriaTriggers extends CriteriaTriggers {
-    public static final DeferredRegister<CriterionTrigger<?>> CRITERIA_TRIGGERS = DeferredRegister.create(BuiltInRegistries.TRIGGER_TYPES, Holyhell.MOD_ID);
+    public static final DeferredRegister<CriterionTrigger<?>> CRITERIA_TRIGGERS = DeferredRegister.create(BuiltInRegistries.TRIGGER_TYPES, HolyHell.MOD_ID);
 
     public static Supplier<PlayerTrigger> KILLED_BY_CROSS = CRITERIA_TRIGGERS.register("killed_by_cross", PlayerTrigger::new);
     public static Supplier<PlayerTrigger> BAB_MERGE = CRITERIA_TRIGGERS.register("bab_merge", PlayerTrigger::new);

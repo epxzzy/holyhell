@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.entity.non_living;
 
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
-import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -150,7 +150,7 @@ public class AngelProjectileEntity extends ThrowableProjectile {
                     this.explode(0.5d);
                     if (this.level().isClientSide) {
                         this.level().addParticle(
-                                HolyhellParticles.KAMIKAZE_EXPLOSION.get(),
+                                HolyHellParticles.KAMIKAZE_EXPLOSION.get(),
                                 this.getX(), this.getY(), this.getZ(),
                                 0, 0, 0
                         );
@@ -232,7 +232,7 @@ public class AngelProjectileEntity extends ThrowableProjectile {
 
         if (this.level().isClientSide) {
             this.level().addParticle(
-                    HolyhellParticles.FIREBALL_TRAIL.get(),
+                    HolyHellParticles.FIREBALL_TRAIL.get(),
                     this.getX(), this.getY(), this.getZ(),
                     0, 0, 0
             );
@@ -268,7 +268,7 @@ public class AngelProjectileEntity extends ThrowableProjectile {
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 3) {
-            ParticleOptions particle = HolyhellParticles.FIREBALL_IMPACT.get();
+            ParticleOptions particle = HolyHellParticles.FIREBALL_IMPACT.get();
             this.level().addParticle(particle, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         }
     }

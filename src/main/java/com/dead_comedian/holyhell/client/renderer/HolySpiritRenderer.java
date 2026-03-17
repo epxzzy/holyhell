@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.HolySpiritModel;
 import com.dead_comedian.holyhell.server.entity.HolySpiritEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class HolySpiritRenderer extends MobRenderer<HolySpiritEntity, HolySpiritModel<HolySpiritEntity>> {
-    private static final ResourceLocation NORMAL = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/holy_spirit.png");
+    private static final ResourceLocation NORMAL = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/holy_spirit.png");
 
 
     public HolySpiritRenderer(EntityRendererProvider.Context context) {

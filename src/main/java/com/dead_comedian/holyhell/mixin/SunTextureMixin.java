@@ -1,9 +1,10 @@
 package com.dead_comedian.holyhell.mixin;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
-import com.dead_comedian.holyhell.server.registries.HolyhellDimensions;
+import com.dead_comedian.holyhell.server.registries.HolyHellDimensions;
+import com.dead_comedian.holyhell.server.registries.HolyHellRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
@@ -13,6 +14,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -38,16 +41,17 @@ import javax.annotation.Nullable;
 @Mixin(LevelRenderer.class)
 public abstract class SunTextureMixin {
 
-    private static final ResourceLocation SKY_BOX = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/eye_ring.png");
+    @Unique
+    private static final ResourceLocation SKY_BOX = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/eye_ring.png");
 
     @Unique
-    int spriteNo = 0;
+    public int holyHell1_21_1$spriteNo = 0;
     @Unique
-    int cooldown = 0;
+    public int holyHell1_21_1$cooldown = 0;
     @Unique
-    int switchTime = 150;
+    public int holyHell1_21_1$switchTime = 150;
     @Unique
-    int switchCount = 0;
+    public int holyHell1_21_1$switchCount = 0;
 
     @Shadow
     @Nullable
@@ -67,20 +71,12 @@ public abstract class SunTextureMixin {
     //ANGEL
 
     @Unique
-    private void drawFace(Matrix4f matrix, ResourceLocation texture, float[][] verts) {
+    private void holyHell1_21_1$drawFace(Matrix4f matrix, VertexConsumer consumer, ResourceLocation texture, float[][] verts) {
         RenderSystem.setShaderTexture(0, texture);
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-
-
-        bufferBuilder.addVertex(matrix, verts[0][0], verts[0][1], verts[0][2]).setUv(0.0F, 0.0F);
-        bufferBuilder.addVertex(matrix, verts[1][0], verts[1][1], verts[1][2]).setUv(1.0F, 0.0F);
-        bufferBuilder.addVertex(matrix, verts[2][0], verts[2][1], verts[2][2]).setUv(1.0F, 1.0F);
-        bufferBuilder.addVertex(matrix, verts[3][0], verts[3][1], verts[3][2]).setUv(0.0F, 1.0F);
-
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-
-
+        consumer.addVertex(matrix, verts[0][0], verts[0][1], verts[0][2]).setUv(0.0F, 0.0F);
+        consumer.addVertex(matrix, verts[1][0], verts[1][1], verts[1][2]).setUv(1.0F, 0.0F);
+        consumer.addVertex(matrix, verts[2][0], verts[2][1], verts[2][2]).setUv(1.0F, 1.0F);
+        consumer.addVertex(matrix, verts[3][0], verts[3][1], verts[3][2]).setUv(0.0F, 1.0F);
     }
 
     @Inject(method = "renderSky", at = @At("TAIL"))
@@ -88,10 +84,12 @@ public abstract class SunTextureMixin {
         Player player = Minecraft.getInstance().player;
 
         if (player != null) {
-            if (player.level().dimension() == HolyhellDimensions.ANGEL) {
+            if (player.level().dimension() == HolyHellDimensions.ANGEL) {
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+
                 RenderSystem.disableCull();
 
                 PoseStack poseStack = new PoseStack();
@@ -100,11 +98,15 @@ public abstract class SunTextureMixin {
 
                 poseStack.pushPose();
 
-                // Draw each face of the cube
-                for (int i = 0; i < 6; i++) {
-                    drawFace(matrix, SKY_BOX, CUBE_FACES[i]);
-                }
+                MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
 
+                VertexConsumer consumer = bufferSource.getBuffer(HolyHellRenderTypes.ANGEL_RINGS);
+
+
+                for (int i = 0; i < 6; i++) {
+                    holyHell1_21_1$drawFace(matrix, consumer, SKY_BOX, CUBE_FACES[i]);
+                }
+                bufferSource.endBatch();
                 poseStack.popPose();
                 RenderSystem.enableCull();
                 RenderSystem.depthMask(true);
@@ -112,7 +114,6 @@ public abstract class SunTextureMixin {
             }
         }
     }
-
 
 
     //END
@@ -186,7 +187,7 @@ public abstract class SunTextureMixin {
                     float f3 = randomsource.nextFloat() * 2.0F - 1.0F;
                     float f5 = Mth.lengthSquared(f1, f2, f3);
 
-                    RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/big_void_eye.png"));
+                    RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/big_void_eye.png"));
 
 
                     if (!(f5 <= 0.010000001F) && !(f5 >= 1.0F)) {
@@ -275,7 +276,7 @@ public abstract class SunTextureMixin {
 
             if (Minecraft.getInstance().player.getData(HolyHellAttachments.VISION_SHADER)) {
 
-                RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/eye/eye5.png"));
+                RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/eye/eye5.png"));
 
                 RenderSystem.setShaderColor(1F, 1F, 1F, 0.0F);
                 return;
@@ -287,33 +288,33 @@ public abstract class SunTextureMixin {
     @Unique
     private void holyHell$animateEye() {
 
-        switchTime--;
-        if (switchCount <= 6 && cooldown <= 0 && switchTime <= 0) {
-            spriteNo = level.getRandom().nextInt(0, 5);
-            switchTime = level.getRandom().nextInt(70, 230);
-            switchCount++;
-        } else if (switchCount >= 6 && switchTime <= 0) {
-            spriteNo = 0;
-            switchCount = 0;
-            cooldown = level.getRandom().nextInt(500, 12000);
+        holyHell1_21_1$switchTime--;
+        if (holyHell1_21_1$switchCount <= 6 && holyHell1_21_1$cooldown <= 0 && holyHell1_21_1$switchTime <= 0) {
+            holyHell1_21_1$spriteNo = level.getRandom().nextInt(0, 5);
+            holyHell1_21_1$switchTime = level.getRandom().nextInt(70, 230);
+            holyHell1_21_1$switchCount++;
+        } else if (holyHell1_21_1$switchCount >= 6 && holyHell1_21_1$switchTime <= 0) {
+            holyHell1_21_1$spriteNo = 0;
+            holyHell1_21_1$switchCount = 0;
+            holyHell1_21_1$cooldown = level.getRandom().nextInt(500, 12000);
 
         }
 
-        if (cooldown >= 0) {
-            cooldown--;
+        if (holyHell1_21_1$cooldown >= 0) {
+            holyHell1_21_1$cooldown--;
         }
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        if (spriteNo == 0) {
-            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/eye/eye1.png"));
-        } else if (spriteNo == 1) {
-            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/eye/eye2.png"));
-        } else if (spriteNo == 2) {
-            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/eye/eye3.png"));
-        } else if (spriteNo == 3) {
-            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/eye/eye4.png"));
-        } else if (spriteNo == 4) {
-            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/environment/eye/eye5.png"));
+        if (holyHell1_21_1$spriteNo == 0) {
+            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/eye/eye1.png"));
+        } else if (holyHell1_21_1$spriteNo == 1) {
+            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/eye/eye2.png"));
+        } else if (holyHell1_21_1$spriteNo == 2) {
+            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/eye/eye3.png"));
+        } else if (holyHell1_21_1$spriteNo == 3) {
+            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/eye/eye4.png"));
+        } else if (holyHell1_21_1$spriteNo == 4) {
+            RenderSystem.setShaderTexture(0, ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/environment/eye/eye5.png"));
         }
     }
 }

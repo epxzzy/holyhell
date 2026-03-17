@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.AngelModel;
 import com.dead_comedian.holyhell.server.entity.AngelEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -20,7 +20,7 @@ public class AngelRenderer extends MobRenderer<AngelEntity, AngelModel<AngelEnti
 
     @Override
     public ResourceLocation getTextureLocation(AngelEntity pEntity) {
-        return ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/angel.png");
+        return ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/angel.png");
     }
 
 

@@ -2,7 +2,7 @@ package com.dead_comedian.holyhell.client.renderer.non_living;
 
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.non_living.GlobularDomeModel;
 import com.dead_comedian.holyhell.server.entity.non_living.GlobularDomeEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 
 
 public class GlobularDomeRenderer extends EntityRenderer<GlobularDomeEntity> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/globular_dome.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/globular_dome.png");
     private final GlobularDomeModel<GlobularDomeEntity> model;
 
     public GlobularDomeRenderer(EntityRendererProvider.Context context) {

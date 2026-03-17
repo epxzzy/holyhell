@@ -2,28 +2,26 @@ package com.dead_comedian.holyhell;
 
 import com.dead_comedian.holyhell.client.event.EyeTransitionOverlay;
 import com.dead_comedian.holyhell.server.registries.*;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLEnvironment;
-import org.slf4j.Logger;
-
 import com.mojang.logging.LogUtils;
-
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(Holyhell.MOD_ID)
-public class Holyhell {
+@Mod(HolyHell.MOD_ID)
+public class HolyHell {
     public static final String MOD_ID = "holyhell";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public Holyhell(IEventBus modEventBus, ModContainer modContainer) {
+    public HolyHell(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         NeoForge.EVENT_BUS.register(this);
 
@@ -36,12 +34,13 @@ public class Holyhell {
         HolyHellEntities.register(modEventBus);
         HolyHellItems.register(modEventBus);
         HolyHellCriteriaTriggers.register(modEventBus);
-        HolyhellParticles.register(modEventBus);
+        HolyHellParticles.register(modEventBus);
         HolyHellSounds.register(modEventBus);
-        HolyhellDimensions.register(modEventBus);
-        HolyhellFeatures.ConfiguredFeatures.register(modEventBus);
-        HolyhellFeatures.PlacedFeatures.register(modEventBus);
+        HolyHellDimensions.register(modEventBus);
+        HolyHellFeatures.ConfiguredFeatures.register(modEventBus);
+        HolyHellFeatures.PlacedFeatures.register(modEventBus);
         HolyHellScreens.register(modEventBus);
+        HolyHellStructurePlacements.register(modEventBus);
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.register(EyeTransitionOverlay.class);

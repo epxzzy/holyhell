@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.client.screen;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.menu.CoffinMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.ContainerData;
 public class CoffinScreen extends AbstractContainerScreen<CoffinMenu> {
 
     private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/gui/coffin_gui.png");
+            ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/gui/coffin_gui.png");
 
     public CoffinScreen(CoffinMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);

@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.registries;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.entity.non_living.*;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public class HolyHellEntities {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
-            DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Holyhell.MOD_ID);
+            DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, HolyHell.MOD_ID);
 
 
     //    MOBS

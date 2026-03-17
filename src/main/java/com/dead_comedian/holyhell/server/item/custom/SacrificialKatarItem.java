@@ -3,7 +3,7 @@ package com.dead_comedian.holyhell.server.item.custom;
 
 import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
-import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -31,7 +31,7 @@ public class SacrificialKatarItem extends SwordItem {
 
         if (!pPlayer.hasEffect(HolyHellEffects.BLOODLUST)) {
             if (pPlayer.level() instanceof ServerLevel) {
-                ((ServerLevel) pPlayer.level()).sendParticles(HolyhellParticles.SWEEP_ATTACK.get(), pPlayer.getX() + d0, pPlayer.getY(0.5D), pPlayer.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
+                ((ServerLevel) pPlayer.level()).sendParticles(HolyHellParticles.SWEEP_ATTACK.get(), pPlayer.getX() + d0, pPlayer.getY(0.5D), pPlayer.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
             }
 
             pPlayer.addEffect(new MobEffectInstance(HolyHellEffects.BLOODLUST, 2000, 0));

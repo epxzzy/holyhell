@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.registries;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class HolyHellCreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Holyhell.MOD_ID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, HolyHell.MOD_ID);
 
     public static final Supplier<CreativeModeTab> HOLY_TRINKETS_TAB = CREATIVE_MODE_TAB.register("bismuth_items_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(HolyHellItems.SAINT_EYE.get()))

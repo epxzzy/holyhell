@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.HereticModel;
 import com.dead_comedian.holyhell.server.entity.HereticEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -19,7 +19,7 @@ public class HereticRenderer extends MobRenderer<HereticEntity, HereticModel<Her
 
     @Override
     public ResourceLocation getTextureLocation(HereticEntity pEntity) {
-        return ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/heretic.png");
+        return ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/heretic.png");
     }
 
 

@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.RevenantModel;
 import com.dead_comedian.holyhell.server.entity.RevenantEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 
 public class RevenantRenderer extends MobRenderer<RevenantEntity, RevenantModel<RevenantEntity>> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/revenant.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/revenant.png");
 
     public RevenantRenderer(EntityRendererProvider.Context context) {
         super(context, new RevenantModel<>(context.bakeLayer(HolyHellModelLayers.REVENANT)), 0.6f);

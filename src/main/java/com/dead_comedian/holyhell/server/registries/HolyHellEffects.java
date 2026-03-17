@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.registries;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.effect.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
@@ -13,7 +13,7 @@ public class HolyHellEffects {
 
 
     public static final DeferredRegister<MobEffect> MOB_EFFECTS =
-            DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Holyhell.MOD_ID);
+            DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, HolyHell.MOD_ID);
 
 
     public static final DeferredHolder<MobEffect, AngelicVisionEffect> ANGELIC_VISION = MOB_EFFECTS.register("angelic_vision",

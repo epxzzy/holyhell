@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.event;
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
 import com.dead_comedian.holyhell.server.data.PlayerCoffinStatus;
 import com.dead_comedian.holyhell.server.data.StoredInventory;
@@ -13,9 +13,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
-import java.util.Arrays;
-
-@EventBusSubscriber(modid = Holyhell.MOD_ID)
+@EventBusSubscriber(modid = HolyHell.MOD_ID)
 public class CoffinEvents {
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {

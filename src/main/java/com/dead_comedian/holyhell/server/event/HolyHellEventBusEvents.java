@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.event;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.event.EndTextOverlay;
 import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.entity.*;
@@ -42,25 +42,14 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
-import java.util.Objects;
-
-import static com.dead_comedian.holyhell.Holyhell.LOGGER;
 
 
-@EventBusSubscriber(modid = Holyhell.MOD_ID)
+@EventBusSubscriber(modid = HolyHell.MOD_ID)
 public class HolyHellEventBusEvents {
 
     private static int paranoiaTimer;
     private static int paranoiaAmp;
     private static int secTillText = 40;
-
-    public static List<? extends AllSeerEntity> getEyes(Level level) {
-        if (level instanceof ServerLevel) {
-            return ((ServerLevel) (Object) (level)).getEntities(HolyHellEntities.ALL_SEER.get(), LivingEntity::isAlive);
-        }
-        return null;
-    }
-
 
     @SubscribeEvent
     public static void changePumpkinFace(PlayerInteractEvent.RightClickBlock event) {
@@ -100,55 +89,22 @@ public class HolyHellEventBusEvents {
         // TO-DO:  change music system
 
 
-        if (level.dimension() == HolyhellDimensions.ANGEL) {
+        if (level.dimension() == HolyHellDimensions.ANGEL) {
             player.setData(HolyHellAttachments.VISION_SHADER, false);
-
-            player.getAbilities().flying = true;
-        }
-
-
-        // Spawn All Seer
-
-        if (level.dimension() == HolyhellDimensions.ANGEL) {
-            List<? extends AllSeerEntity> list = getEyes(level);
-
-            if (list != null) {
-                list.removeIf(Objects::isNull);
-                if (list.isEmpty()) {
-
-                    if (level.dimension() == HolyhellDimensions.ANGEL) {
-                        LOGGER.debug("Haven't seen the All Seer , respawning it");
-                    }
-
-
-                    level.getChunkAt(new BlockPos(0, 0, 0));
-                    AllSeerEntity allSeerEntity = HolyHellEntities.ALL_SEER.get().create(level);
-                    if (allSeerEntity != null) {
-                        level.addFreshEntity(allSeerEntity);
-                    }
-                } else if (list.size() >= 2) {
-
-                    for (AllSeerEntity allSeerEntity : list) {
-                        if (allSeerEntity != list.getFirst()) {
-                            allSeerEntity.discard();
-                        }
-                    }
-                }
-            }
         }
 
 
         // Teleport player
-
         if (level.dimension() == Level.END && player.getY() <= -50) {
+
             if (player.getData(HolyHellAttachments.CAN_TP_TO_ANGEL)) {
                 if (level instanceof ServerLevel serverLevel) {
 
-                    ServerLevel targetLevel = serverLevel.getServer().getLevel(HolyhellDimensions.ANGEL);
+                    ServerLevel targetLevel = serverLevel.getServer().getLevel(HolyHellDimensions.ANGEL);
                     if (targetLevel != null) {
                         player.removeEffect(HolyHellEffects.ANGELIC_VISION);
-                        player.changeDimension(new DimensionTransition(targetLevel, new Vec3(20, 12, 0), player.getDeltaMovement(), Direction.EAST.toYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)));
-//                        player.setData(HolyHellAttachments.CAN_TP_TO_ANGEL, false);
+                        player.changeDimension(new DimensionTransition(targetLevel, new Vec3(-10, 6, 11), player.getDeltaMovement(), Direction.EAST.toYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)));
+                        player.setData(HolyHellAttachments.CAN_TP_TO_ANGEL, false);
                     }
                 }
             }
@@ -156,7 +112,6 @@ public class HolyHellEventBusEvents {
 
 
         //  Paranoia Timer
-
         if (player.getData(HolyHellAttachments.VISION_SHADER)) {
             if (player.hasEffect(HolyHellEffects.PARANOIA)) {
                 paranoiaTimer = player.getEffect(HolyHellEffects.PARANOIA).getDuration();
@@ -194,7 +149,6 @@ public class HolyHellEventBusEvents {
             if (player.hasEffect(HolyHellEffects.PARANOIA)) {
                 player.removeEffect(HolyHellEffects.PARANOIA);
             }
-            paranoiaTimer = 0;
         }
     }
 
@@ -237,7 +191,7 @@ public class HolyHellEventBusEvents {
     @SubscribeEvent
     public static void onBlockBroken(BlockEvent.BreakEvent event) {
 
-        if (event.getLevel().getBlockState(event.getPos()).is(HolyhellTags.Blocks.REVENANT_PROTECTS)) {
+        if (event.getLevel().getBlockState(event.getPos()).is(HolyHellTags.Blocks.REVENANT_PROTECTS)) {
             Player player = event.getPlayer();
             List<RevenantEntity> nearbyRevenant = event.getLevel()
                     .getEntitiesOfClass(RevenantEntity.class,

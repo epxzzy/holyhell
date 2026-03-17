@@ -1,8 +1,8 @@
 package com.dead_comedian.holyhell.server.entity.non_living;
 
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
-import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
-import com.dead_comedian.holyhell.server.registries.HolyhellTags;
+import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellTags;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class GlobularDomeEntity extends Entity {
         entityBelow2.clear();
         BlockState blockState = this.level().getBlockState(this.blockPosition());
 
-        boolean bl = blockState.is(HolyhellTags.Blocks.DOME_CLEARS_OUT);
+        boolean bl = blockState.is(HolyHellTags.Blocks.DOME_CLEARS_OUT);
 
 
         if (bl) {
@@ -79,7 +79,7 @@ public class GlobularDomeEntity extends Entity {
                 for (int q = k; q <= n; ++q) {
                     BlockPos blockPos = new BlockPos(o, p, q);
                     BlockState blockState = this.level().getBlockState(blockPos);
-                    if (blockState.isAir() || blockState.is(HolyhellTags.Blocks.DOME_CLEARS_OUT)) {
+                    if (blockState.isAir() || blockState.is(HolyHellTags.Blocks.DOME_CLEARS_OUT)) {
 
                         this.level().setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
                     }
@@ -118,7 +118,7 @@ public class GlobularDomeEntity extends Entity {
                 double h = Math.max(f * f + g * g, 0.1);
                 entity.push(f / h * 2, 0.4, g / h * 2);
 
-                this.level().addParticle(HolyhellParticles.LIGHT_RING.get(), this.getRandomX(0.1), this.getY(0.5), this.getRandomZ(0.1), 0.0, 0.0, 0.0);
+                this.level().addParticle(HolyHellParticles.LIGHT_RING.get(), this.getRandomX(0.1), this.getY(0.5), this.getRandomZ(0.1), 0.0, 0.0, 0.0);
                 this.level().playSound(this, this.blockPosition(), HolyHellSounds.STONE_CRACK.get(), SoundSource.PLAYERS, 0.5f, 1.4f);
 
             }

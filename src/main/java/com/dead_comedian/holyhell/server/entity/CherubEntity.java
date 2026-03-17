@@ -4,7 +4,7 @@ package com.dead_comedian.holyhell.server.entity;
 import com.dead_comedian.holyhell.server.block.entity.DiviningTableBlockEntity;
 import com.dead_comedian.holyhell.server.helper.WaveSpawner;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
-import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -132,7 +132,7 @@ public class CherubEntity extends Monster implements FlyingAnimal {
         }
 
         server.sendParticles(
-                HolyhellParticles.SOUND_RING.get(),
+                HolyHellParticles.SOUND_RING.get(),
                 this.getX(),
                 this.getY(),
                 this.getZ(),

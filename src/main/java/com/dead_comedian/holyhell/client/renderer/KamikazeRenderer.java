@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.model.entity.KamikazeModel;
 import com.dead_comedian.holyhell.server.entity.KamikazeEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 
 public class KamikazeRenderer extends MobRenderer<KamikazeEntity, KamikazeModel<KamikazeEntity>> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Holyhell.MOD_ID, "textures/entity/kamikaze_angel.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/kamikaze_angel.png");
 
     public KamikazeRenderer(EntityRendererProvider.Context context) {
         super(context, new KamikazeModel<>(context.bakeLayer(HolyHellModelLayers.KAMIKAZE_ANGEL)), 0.6f);

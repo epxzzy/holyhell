@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.entity;
 
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
-import com.dead_comedian.holyhell.server.registries.HolyhellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -160,13 +160,13 @@ public class HereticEntity extends Monster {
                         this.mob.playSound(HolyHellSounds.STUN.get(),1F,1F);
                         pEnemy.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 255));
                         if (pEnemy.level() instanceof ServerLevel world) {
-                            world.sendParticles(HolyhellParticles.STUN.get(),
+                            world.sendParticles(HolyHellParticles.STUN.get(),
                                     pEnemy.getX(),
                                     pEnemy.getEyeY() + 0.3F,
                                     pEnemy.getZ() - 0.5,
                                     1, 0, 0, 0, 0);
 
-                            world.sendParticles(HolyhellParticles.STUN2.get(),
+                            world.sendParticles(HolyHellParticles.STUN2.get(),
                                     pEnemy.getX(),
                                     pEnemy.getEyeY() + 0.3F,
                                     pEnemy.getZ() + 0.5,

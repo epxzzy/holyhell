@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.registries;
 
 
-import com.dead_comedian.holyhell.Holyhell;
+import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.item.HolyHellToolMaterial;
 import com.dead_comedian.holyhell.server.item.HolyhellArmorMaterials;
 import com.dead_comedian.holyhell.server.item.custom.*;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 public class HolyHellItems {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, Holyhell.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, HolyHell.MOD_ID);
 
     public static final Supplier<Item> SAINT_EYE = ITEMS.register("saint_eye", () ->
             new Item(new Item.Properties().food(HolyHellFoods.SAINT_EYE)));
