@@ -22,6 +22,7 @@ public class OriginStructurePlacement extends StructurePlacement {
 
     @Override
     protected boolean isPlacementChunk(ChunkGeneratorStructureState structureState, int x, int z) {
+        structureState.ensureStructuresGenerated();
         return x == 0 && z == 0;
     }
 

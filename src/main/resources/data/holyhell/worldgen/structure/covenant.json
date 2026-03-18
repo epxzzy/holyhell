@@ -6,7 +6,7 @@
   "biomes": "holyhell:angel",
   "step": "surface_structures",
   "start_height": {
-    "absolute": 50
+    "absolute": 10
   },
   "terrain_adaptation": "none",
   "use_expansion_hack": false,

@@ -8,7 +8,6 @@ import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -80,7 +79,6 @@ public class HolyHellEventBusEvents {
         }
     }
 
-
     @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
@@ -107,7 +105,7 @@ public class HolyHellEventBusEvents {
                     ServerLevel targetLevel = serverLevel.getServer().getLevel(HolyHellDimensions.ANGEL);
                     if (targetLevel != null) {
                         player.removeEffect(HolyHellEffects.ANGELIC_VISION);
-                        player.changeDimension(new DimensionTransition(targetLevel, new Vec3(-10, 6, 11), player.getDeltaMovement(), Direction.EAST.toYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)));
+                        player.changeDimension(new DimensionTransition(targetLevel, new Vec3(-10, 126, -11), player.getDeltaMovement(), Direction.EAST.toYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)));
                         player.setData(HolyHellAttachments.CAN_TP_TO_ANGEL, false);
                     }
                 }
@@ -126,13 +124,13 @@ public class HolyHellEventBusEvents {
 
 
             if (paranoiaTimer == 300 && !player.hasEffect(HolyHellEffects.PARANOIA)) {
-                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 200, 0));
+                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 100, 0));
             } else if (paranoiaTimer == 0 && paranoiaAmp == 0) {
-                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 300, 1));
+                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 100, 1));
             } else if (paranoiaTimer == 0 && paranoiaAmp == 1) {
-                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 400, 2));
+                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 100, 2));
             } else if (paranoiaTimer == 0 && paranoiaAmp == 2) {
-                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 500, 3));
+                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 100, 3));
             }
 
             if (paranoiaAmp == 3 && level.dimension() == Level.END) {
@@ -157,9 +155,10 @@ public class HolyHellEventBusEvents {
     }
 
     @SubscribeEvent
-    public static void jesistence(LivingDamageEvent.Pre event) {
+    public static void livingDamage(LivingDamageEvent.Pre event) {
         LivingEntity entity = event.getEntity();
 
+        //Jesistence
         if (entity.getEffect(HolyHellEffects.JESISTANCE) != null) {
             int duration = entity.getEffect(HolyHellEffects.JESISTANCE).getDuration();
             int amp = entity.getEffect(HolyHellEffects.JESISTANCE).getAmplifier();
@@ -167,6 +166,13 @@ public class HolyHellEventBusEvents {
             event.setNewDamage((float) (event.getOriginalDamage() - (event.getOriginalDamage() * (entity.getEffect(HolyHellEffects.JESISTANCE).getAmplifier() + 1) * 0.25)));
             entity.removeEffect(HolyHellEffects.JESISTANCE);
             entity.addEffect(new MobEffectInstance(HolyHellEffects.JESISTANCE, duration - (int) event.getNewDamage() * 10, amp));
+        }
+
+        //Fall Damage
+        if(entity.level().dimension() == HolyHellDimensions.ANGEL){
+            if(event.getSource().is(DamageTypes.FALL)){
+                event.setNewDamage(0);
+            }
         }
     }
 
