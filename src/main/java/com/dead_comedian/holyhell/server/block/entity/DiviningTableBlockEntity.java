@@ -7,9 +7,7 @@ import com.dead_comedian.holyhell.server.helper.WaveSpawner;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
-
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -17,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -115,13 +114,13 @@ public class DiviningTableBlockEntity extends BlockEntity {
 
         if (world.isClientSide) return;
 
-        if(this.shouldTurnOn(world,pos,state)) {
+        if (this.shouldTurnOn(world, pos, state)) {
 
-            if(world instanceof ServerLevel server) {
+            if (world instanceof ServerLevel server) {
 
                 difficulty = signalPower * 2;
 
-                List<Entity> wave = WaveSpawner.spawnWave(server,pos,difficulty);
+                List<Entity> wave = WaveSpawner.spawnWave(server, pos, difficulty);
 
                 setTrackedEntities(wave);
 
@@ -138,13 +137,13 @@ public class DiviningTableBlockEntity extends BlockEntity {
 
                 enableCanDropLoot();
 
-                if (world instanceof ServerLevel serverLevel && canDropLoot) {
+                if (world instanceof ServerLevel serverLevel && canDropLoot && !world.getDifficulty().equals(Difficulty.PEACEFUL)) {
 
-                    int rolls = (int)(3 + 4 * Math.log1p(difficulty));
+                    int rolls = (int) (3 + 4 * Math.log1p(difficulty));
 
                     for (int i = 0; i < rolls; i++) {
 
-                        ejectReward(serverLevel,pos,
+                        ejectReward(serverLevel, pos,
                                 ResourceKey.create(
                                         Registries.LOOT_TABLE,
                                         ResourceLocation.fromNamespaceAndPath(
@@ -158,11 +157,11 @@ public class DiviningTableBlockEntity extends BlockEntity {
                             enableCooldown();
 
                             BabOneEntity boss =
-                                    new BabOneEntity(HolyHellEntities.BAB_ONE.get(),world);
+                                    new BabOneEntity(HolyHellEntities.BAB_ONE.get(), world);
 
                             world.addFreshEntity(boss);
 
-                            boss.moveTo(pos.above(),0,0);
+                            boss.moveTo(pos.above(), 0, 0);
 
                             this.getTrackedEntities().clear();
                         }
@@ -179,29 +178,29 @@ public class DiviningTableBlockEntity extends BlockEntity {
 
             if (timer == 0)
                 server.sendParticles(HolyHellParticles.EYE3.get(),
-                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
-                        1,0,0,0,0);
+                        pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
+                        1, 0, 0, 0, 0);
 
             if (timer == 2)
                 server.sendParticles(HolyHellParticles.EYE0.get(),
-                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
-                        1,0,0,0,0);
+                        pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
+                        1, 0, 0, 0, 0);
 
             if (timer == 501)
                 server.sendParticles(HolyHellParticles.EYE1.get(),
-                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
-                        1,0,0,0,0);
+                        pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
+                        1, 0, 0, 0, 0);
 
             if (timer == 1001)
                 server.sendParticles(HolyHellParticles.EYE2.get(),
-                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
-                        1,0,0,0,0);
+                        pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
+                        1, 0, 0, 0, 0);
 
             if (timer >= 1500) {
 
                 server.sendParticles(HolyHellParticles.EYE3.get(),
-                        pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5,
-                        1,0,0,0,0);
+                        pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
+                        1, 0, 0, 0, 0);
 
                 enableReadyToSpawn();
             }
@@ -227,7 +226,7 @@ public class DiviningTableBlockEntity extends BlockEntity {
                     stack,
                     1,
                     Direction.UP,
-                    Vec3.atBottomCenterOf(pos).add(0,2,0)
+                    Vec3.atBottomCenterOf(pos).add(0, 2, 0)
             );
         }
     }
