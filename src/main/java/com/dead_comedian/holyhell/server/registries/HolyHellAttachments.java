@@ -17,7 +17,6 @@ public class HolyHellAttachments {
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, HolyHell.MOD_ID);
 
 
-
     public static final Supplier<AttachmentType<Boolean>> RENDER_RINGS = ATTACHMENT_TYPES.register(
             "render_rings",
             () -> AttachmentType.builder(() -> false)
@@ -68,8 +67,6 @@ public class HolyHellAttachments {
                     .copyOnDeath()
                     .build()
     );
-
-
 
 
     public static final Supplier<AttachmentType<PlayerCoffinStatus>> COFFIN_STATUS = ATTACHMENT_TYPES.register(

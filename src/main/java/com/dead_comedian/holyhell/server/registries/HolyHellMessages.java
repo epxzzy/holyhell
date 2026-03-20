@@ -1,10 +1,8 @@
 package com.dead_comedian.holyhell.server.registries;
 
-import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.networking.ServerboundAngelShaderAbilityPacket;
 import com.dead_comedian.holyhell.networking.ServerboundTpToAngelPacket;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 

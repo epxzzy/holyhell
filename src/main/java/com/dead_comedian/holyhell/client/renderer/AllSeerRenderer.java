@@ -28,7 +28,7 @@ public class AllSeerRenderer extends MobRenderer<AllSeerEntity, AllSeerModel<All
     public void render(AllSeerEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
 
         pMatrixStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        pMatrixStack.scale(10,10,4);
+        pMatrixStack.scale(10, 10, 4);
         pMatrixStack.pushPose();
         pMatrixStack.popPose();
 

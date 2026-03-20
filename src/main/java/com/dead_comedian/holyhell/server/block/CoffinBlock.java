@@ -1,7 +1,6 @@
 package com.dead_comedian.holyhell.server.block;
 
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
-
 import com.dead_comedian.holyhell.server.data.PlayerCoffinStatus;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -34,6 +32,7 @@ public class CoffinBlock extends BaseEntityBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = EnumProperty.create("half", DoubleBlockHalf.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
+
     public CoffinBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER).setValue(ACTIVATED, false));
@@ -86,7 +85,7 @@ public class CoffinBlock extends BaseEntityBlock {
                 case NORTH -> level.destroyBlock(pos.south(), true);
                 case SOUTH -> level.destroyBlock(pos.north(), true);
                 case EAST -> level.destroyBlock(pos.west(), true);
-                case WEST -> level.destroyBlock(pos.east(), true );
+                case WEST -> level.destroyBlock(pos.east(), true);
             }
         }
 
@@ -139,7 +138,7 @@ public class CoffinBlock extends BaseEntityBlock {
 
         if (!level.isClientSide() && pBlockEntity instanceof CoffinBlockEntity cbe) {
             UUID id = cbe.getStoredPlayer();
-            if (id != null && level.getPlayerByUUID(id)!=null) {
+            if (id != null && level.getPlayerByUUID(id) != null) {
                 PlayerCoffinStatus status = level.getPlayerByUUID(id).getData(HolyHellAttachments.COFFIN_STATUS);
 
                 status.update(false, pos);
@@ -163,7 +162,7 @@ public class CoffinBlock extends BaseEntityBlock {
 
 
             if (entity instanceof CoffinBlockEntity && entity != null) {
-                     player.openMenu((CoffinBlockEntity) entity, entity.getBlockPos());
+                player.openMenu((CoffinBlockEntity) entity, entity.getBlockPos());
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

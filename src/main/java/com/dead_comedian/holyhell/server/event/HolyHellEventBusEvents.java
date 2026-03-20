@@ -3,7 +3,6 @@ package com.dead_comedian.holyhell.server.event;
 
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.event.EndTextOverlay;
-import com.dead_comedian.holyhell.networking.ServerboundTpToAngelPacket;
 import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
@@ -40,7 +39,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.time.LocalDate;
@@ -101,7 +99,6 @@ public class HolyHellEventBusEvents {
 
 
         // Teleport player
-        System.out.println(player.getData(HolyHellAttachments.TP_TO_ANGEL));
         if (player.level().dimension() == Level.END && player.blockPosition().getY() < -50) {
             if (level instanceof ServerLevel serverLevel) {
                 if (player.getData(HolyHellAttachments.TP_TO_ANGEL)) {
@@ -116,7 +113,7 @@ public class HolyHellEventBusEvents {
                                 DimensionTransition.PLAY_PORTAL_SOUND
                                         .then(DimensionTransition.PLACE_PORTAL_TICKET)
                         ));
-                        PacketDistributor.sendToServer(new ServerboundTpToAngelPacket());
+                        player.setData(HolyHellAttachments.TP_TO_ANGEL, player.level().dimension() != HolyHellDimensions.ANGEL);
                     }
                 }
             }
@@ -150,7 +147,7 @@ public class HolyHellEventBusEvents {
                     secTillText--;
                 } else {
                     if (EndTextOverlay.textCounter == 185) {
-                        PacketDistributor.sendToServer(new ServerboundTpToAngelPacket());
+                        player.setData(HolyHellAttachments.TP_TO_ANGEL, player.level().dimension() != HolyHellDimensions.ANGEL);
                         EndTextOverlay.textCounter = 1;
                         player.setData(HolyHellAttachments.SHOULD_DISPLAY_TEXT, true);
                     }
