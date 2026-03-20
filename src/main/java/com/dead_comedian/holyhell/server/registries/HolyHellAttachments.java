@@ -26,18 +26,14 @@ public class HolyHellAttachments {
                     .copyOnDeath()
                     .build()
     );
-
-
-
-    public static final Supplier<AttachmentType<Boolean>> CAN_TP_TO_ANGEL = ATTACHMENT_TYPES.register(
-            "can_tp_to_angel",
+    public static final Supplier<AttachmentType<Boolean>> TP_TO_ANGEL = ATTACHMENT_TYPES.register(
+            "tp_to_angel",
             () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL)
                     .sync(ByteBufCodecs.BOOL)
                     .copyOnDeath()
                     .build()
     );
-
     public static final Supplier<AttachmentType<Boolean>> FLASHBANG = ATTACHMENT_TYPES.register(
             "flashbang",
             () -> AttachmentType.builder(() -> false)

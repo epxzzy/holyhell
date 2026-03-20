@@ -3,11 +3,11 @@ package com.dead_comedian.holyhell.server.event;
 
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.event.EndTextOverlay;
+import com.dead_comedian.holyhell.networking.ServerboundTpToAngelPacket;
 import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -20,12 +20,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -37,6 +40,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.time.LocalDate;
@@ -84,37 +88,45 @@ public class HolyHellEventBusEvents {
         Player player = event.getEntity();
         Level level = event.getEntity().level();
 
-        // In angel dimension
         // TO-DO:  change music system
 
 
         if (level.dimension() == HolyHellDimensions.ANGEL) {
-            player.getAbilities().mayBuild=false;
+
+            player.getAbilities().mayBuild = false;
             player.setData(HolyHellAttachments.VISION_SHADER, false);
-        }else {
-            player.getAbilities().mayBuild=true;
+        } else {
+            player.getAbilities().mayBuild = true;
         }
 
 
         // Teleport player
-        if (level.dimension() == Level.END && player.getY() <= -50) {
-
-            if (player.getData(HolyHellAttachments.CAN_TP_TO_ANGEL)) {
-                if (level instanceof ServerLevel serverLevel) {
-
+        System.out.println(player.getData(HolyHellAttachments.TP_TO_ANGEL));
+        if (player.level().dimension() == Level.END && player.blockPosition().getY() < -50) {
+            if (level instanceof ServerLevel serverLevel) {
+                if (player.getData(HolyHellAttachments.TP_TO_ANGEL)) {
                     ServerLevel targetLevel = serverLevel.getServer().getLevel(HolyHellDimensions.ANGEL);
                     if (targetLevel != null) {
-                        player.removeEffect(HolyHellEffects.ANGELIC_VISION);
-                        player.changeDimension(new DimensionTransition(targetLevel, new Vec3(-10, 126, -11), player.getDeltaMovement(), Direction.EAST.toYRot(), player.getXRot(), DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)));
-                        player.setData(HolyHellAttachments.CAN_TP_TO_ANGEL, false);
+                        player.changeDimension(new DimensionTransition(
+                                targetLevel,
+                                new Vec3(-10.5, 126, -11.5),
+                                Vec3.ZERO,
+                                player.getYRot(),
+                                player.getXRot(),
+                                DimensionTransition.PLAY_PORTAL_SOUND
+                                        .then(DimensionTransition.PLACE_PORTAL_TICKET)
+                        ));
+                        PacketDistributor.sendToServer(new ServerboundTpToAngelPacket());
                     }
                 }
             }
         }
 
 
-        //  Paranoia Timer
         if (player.getData(HolyHellAttachments.VISION_SHADER)) {
+
+            //paranoia timer
+
             if (player.hasEffect(HolyHellEffects.PARANOIA)) {
                 paranoiaTimer = player.getEffect(HolyHellEffects.PARANOIA).getDuration();
                 paranoiaAmp = player.getEffect(HolyHellEffects.PARANOIA).getAmplifier();
@@ -130,28 +142,55 @@ public class HolyHellEventBusEvents {
             } else if (paranoiaTimer == 0 && paranoiaAmp == 1) {
                 player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 100, 2));
             } else if (paranoiaTimer == 0 && paranoiaAmp == 2) {
-                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 100, 3));
+                player.addEffect(new MobEffectInstance(HolyHellEffects.PARANOIA, 400, 3));
             }
 
-            if (paranoiaAmp == 3 && level.dimension() == Level.END) {
-                if (!player.getData(HolyHellAttachments.CAN_TP_TO_ANGEL)) {
-                    if (secTillText > 0) {
-                        secTillText--;
-                    } else {
-                        if (EndTextOverlay.textCounter == 185) {
-                            EndTextOverlay.textCounter = 0;
-                            player.setData(HolyHellAttachments.SHOULD_DISPLAY_TEXT, true);
-                        }
+            if (paranoiaAmp == 3 && level.dimension() == Level.END && isLookingIntoVoidInEnd(player)) {
+                if (secTillText > 0) {
+                    secTillText--;
+                } else {
+                    if (EndTextOverlay.textCounter == 185) {
+                        PacketDistributor.sendToServer(new ServerboundTpToAngelPacket());
+                        EndTextOverlay.textCounter = 1;
+                        player.setData(HolyHellAttachments.SHOULD_DISPLAY_TEXT, true);
                     }
                 }
+            } else {
+
+                player.setData(HolyHellAttachments.SHOULD_DISPLAY_TEXT, false);
             }
 
 
         } else {
+
             if (player.hasEffect(HolyHellEffects.PARANOIA)) {
                 player.removeEffect(HolyHellEffects.PARANOIA);
             }
         }
+    }
+
+
+    public static boolean isLookingIntoVoidInEnd(Player player) {
+        if (player.level().dimension() != Level.END) {
+            return false;
+        }
+        float pitch = player.getXRot();
+        if (pitch < 0.0f) {
+            return false;
+        }
+
+        Vec3 eyePos = player.getEyePosition(1.0F);
+        Vec3 lookVec = player.getLookAngle();
+        Vec3 target = eyePos.add(lookVec.scale(256));
+
+        ClipContext ctx = new ClipContext(eyePos, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
+
+        BlockHitResult hit = player.level().clip(ctx);
+
+        boolean miss = (hit.getType() == HitResult.Type.MISS);
+        boolean targetBelowVoid = (target.y < 0);
+
+        return miss && targetBelowVoid;
     }
 
     @SubscribeEvent
@@ -169,8 +208,8 @@ public class HolyHellEventBusEvents {
         }
 
         //Fall Damage
-        if(entity.level().dimension() == HolyHellDimensions.ANGEL){
-            if(event.getSource().is(DamageTypes.FALL)){
+        if (entity.level().dimension() == HolyHellDimensions.ANGEL) {
+            if (event.getSource().is(DamageTypes.FALL)) {
                 event.setNewDamage(0);
             }
         }
@@ -202,7 +241,7 @@ public class HolyHellEventBusEvents {
     public static void onBlockBroken(BlockEvent.BreakEvent event) {
 
         if (event.getPlayer().level().dimension().equals(HolyHellDimensions.ANGEL) && !event.getLevel().isClientSide()) {
-          event.setCanceled(true);
+            event.setCanceled(true);
         }
 
         if (event.getLevel().getBlockState(event.getPos()).is(HolyHellTags.Blocks.REVENANT_PROTECTS)) {

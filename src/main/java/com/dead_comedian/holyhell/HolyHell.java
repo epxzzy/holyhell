@@ -23,6 +23,7 @@ public class HolyHell {
 
     public HolyHell(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(HolyHellMessages::register);
         NeoForge.EVENT_BUS.register(this);
 
 

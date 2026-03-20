@@ -31,7 +31,7 @@ public class EndTextOverlay {
                 GuiGraphics guiGraphics = event.getGuiGraphics();
 
                 if (player.hasEffect(HolyHellEffects.PARANOIA) && player.getEffect(HolyHellEffects.PARANOIA).getAmplifier() == 3) {
-                    renderMultiFileAnimation(guiGraphics, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight(),player);
+                    renderMultiFileAnimation(guiGraphics, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight(), player);
                 }
             }
         }
@@ -68,12 +68,9 @@ public class EndTextOverlay {
         if (currentFrame == 2) {
             extraGraceTime--;
             if (player != null) {
-
-                player.setData(HolyHellAttachments.CAN_TP_TO_ANGEL, true);
                 if (extraGraceTime == 0) {
-
+                    EndTextOverlay.textCounter = 0;
                     player.setData(HolyHellAttachments.SHOULD_DISPLAY_TEXT, false);
-                    textCounter = 185;
                 }
             }
 
@@ -88,7 +85,7 @@ public class EndTextOverlay {
 
     @SubscribeEvent
     public static void increaseCounter(ClientTickEvent.Post event) {
-        if (EndTextOverlay.textCounter >= 0) {
+        if (EndTextOverlay.textCounter >= 1) {
             if (EndTextOverlay.textCounter < EndTextOverlay.FRAME_TEXTURES.length * 60 + 5) {
                 EndTextOverlay.textCounter++;
             }
