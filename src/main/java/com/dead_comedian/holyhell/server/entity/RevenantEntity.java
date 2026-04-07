@@ -2,23 +2,31 @@ package com.dead_comedian.holyhell.server.entity;
 
 
 import com.dead_comedian.holyhell.server.block.CandleholderBlock;
+import com.dead_comedian.holyhell.server.entity.ai.task.RevenantAi;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlocks;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyHellTags;
+import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.entity.animal.armadillo.Armadillo;
+import net.minecraft.world.entity.animal.armadillo.ArmadilloAi;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -181,30 +189,39 @@ public class RevenantEntity extends Monster {
         this.setPathfindingMalus(PathType.LEAVES, 0.0F);
     }
 
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
 
-        this.goalSelector.addGoal(1, new RevenantGetWeaponGoal(this, 1.2, 50, HolyHellBlocks.CANDLEHOLDER.get()));
-        this.goalSelector.addGoal(3, new RevenantRitualGoal(this));
-        this.goalSelector.addGoal(2, new RevenantArmedAttackGoal(this));
-        this.goalSelector.addGoal(2, new RevenantMeleeAttackGoal(this, 1.2D, true));
-        this.goalSelector.addGoal(2, new RevenantPlaceWeaponGoal(this, 1));
-
-
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1D) {
-            @Override
-            public boolean canUse() {
-                return !((RevenantEntity) (Object) this.mob).isCatatonic() && super.canUse();
-            }
-        });
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 4f) {
-            @Override
-            public boolean canUse() {
-                return !((RevenantEntity) (Object) this.mob).isCatatonic() && super.canUse();
-            }
-        });
+    public boolean shouldEvaporate(LivingEntity entity) {
+        AABB searchBox = this.getBoundingBox().inflate(30);
+        return searchBox.intersects(entity.getBoundingBox()) && entity.getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
     }
+
+    @Override
+    protected void customServerAiStep() {
+        this.level().getProfiler().push("revenantBrain");
+        ((Brain<RevenantEntity>)this.brain).tick((ServerLevel)this.level(), this);
+        this.level().getProfiler().pop();
+        this.level().getProfiler().push("revenantActivityUpdate");
+        RevenantAi.updateActivity(this);
+        this.level().getProfiler().pop();
+
+        super.customServerAiStep();
+    }
+
+    @Override
+    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
+        return RevenantAi.makeBrain(this.brainProvider().makeBrain(dynamic));
+    }
+
+    @Override
+    protected Brain.Provider<RevenantEntity> brainProvider() {
+        return Brain.provider(RevenantAi.MEMORY_MODULES, RevenantAi.SENSORS);
+    }
+
+    @Override
+    public Brain<RevenantEntity> getBrain() {
+        return (Brain<RevenantEntity>) super.getBrain();
+    }
+
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -228,7 +245,6 @@ public class RevenantEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-
         this.setWololo((this.getWololoAnimationTimeout() < 39 && this.getWololoAnimationTimeout() > 0));
 
 
@@ -646,6 +662,7 @@ public class RevenantEntity extends Monster {
             this.revenantEntity.setTarget(null);
             super.stop();
         }
+
 
         @Override
         public void tick() {
