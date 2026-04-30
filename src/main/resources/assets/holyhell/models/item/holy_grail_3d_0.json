@@ -1,0 +1,98 @@
+{
+  "format_version": "1.9.0",
+  "credit": "Made with Blockbench",
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "holyhell:item/holygrail/holy_grail_3d_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "grail_level": 1
+      },
+      "model": "holyhell:item/holy_grail_3d_1"
+    },
+    {
+      "predicate": {
+        "grail_level": 2
+      },
+      "model": "holyhell:item/holy_grail_3d_2"
+    },
+    {
+      "predicate": {
+        "grail_level": 3
+      },
+      "model": "holyhell:item/holy_grail_3d_3"
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        45,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        14,
+        2
+      ],
+      "scale": [
+        2,
+        2,
+        1
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        45,
+        -90,
+        0
+      ],
+      "translation": [
+        0,
+        14.5,
+        2
+      ],
+      "scale": [
+        2,
+        2,
+        1
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -157.25,
+        75,
+        -180
+      ],
+      "translation": [
+        0,
+        6,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        0.5
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        -152.25,
+        -86.25,
+        -180
+      ],
+      "translation": [
+        0,
+        6.75,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        0.5
+      ]
+    }
+  }
+}

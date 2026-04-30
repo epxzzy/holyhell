@@ -1,18 +1,48 @@
 {
-	"parent": "minecraft:item/handheld",
-	"loader": "neoforge:separate_transforms",
-	"base": {
-		"parent": "holyhell:item/sacrificial_katar_3d"
-	},
-	"perspectives": {
-		"gui": {
-			"parent": "holyhell:item/sacrificial_katar_2d",
-			"ground": {
-				"parent": "holyhell:item/sacrificial_katar_2d"
-			},
-			"fixed": {
-				"parent": "holyhell:item/sacrificial_katar_2d"
-			}
-		}
-	}
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "holyhell:item/sacrificial_katar"
+  },
+
+
+  "overrides": [
+    {
+      "predicate": {
+        "activated": 0
+      },
+      "model": "holyhell:item/sacrificial_katar"
+    },
+    {
+      "predicate": {
+        "activated": 1
+      },
+      "model": "holyhell:item/sacrificial_katar_1"
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        -45,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        -1.75,
+        -2.25
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -46,
+        90,
+        -90
+      ],
+      "translation": [
+        0,
+        -2,
+        -2.75
+      ]
+    }
+  }
 }

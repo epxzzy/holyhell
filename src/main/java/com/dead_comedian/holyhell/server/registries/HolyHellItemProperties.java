@@ -12,12 +12,26 @@ public class HolyHellItemProperties {
             return livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == stack ? 1.0F : 0.0F;
         });
 
+        ItemProperties.register(HolyHellItems.HOLY_GRAIL.get(), ResourceLocation.withDefaultNamespace("grail_level"), (stack, level, livingEntity, i) -> {
+
+            if (stack.get(HolyhellDataComps.GRAIL_LEVEL) != null) {
+                return stack.get(HolyhellDataComps.GRAIL_LEVEL);
+            }
+            return 0;
+        });
+
+
         ItemProperties.register(HolyHellItems.BAB.get(), ResourceLocation.withDefaultNamespace("level"), (stack, level, livingEntity, i) -> {
             if (stack.get(DataComponents.CUSTOM_DATA) != null) {
 
                 return stack.get(DataComponents.CUSTOM_DATA).copyTag().getInt("level");
-            } return 0;
+            }
+            return 0;
         });
+
+        ItemProperties.register(HolyHellItems.SACRIFICIAL_KATAR.get(), ResourceLocation.withDefaultNamespace("activated"),
+                (stack, level, livingEntity, i) ->
+                        livingEntity!=null && livingEntity.hasEffect(HolyHellEffects.BLOODLUST) ? 1 : 0);
     }
 
 }

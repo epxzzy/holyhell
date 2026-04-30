@@ -1,0 +1,18 @@
+{
+  "parent": "minecraft:item/handheld",
+  "loader": "neoforge:separate_transforms",
+  "base": {
+    "parent": "holyhell:item/holy_grail_3d_1"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "holyhell:item/holy_grail_2d_1"
+    },
+    "ground": {
+      "parent": "holyhell:item/holy_grail_2d_1"
+    },
+    "fixed": {
+      "parent": "holyhell:item/holy_grail_2d_1"
+    }
+  }
+}

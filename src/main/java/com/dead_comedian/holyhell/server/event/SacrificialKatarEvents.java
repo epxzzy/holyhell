@@ -2,6 +2,10 @@ package com.dead_comedian.holyhell.server.event;
 
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
+import com.dead_comedian.holyhell.server.registries.HolyHellItems;
+import com.dead_comedian.holyhell.server.registries.HolyhellDataComps;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,10 +15,12 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 @EventBusSubscriber(modid = HolyHell.MOD_ID)
@@ -22,7 +28,7 @@ public class SacrificialKatarEvents {
 
 
     @SubscribeEvent
-    public static void onLivingHealEvent(LivingHealEvent event) {
+    public static void criticalHitEvent(LivingHealEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (player.hasEffect(HolyHellEffects.BLOODLUST)) {
                 event.setCanceled(true);

@@ -6,11 +6,15 @@ import com.dead_comedian.holyhell.client.event.EndTextOverlay;
 import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -36,6 +41,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -78,6 +84,23 @@ public class HolyHellEventBusEvents {
             if (pumpkin == HolyHellBlocks.JACK_O_LANTERN_CROSS.get()) {
                 event.getLevel().setBlock(event.getPos(), Blocks.JACK_O_LANTERN.defaultBlockState(), 11);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void criticalHitEvent(CriticalHitEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
+
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).is(HolyHellItems.HOLY_GRAIL.get())) {
+                if (itemStack.get(HolyhellDataComps.GRAIL_LEVEL) != null) {
+                    itemStack.set(HolyhellDataComps.GRAIL_LEVEL, itemStack.get(HolyhellDataComps.GRAIL_LEVEL) + 1);
+                }
+                else {
+                    itemStack.set(HolyhellDataComps.GRAIL_LEVEL,0);
+                }
+            }
+
         }
     }
 
