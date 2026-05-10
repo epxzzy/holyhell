@@ -26,6 +26,8 @@ public class OriginStructurePlacement extends StructurePlacement {
         return x == 0 && z == 0;
     }
 
+
+
     @Override
     public StructurePlacementType<?> type() {
         return HolyHellStructurePlacements.ORIGIN_STRUCTURE_PLACEMENT_TYPE.get();

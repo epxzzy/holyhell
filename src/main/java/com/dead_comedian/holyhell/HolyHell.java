@@ -26,7 +26,7 @@ public class HolyHell {
         modEventBus.addListener(HolyHellMessages::register);
         NeoForge.EVENT_BUS.register(this);
 
-
+        HolyHellActivities.register(modEventBus);
         HolyHellAttachments.register(modEventBus);
         HolyHellBlockEntities.register(modEventBus);
         HolyHellBlocks.register(modEventBus);
@@ -44,7 +44,6 @@ public class HolyHell {
         HolyHellStructurePlacements.register(modEventBus);
         HolyhellDataComps.register(modEventBus);
 
-        HolyHellMemoryModules.register(modEventBus);
         HolyHellSensorTypes.register(modEventBus);
 
         if (FMLEnvironment.dist == Dist.CLIENT) {

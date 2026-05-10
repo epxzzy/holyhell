@@ -3,13 +3,13 @@ package com.dead_comedian.holyhell.server.registries;
 
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.entity.*;
-import com.dead_comedian.holyhell.server.entity.non_living.*;
+import com.dead_comedian.holyhell.server.entity.non_living.AngelProjectileEntity;
+import com.dead_comedian.holyhell.server.entity.non_living.BlindingBombEntity;
+import com.dead_comedian.holyhell.server.entity.non_living.GlobularDomeEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-
 import net.neoforged.bus.api.IEventBus;
-
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -55,7 +55,7 @@ public class HolyHellEntities {
 
     public static final Supplier<EntityType<AllSeerEntity>> ALL_SEER =
             ENTITY_TYPES.register("all_seer", () -> EntityType.Builder.of(AllSeerEntity::new, MobCategory.CREATURE)
-                    .sized(60f, 30f).build("all_seer"));
+                    .sized(3f, 3f).build("all_seer"));
 
     public static final Supplier<EntityType<RevenantEntity>> REVENANT =
             ENTITY_TYPES.register("revenant", () -> EntityType.Builder.of(RevenantEntity::new, MobCategory.CREATURE)

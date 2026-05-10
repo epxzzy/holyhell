@@ -6,10 +6,7 @@ import com.dead_comedian.holyhell.client.event.EndTextOverlay;
 import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.entity.*;
 import com.dead_comedian.holyhell.server.registries.*;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -95,9 +92,8 @@ public class HolyHellEventBusEvents {
             if (player.getItemInHand(InteractionHand.MAIN_HAND).is(HolyHellItems.HOLY_GRAIL.get())) {
                 if (itemStack.get(HolyhellDataComps.GRAIL_LEVEL) != null) {
                     itemStack.set(HolyhellDataComps.GRAIL_LEVEL, itemStack.get(HolyhellDataComps.GRAIL_LEVEL) + 1);
-                }
-                else {
-                    itemStack.set(HolyhellDataComps.GRAIL_LEVEL,0);
+                } else {
+                    itemStack.set(HolyhellDataComps.GRAIL_LEVEL, 0);
                 }
             }
 

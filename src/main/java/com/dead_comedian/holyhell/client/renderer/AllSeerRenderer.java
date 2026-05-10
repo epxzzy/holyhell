@@ -13,6 +13,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class AllSeerRenderer extends MobRenderer<AllSeerEntity, AllSeerModel<AllSeerEntity>> {
+
+    protected float roll;
+    protected float oRoll;
+
     public AllSeerRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new AllSeerModel<>(pContext.bakeLayer(HolyHellModelLayers.ALL_SEER)), 0);
         this.addLayer(new GlowingSeerLayer<>(this));
@@ -27,8 +31,9 @@ public class AllSeerRenderer extends MobRenderer<AllSeerEntity, AllSeerModel<All
     @Override
     public void render(AllSeerEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
 
-        pMatrixStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        pMatrixStack.scale(10, 10, 4);
+        pMatrixStack.mulPose(this.entityRenderDispatcher.camera.rotation());
+
+//        pMatrixStack.scale(10, 10, 4);
         pMatrixStack.pushPose();
         pMatrixStack.popPose();
 

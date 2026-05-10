@@ -1,10 +1,14 @@
-package com.dead_comedian.holyhell.server.entity.ai.task;
+package com.dead_comedian.holyhell.server.entity.ai;
 
 import com.dead_comedian.holyhell.server.entity.RevenantEntity;
-import com.dead_comedian.holyhell.server.entity.ai.task.revenant.Ritual;
-import com.dead_comedian.holyhell.server.registries.HolyHellMemoryModules;
+import com.dead_comedian.holyhell.server.entity.ai.task.RevenantPrepareTarget;
+import com.dead_comedian.holyhell.server.entity.ai.task.Ritual;
+import com.dead_comedian.holyhell.server.entity.ai.task.SitDown;
+import com.dead_comedian.holyhell.server.entity.ai.task.SitUp;
+import com.dead_comedian.holyhell.server.registries.HolyHellActivities;
 import com.dead_comedian.holyhell.server.registries.HolyHellSensorTypes;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
@@ -12,9 +16,9 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.schedule.Activity;
 
 import java.util.List;
@@ -29,19 +33,22 @@ public class RevenantAi {
             MemoryModuleType.NEAREST_LIVING_ENTITIES,
             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
             MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            HolyHellMemoryModules.TRANSCENDING_MOBS_DETECTED.get(),
-            MemoryModuleType.PATH
+            MemoryModuleType.PATH,
+            MemoryModuleType.ATTACK_TARGET
+
     );
 
-    public static final List<SensorType<? extends Sensor<? super RevenantEntity>>> SENSORS = ImmutableList.of(
-            HolyHellSensorTypes.TRANSCENDING_MOBS_SENSOR.get(),
+    public static final ImmutableList<SensorType<? extends Sensor<? super RevenantEntity>>> SENSORS = ImmutableList.of(
             SensorType.NEAREST_LIVING_ENTITIES,
-            SensorType.HURT_BY
+            SensorType.HURT_BY,
+            HolyHellSensorTypes.ATTACKABLE_ENTITY.get()
     );
 
     public static Brain<?> makeBrain(Brain<RevenantEntity> brain) {
         initCoreActivity(brain);
         initIdleActivity(brain);
+        initAwakeActivities(brain);
+
         brain.setCoreActivities(Set.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.useDefaultActivity();
@@ -49,7 +56,10 @@ public class RevenantAi {
     }
 
     public static void updateActivity(RevenantEntity revenant) {
-        revenant.getBrain().setActiveActivityToFirstValid(ImmutableList.of(Activity.IDLE));
+        revenant.getBrain().setActiveActivityToFirstValid(ImmutableList.of(
+                HolyHellActivities.AWAKE.get(),
+                Activity.IDLE
+        ));
     }
 
     private static void initCoreActivity(Brain<RevenantEntity> brain) {
@@ -61,7 +71,7 @@ public class RevenantAi {
                         new MoveToTargetSink() {
                             @Override
                             protected boolean checkExtraStartConditions(ServerLevel serverLevel, Mob mob) {
-                                if (mob instanceof RevenantEntity revenant && revenant.isCatatonic()) {
+                                if (mob instanceof RevenantEntity revenant && revenant.getState().getId() == 0) {
                                     return false;
                                 }
 
@@ -78,11 +88,31 @@ public class RevenantAi {
     private static void initIdleActivity(Brain<RevenantEntity> brain) {
         brain.addActivity(
                 Activity.IDLE,
+
                 ImmutableList.of(
-                        Pair.of(1, new Ritual())
+                        Pair.of(0, new SitDown())
                 )
         );
 
     }
+
+
+    private static void initAwakeActivities(Brain<RevenantEntity> brain) {
+        brain.addActivityWithConditions(
+                HolyHellActivities.AWAKE.get(),
+                ImmutableList.of(
+                        Pair.of(1, new Ritual()),
+                        Pair.of(2, new SitUp()),
+                        Pair.of(2, new LookAtTargetSink(45, 90)),
+                        Pair.of(2, new MoveToTargetSink()),
+                        Pair.of(2, new RevenantPrepareTarget())
+
+                ),
+                ImmutableSet.of(
+                        Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT)
+                )
+        );
+    }
+
 
 }

@@ -92,7 +92,7 @@ public class RevenantModel<T extends RevenantEntity> extends HierarchicalModel<T
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
 
-        if (entity.isArmed()) {
+        if (entity.getState().getId()==4) {
             this.weapon.yScale = 1;
             this.animateWalk(ModAnimations.REVENANT_WALK_ARMED, limbSwing, limbSwingAmount, 2f, 2.5f);
             this.animate(entity.idleAnimationState, ModAnimations.REVENANT_IDLE_ARMED, ageInTicks, 1f);
@@ -110,7 +110,7 @@ public class RevenantModel<T extends RevenantEntity> extends HierarchicalModel<T
         this.animate(entity.catatonicRiseAnimationState, ModAnimations.REVENANT_CATATONIC_RISE, ageInTicks, 1f);
         this.animate(entity.catatonicSitAnimationState, ModAnimations.REVENANT_CATATONIC_SIT, ageInTicks, 1f);
 
-        if (entity.getWololo()) {
+        if (entity.getState().getId()==5) {
             entity.getNavigation().stop();
             entity.catatonicAnimationState.stop();
             entity.idleAnimationState.stop();

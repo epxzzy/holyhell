@@ -65,6 +65,11 @@ public class AllSeerEntity extends Mob {
         return super.mobInteract(player, hand);
     }
 
+    @Override
+    public void tick() {
+        System.out.println(this.getYRot());
+        super.tick();
+    }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
