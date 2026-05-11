@@ -3,6 +3,7 @@ package com.dead_comedian.holyhell.server.entity.ai.task;
 import com.dead_comedian.holyhell.server.entity.RevenantEntity;
 import com.dead_comedian.holyhell.server.entity.ai.RevenantStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
+import com.dead_comedian.holyhell.server.registries.HolyHellTags;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -26,7 +27,10 @@ public class Ritual extends Behavior<RevenantEntity> {
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, RevenantEntity owner) {
         targetEntity = owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
-        return owner.distanceTo(targetEntity) < 2 && owner.getState().getId() == 3;
+        return owner.distanceTo(targetEntity) < 2 &&
+                owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET)
+                        .get().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS)
+                && owner.getState().getId() == 3;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class Ritual extends Behavior<RevenantEntity> {
 
     @Override
     protected boolean canStillUse(ServerLevel level, RevenantEntity entity, long gameTime) {
-        return targetEntity != null;
+        return targetEntity != null && targetEntity.getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS);
     }
 
 }

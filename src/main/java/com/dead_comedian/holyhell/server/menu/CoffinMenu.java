@@ -35,6 +35,7 @@ public class CoffinMenu extends AbstractContainerMenu {
     public CoffinMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
         this(containerId, inv, (CoffinBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
+
     public CoffinMenu(int id, Inventory inv, CoffinBlockEntity blockEntity) {
         super(HolyHellScreens.COFFIN_MENU.get(), id);
 

@@ -1,11 +1,9 @@
 package com.dead_comedian.holyhell.server.entity.ai;
 
 import com.dead_comedian.holyhell.server.entity.RevenantEntity;
-import com.dead_comedian.holyhell.server.entity.ai.task.RevenantPrepareTarget;
-import com.dead_comedian.holyhell.server.entity.ai.task.Ritual;
-import com.dead_comedian.holyhell.server.entity.ai.task.SitDown;
-import com.dead_comedian.holyhell.server.entity.ai.task.SitUp;
+import com.dead_comedian.holyhell.server.entity.ai.task.*;
 import com.dead_comedian.holyhell.server.registries.HolyHellActivities;
+import com.dead_comedian.holyhell.server.registries.HolyHellMemoryModules;
 import com.dead_comedian.holyhell.server.registries.HolyHellSensorTypes;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -34,14 +32,20 @@ public class RevenantAi {
             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
             MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
             MemoryModuleType.PATH,
-            MemoryModuleType.ATTACK_TARGET
+            MemoryModuleType.ATTACK_TARGET,
+
+            HolyHellMemoryModules.WEAPON_POS.get(),
+            HolyHellMemoryModules.IS_AWAKE.get()
 
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super RevenantEntity>>> SENSORS = ImmutableList.of(
             SensorType.NEAREST_LIVING_ENTITIES,
             SensorType.HURT_BY,
-            HolyHellSensorTypes.ATTACKABLE_ENTITY.get()
+            HolyHellSensorTypes.ATTACKABLE_ENTITY.get(),
+            HolyHellSensorTypes.NEARBY_WEAPON.get(),
+            HolyHellSensorTypes.IS_AWAKE_SENSOR.get()
+
     );
 
     public static Brain<?> makeBrain(Brain<RevenantEntity> brain) {
@@ -101,15 +105,17 @@ public class RevenantAi {
         brain.addActivityWithConditions(
                 HolyHellActivities.AWAKE.get(),
                 ImmutableList.of(
-                        Pair.of(1, new Ritual()),
-                        Pair.of(2, new SitUp()),
-                        Pair.of(2, new LookAtTargetSink(45, 90)),
-                        Pair.of(2, new MoveToTargetSink()),
-                        Pair.of(2, new RevenantPrepareTarget())
+                        Pair.of(0, new SitUp()),
+                        Pair.of(1, new LookAtTargetSink(45, 90)),
+                        Pair.of(1, new MoveToTargetSink()),
+                        Pair.of(1, new RevenantPrepareTarget()),
+                        Pair.of(2, new Ritual()),
+                        Pair.of(2,new PickUpWeapon()),
+                        Pair.of(2,new PlaceWeapon())
 
                 ),
                 ImmutableSet.of(
-                        Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT)
+                        Pair.of(HolyHellMemoryModules.IS_AWAKE.get(), MemoryStatus.VALUE_PRESENT)
                 )
         );
     }

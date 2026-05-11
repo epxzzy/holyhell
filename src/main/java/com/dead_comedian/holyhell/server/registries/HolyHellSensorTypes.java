@@ -2,6 +2,8 @@ package com.dead_comedian.holyhell.server.registries;
 
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.entity.ai.sensor.AttackableEntitySensor;
+import com.dead_comedian.holyhell.server.entity.ai.sensor.IsAwakeSensor;
+import com.dead_comedian.holyhell.server.entity.ai.sensor.NearbyWeaponSensor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.neoforged.bus.api.IEventBus;
@@ -17,6 +19,14 @@ public class HolyHellSensorTypes {
     public static final Supplier<SensorType<AttackableEntitySensor>> ATTACKABLE_ENTITY =
             SENSOR_TYPES.register("attackable_entity",
                     () -> new SensorType<>(AttackableEntitySensor::new));
+
+    public static final Supplier<SensorType<NearbyWeaponSensor>> NEARBY_WEAPON =
+            SENSOR_TYPES.register("nearby_weapon",
+                    () -> new SensorType<>(NearbyWeaponSensor::new));
+
+    public static final Supplier<SensorType<IsAwakeSensor>> IS_AWAKE_SENSOR =
+            SENSOR_TYPES.register("is_awake_sensor",
+                    () -> new SensorType<>(IsAwakeSensor::new));
 
 
     public static void register(IEventBus eventBus) {

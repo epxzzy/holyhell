@@ -44,6 +44,7 @@ public class HolyHell {
         HolyHellStructurePlacements.register(modEventBus);
         HolyhellDataComps.register(modEventBus);
 
+        HolyHellMemoryModules.register(modEventBus);
         HolyHellSensorTypes.register(modEventBus);
 
         if (FMLEnvironment.dist == Dist.CLIENT) {

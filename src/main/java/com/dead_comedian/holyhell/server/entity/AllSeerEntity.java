@@ -67,7 +67,6 @@ public class AllSeerEntity extends Mob {
 
     @Override
     public void tick() {
-        System.out.println(this.getYRot());
         super.tick();
     }
 

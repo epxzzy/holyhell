@@ -119,11 +119,6 @@ public class RevenantEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        System.out.println(this.getState());
-        if (!this.getState().canMove()) {
-            this.navigation.stop();
-        }
-
         if (this.level().isClientSide) {
             this.setupAnimationStates();
         }

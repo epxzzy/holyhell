@@ -17,6 +17,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
@@ -266,7 +267,7 @@ public class HolyHellEventBusEvents {
 
             for (RevenantEntity entity : nearbyRevenant) {
                 if (!player.isCreative() && !player.isSpectator()) {
-                    entity.setTarget(player);
+                  entity.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET,player);
                 }
             }
 
