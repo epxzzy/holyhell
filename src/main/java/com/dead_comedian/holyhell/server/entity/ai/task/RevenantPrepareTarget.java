@@ -5,6 +5,7 @@ import com.dead_comedian.holyhell.server.registries.HolyHellMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
@@ -27,19 +28,13 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
         if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
             //checks if target is not player, thus can only be a mob to transcend
             if (!(owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get() instanceof Player)) {
-                owner.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(
-                        owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get().blockPosition(),
-                        1F,
-                        1));
+                BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
 
             } else {
 
                 // sets position target for unarmed attack
-                if (owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isEmpty()) {
-                    owner.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(
-                            owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get().blockPosition(),
-                            1F,
-                            1));
+                if (owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isEmpty() && owner.getState().getId() == 3) {
+                    BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
 
                     //sets position target to get weapon
                 } else if (owner.getState().getId() == 3 && owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isPresent()) {
@@ -51,16 +46,19 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
 
                 //sets position target for armed attack
                 if (owner.getState().getId() == 4) {
-                    owner.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(
-                            owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get().blockPosition(),
-                            1F,
-                            1));
+                    BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
                 }
+
+                //stops the mob from moving while performing weapon attacked
+                if (owner.getState().getId() == 7) {
+                    owner.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+                }
+
             }
         } else {
             // sets the position target for the revenant to go place the weapon back
 
-            if (owner.getState().getId() == 4) {
+            if (owner.getState().getId() == 4 && owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isPresent()) {
 
                 owner.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(
                         owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).get(),
@@ -68,6 +66,8 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
                         1));
             }
         }
+
+
     }
 
 

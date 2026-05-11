@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
+import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.sensing.Sensor;
@@ -105,13 +106,16 @@ public class RevenantAi {
         brain.addActivityWithConditions(
                 HolyHellActivities.AWAKE.get(),
                 ImmutableList.of(
+                        Pair.of(0, new Swim(0.8F)),
                         Pair.of(0, new SitUp()),
                         Pair.of(1, new LookAtTargetSink(45, 90)),
                         Pair.of(1, new MoveToTargetSink()),
                         Pair.of(1, new RevenantPrepareTarget()),
                         Pair.of(2, new Ritual()),
                         Pair.of(2,new PickUpWeapon()),
-                        Pair.of(2,new PlaceWeapon())
+                        Pair.of(2,new PlaceWeapon()),
+                        Pair.of(3,new UnarmedAttack()),
+                        Pair.of(3,new ArmedAttack())
 
                 ),
                 ImmutableSet.of(

@@ -13,7 +13,7 @@ public class IsAwakeSensor extends Sensor<RevenantEntity> {
     @Override
     protected void doTick(ServerLevel level, RevenantEntity entity) {
         if (entity.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent() ||
-                (entity.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isPresent() )
+                (entity.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isPresent() && entity.getState().getId()!=3 )
         ) {
 
             entity.getBrain().setMemory(HolyHellMemoryModules.IS_AWAKE.get(), true);

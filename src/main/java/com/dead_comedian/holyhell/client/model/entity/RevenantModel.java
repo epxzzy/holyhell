@@ -9,6 +9,7 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -96,7 +97,6 @@ public class RevenantModel<T extends RevenantEntity> extends HierarchicalModel<T
             this.weapon.yScale = 1;
             this.animateWalk(ModAnimations.REVENANT_WALK_ARMED, limbSwing, limbSwingAmount, 2f, 2.5f);
             this.animate(entity.idleAnimationState, ModAnimations.REVENANT_IDLE_ARMED, ageInTicks, 1f);
-            this.animate(entity.attackAnimationState, ModAnimations.REVENANT_ATTACK_ARMED, ageInTicks, 1f);
 
         } else {
 
@@ -106,9 +106,20 @@ public class RevenantModel<T extends RevenantEntity> extends HierarchicalModel<T
             this.animate(entity.attackAnimationState, ModAnimations.REVENANT_ATTACK, ageInTicks, 1f);
 
         }
+
+        if(entity.getState().getId()==7){
+            this.weapon.yScale = 1;
+            this.animate(entity.attackAnimationState, ModAnimations.REVENANT_ATTACK_ARMED, ageInTicks, 1f);
+        }
+
         this.animate(entity.catatonicAnimationState, ModAnimations.REVENANT_CATATONIC, ageInTicks, 1f);
         this.animate(entity.catatonicRiseAnimationState, ModAnimations.REVENANT_CATATONIC_RISE, ageInTicks, 1f);
         this.animate(entity.catatonicSitAnimationState, ModAnimations.REVENANT_CATATONIC_SIT, ageInTicks, 1f);
+
+        if(entity.getState().getId() != 0){
+            this.head.xRot = Mth.clamp(headPitch, -22.5F, 25.0F) * (float) (Math.PI / 180.0);
+            this.head.yRot = Mth.clamp(netHeadYaw, -32.5F, 32.5F) * (float) (Math.PI / 180.0);
+        }
 
         if (entity.getState().getId()==5) {
             entity.getNavigation().stop();

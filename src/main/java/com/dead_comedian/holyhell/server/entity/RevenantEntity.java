@@ -18,10 +18,13 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class RevenantEntity extends Monster {
 
@@ -30,17 +33,10 @@ public class RevenantEntity extends Monster {
     /// ///////////////////////////////
 
     public final AnimationState idleAnimationState = new AnimationState();
-    private int idleAnimationTimeout = 0;
-
     public final AnimationState attackAnimationState = new AnimationState();
-    public int attackAnimationTimeout = 0;
-
     public final AnimationState catatonicAnimationState = new AnimationState();
     public final AnimationState catatonicRiseAnimationState = new AnimationState();
     public final AnimationState catatonicSitAnimationState = new AnimationState();
-
-    public int catatonicRiseAnimationTimeout = 0;
-    public int catatonicSitAnimationTimeout = 0;
 
 
     public RevenantStates getState() {
@@ -122,73 +118,52 @@ public class RevenantEntity extends Monster {
         if (this.level().isClientSide) {
             this.setupAnimationStates();
         }
+
+        if (this.getState().getId() == 7) {
+            if (this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
+                LivingEntity targetEntity = this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
+                AABB revenantThrustAABB = new AABB(this.getX() + 3,
+                        this.getY() + 3,
+                        this.getZ() + 3,
+                        this.getX() - 3,
+                        this.getY() - 3,
+                        this.getZ() - 3);
+                if (revenantThrustAABB.intersects(targetEntity.getBoundingBox())) {
+                    if (!targetEntity.isBlocking()) {
+                        this.doHurtTarget(targetEntity);
+                    } else {
+                        targetEntity.knockback(1.2, -targetEntity.getLookAngle().x, -targetEntity.getLookAngle().y);
+                    }
+                }
+            }
+
+            this.setState(RevenantStates.ARMED);
+        }
     }
 
     private void setupAnimationStates() {
 
-        switch (this.getState().getId()){
+        switch (this.getState().getId()) {
             case 0:
                 this.catatonicAnimationState.startIfStopped(tickCount);
-                this.catatonicRiseAnimationState.stop();
                 this.catatonicSitAnimationState.stop();
 
                 break;
             case 1:
                 this.catatonicRiseAnimationState.startIfStopped(tickCount);
                 this.catatonicAnimationState.stop();
-                this.catatonicSitAnimationState.stop();
                 break;
             case 2:
                 this.catatonicSitAnimationState.startIfStopped(tickCount);
                 this.catatonicAnimationState.stop();
-                this.catatonicRiseAnimationState.stop();
+                break;
+            case 3, 4:
+                this.attackAnimationState.stop();
+                break;
+            case 6, 7:
+                this.attackAnimationState.startIfStopped(tickCount);
                 break;
         }
-
-
-
-//        if (this.getState().getId() == 1) {
-//            this.catatonicAnimationState.stop();
-//            if (this.getDeltaMovement().x == 0 && this.getDeltaMovement().z == 0) {
-//
-//                if (this.idleAnimationTimeout <= 0) {
-//                    this.idleAnimationTimeout = 53;
-//                    this.idleAnimationState.startIfStopped(this.tickCount);
-//                } else {
-//                    --this.idleAnimationTimeout;
-//                }
-//            } else {
-//                this.idleAnimationTimeout = 53;
-//                this.idleAnimationState.stop();
-//            }
-//        } else {
-//            this.idleAnimationState.stop();
-//            if (this.catatonicSitAnimationTimeout >= 19 ) {
-//                this.catatonicAnimationState.startIfStopped(this.tickCount);
-//            }
-//        }
-//
-//        if (this.catatonicSitAnimationState.isStarted()) {
-//            this.catatonicSitAnimationTimeout++;
-//        } else {
-//            this.catatonicSitAnimationTimeout = 0;
-//        }
-//        if (this.catatonicSitAnimationTimeout >= 20) {
-//            this.catatonicSitAnimationState.stop();
-//        }
-//
-//        if (this.catatonicRiseAnimationState.isStarted()) {
-//            this.catatonicRiseAnimationTimeout++;
-//        } else {
-//            this.catatonicRiseAnimationTimeout = 0;
-//        }
-//        if (this.catatonicRiseAnimationTimeout >= 20) {
-//            this.catatonicRiseAnimationState.stop();
-//        }
-
-
-
-
     }
 
     protected void updateWalkAnimation(float v) {
@@ -213,7 +188,7 @@ public class RevenantEntity extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource pSource) {
-        return this.getState().getId()==0 && !pSource.isCreativePlayer();
+        return this.getState().getId() == 0 && !pSource.isCreativePlayer();
     }
 
     protected SoundEvent getStepSound() {
