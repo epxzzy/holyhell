@@ -28,8 +28,9 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
         if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
             //checks if target is not player, thus can only be a mob to transcend
             if (!(owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get() instanceof Player)) {
-                BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
-
+                if (owner.getState().getId() != 4) {
+                    BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
+                }
             } else {
 
                 // sets position target for unarmed attack
@@ -46,7 +47,7 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
 
                 //sets position target for armed attack
                 if (owner.getState().getId() == 4) {
-                    BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
+                    BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 5);
                 }
 
                 //stops the mob from moving while performing weapon attacked

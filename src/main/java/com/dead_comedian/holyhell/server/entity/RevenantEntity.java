@@ -119,26 +119,6 @@ public class RevenantEntity extends Monster {
             this.setupAnimationStates();
         }
 
-        if (this.getState().getId() == 7) {
-            if (this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
-                LivingEntity targetEntity = this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
-                AABB revenantThrustAABB = new AABB(this.getX() + 3,
-                        this.getY() + 3,
-                        this.getZ() + 3,
-                        this.getX() - 3,
-                        this.getY() - 3,
-                        this.getZ() - 3);
-                if (revenantThrustAABB.intersects(targetEntity.getBoundingBox())) {
-                    if (!targetEntity.isBlocking()) {
-                        this.doHurtTarget(targetEntity);
-                    } else {
-                        targetEntity.knockback(1.2, -targetEntity.getLookAngle().x, -targetEntity.getLookAngle().y);
-                    }
-                }
-            }
-
-            this.setState(RevenantStates.ARMED);
-        }
     }
 
     private void setupAnimationStates() {

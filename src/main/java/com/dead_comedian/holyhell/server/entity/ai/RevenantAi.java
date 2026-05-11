@@ -36,7 +36,9 @@ public class RevenantAi {
             MemoryModuleType.ATTACK_TARGET,
 
             HolyHellMemoryModules.WEAPON_POS.get(),
-            HolyHellMemoryModules.IS_AWAKE.get()
+            HolyHellMemoryModules.IS_AWAKE.get(),
+            HolyHellMemoryModules.SHOULD_DAMAGE.get()
+
 
     );
 
@@ -115,7 +117,8 @@ public class RevenantAi {
                         Pair.of(2,new PickUpWeapon()),
                         Pair.of(2,new PlaceWeapon()),
                         Pair.of(3,new UnarmedAttack()),
-                        Pair.of(3,new ArmedAttack())
+                        Pair.of(3,new ArmedAttack()),
+                        Pair.of(4, new DealDashDamage())
 
                 ),
                 ImmutableSet.of(

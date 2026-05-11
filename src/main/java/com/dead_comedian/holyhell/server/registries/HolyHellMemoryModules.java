@@ -16,6 +16,7 @@ public class HolyHellMemoryModules {
 
     public static final Supplier<MemoryModuleType<BlockPos>> WEAPON_POS = register("weapon_pos", BlockPos.CODEC);
     public static final Supplier<MemoryModuleType<Boolean>> IS_AWAKE = register("is_awake", Codec.BOOL);
+    public static final Supplier<MemoryModuleType<Boolean>> SHOULD_DAMAGE = register("should_damage", Codec.BOOL);
 
 
     private static <T> Supplier<MemoryModuleType<T>> register(String name, Codec<T> codec) {

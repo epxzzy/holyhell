@@ -75,6 +75,7 @@ public class HolyHellEntities {
                     .sized(0.9F, 0.9F).build("angel_projectile"));
 
 
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }
