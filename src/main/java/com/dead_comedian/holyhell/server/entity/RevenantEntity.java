@@ -18,13 +18,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 public class RevenantEntity extends Monster {
 
@@ -34,6 +31,7 @@ public class RevenantEntity extends Monster {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
+    public final AnimationState armedAttackAnimationState = new AnimationState();
     public final AnimationState catatonicAnimationState = new AnimationState();
     public final AnimationState catatonicRiseAnimationState = new AnimationState();
     public final AnimationState catatonicSitAnimationState = new AnimationState();
@@ -121,6 +119,22 @@ public class RevenantEntity extends Monster {
 
     }
 
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return false;
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence();
+    }
+
+    @Override
+    public boolean isPersistenceRequired() {
+        return true;
+    }
+
+
     private void setupAnimationStates() {
 
         switch (this.getState().getId()) {
@@ -140,8 +154,13 @@ public class RevenantEntity extends Monster {
             case 3, 4:
                 this.attackAnimationState.stop();
                 break;
-            case 6, 7:
+            case 6:
                 this.attackAnimationState.startIfStopped(tickCount);
+                break;
+            case 7:
+
+                this.armedAttackAnimationState.startIfStopped(tickCount);
+
                 break;
         }
     }

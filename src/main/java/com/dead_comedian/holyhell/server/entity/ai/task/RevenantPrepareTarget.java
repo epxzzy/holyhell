@@ -1,6 +1,7 @@
 package com.dead_comedian.holyhell.server.entity.ai.task;
 
 import com.dead_comedian.holyhell.server.entity.RevenantEntity;
+import com.dead_comedian.holyhell.server.entity.ai.RevenantStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +25,8 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
     protected void tick(ServerLevel level, RevenantEntity owner, long gameTime) {
         super.tick(level, owner, gameTime);
         //comments by me cuz i cant read me own code
+
+
 
         if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
             //checks if target is not player, thus can only be a mob to transcend
@@ -58,13 +61,20 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
             }
         } else {
             // sets the position target for the revenant to go place the weapon back
-
             if (owner.getState().getId() == 4 && owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isPresent()) {
 
                 owner.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(
                         owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).get(),
                         1F,
                         1));
+            }
+
+            //return to unarmed
+            if(owner.getState().getId()==6){
+                owner.setState(RevenantStates.UNARMED);
+            }
+            if(owner.getState().getId()==7){
+                owner.setState(RevenantStates.ARMED);
             }
         }
 
