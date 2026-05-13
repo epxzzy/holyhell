@@ -55,7 +55,7 @@ public class ArmedAttack extends Behavior<RevenantEntity> {
             entity.getBrain().setMemory(HolyHellMemoryModules.SHOULD_DAMAGE.get(), true);
             LivingEntity targetEntity = entity.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
             Vec3 direction = targetEntity.position().subtract(entity.position()).multiply(1, 0, 1).normalize();
-            entity.addDeltaMovement(direction.scale(10));
+            entity.addDeltaMovement(direction.scale(6));
 
 
         }

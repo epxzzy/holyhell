@@ -107,7 +107,7 @@ public class RevenantEntity extends Monster {
 
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 100).add(Attributes.MOVEMENT_SPEED, 0.3f).add(Attributes.ARMOR, 2f).add(Attributes.ATTACK_DAMAGE, 5);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 100).add(Attributes.STEP_HEIGHT,1.1).add(Attributes.MOVEMENT_SPEED, 0.3f).add(Attributes.ARMOR, 2f).add(Attributes.ATTACK_DAMAGE, 5);
     }
 
     @Override

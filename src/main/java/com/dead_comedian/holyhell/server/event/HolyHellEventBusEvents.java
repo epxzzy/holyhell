@@ -39,6 +39,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -56,6 +57,21 @@ public class HolyHellEventBusEvents {
     private static int paranoiaTimer;
     private static int paranoiaAmp;
     private static int secTillText = 40;
+
+
+    @SubscribeEvent
+    public static void block(LivingShieldBlockEvent event) {
+        Entity entity = event.getDamageSource().getDirectEntity();
+        if (entity instanceof RevenantEntity && event.getBlocked()) {
+            if (((RevenantEntity) entity).getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
+                Entity targetEntity = ((RevenantEntity) entity).getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
+                double d0 = targetEntity.getX() - entity.getX();
+                double d1 = targetEntity.getZ() - entity.getZ();
+                double d2 = Math.max(d0 * d0 + d1 * d1, 0.001);
+                targetEntity.push(d0 / d2 * 4.0, 0.2, d1 / d2 * 4.0);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void changePumpkinFace(PlayerInteractEvent.RightClickBlock event) {
@@ -267,7 +283,7 @@ public class HolyHellEventBusEvents {
 
             for (RevenantEntity entity : nearbyRevenant) {
                 if (!player.isCreative() && !player.isSpectator()) {
-                  entity.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET,player);
+                    entity.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, player);
                 }
             }
 

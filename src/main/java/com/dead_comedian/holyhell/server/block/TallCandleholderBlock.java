@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.function.ToIntFunction;
@@ -46,25 +44,29 @@ public class TallCandleholderBlock extends Block {
     }
 
     @Override
-    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pPos, BlockPos pNeighborPos) {
-        return pDirection == Direction.DOWN && !this.canPlaceAt(pState, pLevel, pPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(pState, pDirection, pNeighborState, pLevel, pPos, pNeighborPos);
-
-    }
-
-    @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = level.getBlockState(belowPos);
-        if (state.getValue(PIECE) > 0) {
-            return belowState.getBlock() == this;
-        } else {
-            return belowState.isSolid();
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (!canPlaceAt(state, level, pos)) {
+            return Blocks.AIR.defaultBlockState();
         }
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
-    public boolean canPlaceAt(BlockState state, LevelAccessor world, BlockPos pos) {
-        return canSupportCenter(world, pos.below(), Direction.UP) || state.is(this.asBlock());
-    }
+
+
+    public boolean canPlaceAt(BlockState state, LevelAccessor level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        BlockState aboveState = level.getBlockState(pos.above());
+
+        if (state.getValue(PIECE) == 0) {
+            return belowState.isSolid()
+                    && aboveState.is(this) && aboveState.getValue(PIECE) == 1;
+        } else if (state.getValue(PIECE) == 1) {
+            return belowState.is(this) && belowState.getValue(PIECE) == 0
+                    && aboveState.is(this) && aboveState.getValue(PIECE) == 2;
+        } else if (state.getValue(PIECE) == 2) {
+            return belowState.is(this) && belowState.getValue(PIECE) == 1;
+        }
+        return false;    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -141,42 +143,43 @@ public class TallCandleholderBlock extends Block {
 
         }
     }
+//
+//    @Override
+//    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+//        if (state.getValue(PIECE) == 1) {
+//            level.destroyBlock(pos.above(), true);
+//            level.destroyBlock(pos.below(), true);
+//
+//        } else if (state.getValue(PIECE) == 2) {
+//            level.destroyBlock(pos.below(), true);
+//            level.destroyBlock(pos.below().below(), true);
+//
+//        } else if (state.getValue(PIECE) == 0) {
+//            level.destroyBlock(pos.above(), true);
+//            level.destroyBlock(pos.above().above(), true);
+//        }
+//
+//        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+//    }
+//
+//    @Override
+//    public void onDestroyedByPushReaction(BlockState state, Level level, BlockPos pos, Direction pushDirection, FluidState fluid) {
+//        if (state.getValue(PIECE) == 1) {
+//            level.destroyBlock(pos, true);
+//            level.destroyBlock(pos.above(), true);
+//            level.destroyBlock(pos.below(), true);
+//
+//        } else if (state.getValue(PIECE) == 2) {
+//            level.destroyBlock(pos, true);
+//            level.destroyBlock(pos.below(), true);
+//            level.destroyBlock(pos.below().below(), true);
+//
+//        } else if (state.getValue(PIECE) == 0) {
+//            level.destroyBlock(pos, true);
+//            level.destroyBlock(pos.above(), true);
+//            level.destroyBlock(pos.above().above(), true);
+//        }
+//        super.onDestroyedByPushReaction(state, level, pos, pushDirection, fluid);
+//    }
 
-    @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        if (state.getValue(PIECE) == 1) {
-            level.destroyBlock(pos.above(), true);
-            level.destroyBlock(pos.below(), true);
-
-        } else if (state.getValue(PIECE) == 2) {
-            level.destroyBlock(pos.below(), true);
-            level.destroyBlock(pos.below().below(), true);
-
-        } else if (state.getValue(PIECE) == 0) {
-            level.destroyBlock(pos.above(), true);
-            level.destroyBlock(pos.above().above(), true);
-        }
-
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-    }
-
-    @Override
-    public void onDestroyedByPushReaction(BlockState state, Level level, BlockPos pos, Direction pushDirection, FluidState fluid) {
-        if (state.getValue(PIECE) == 1) {
-            level.destroyBlock(pos, true);
-            level.destroyBlock(pos.above(), true);
-            level.destroyBlock(pos.below(), true);
-
-        } else if (state.getValue(PIECE) == 2) {
-            level.destroyBlock(pos, true);
-            level.destroyBlock(pos.below(), true);
-            level.destroyBlock(pos.below().below(), true);
-
-        } else if (state.getValue(PIECE) == 0) {
-            level.destroyBlock(pos, true);
-            level.destroyBlock(pos.above(), true);
-            level.destroyBlock(pos.above().above(), true);
-        }
-        super.onDestroyedByPushReaction(state, level, pos, pushDirection, fluid);
-    }
 }

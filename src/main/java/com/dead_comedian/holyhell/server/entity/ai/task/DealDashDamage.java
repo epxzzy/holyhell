@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.phys.AABB;
 
 public class DealDashDamage extends Behavior<RevenantEntity> {
-    public static final int DURATION = 20;
+    public static final int DURATION = 25;
 
     public DealDashDamage() {
         super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT,
@@ -28,16 +28,10 @@ public class DealDashDamage extends Behavior<RevenantEntity> {
         super.tick(level, owner, gameTime);
         if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
             LivingEntity targetEntity = owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
-            AABB revenantThrustAABB = owner.getBoundingBox().expandTowards(2.5, 1.5, 2.5);
-
+            AABB revenantThrustAABB = owner.getBoundingBox().expandTowards(3, 2, 3);
             if (revenantThrustAABB.intersects(targetEntity.getBoundingBox())) {
                 if (!targetEntity.isBlocking()) {
                     owner.doHurtTarget(targetEntity);
-                } else {
-                    double d0 = targetEntity.getX() - owner.getX();
-                    double d1 = targetEntity.getZ() - owner.getZ();
-                    double d2 = Math.max(d0 * d0 + d1 * d1, 0.001);
-                    targetEntity.push(d0 / d2 * 4.0, 0.2, d1 / d2 * 4.0);
                 }
                 owner.getBrain().eraseMemory(HolyHellMemoryModules.SHOULD_DAMAGE.get());
             }

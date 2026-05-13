@@ -227,7 +227,7 @@ public class HolyHellBlocks {
                     .sound(SoundType.STONE)) {
             });
     public static final Supplier<Block> MARBLE_BRICK_STAIRS = register("marble_brick_stairs",
-            () -> new StairBlock(MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.of()
+            () -> new StairBlock(MARBLE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE)
                     .strength(3F)
                     .noOcclusion()
@@ -261,7 +261,7 @@ public class HolyHellBlocks {
                     .sound(SoundType.STONE)) {
             });
     public static final Supplier<Block> CRACKED_MARBLE_BRICK_STAIRS = register("cracked_marble_brick_stairs",
-            () -> new StairBlock(MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.of()
+            () -> new StairBlock(CRACKED_MARBLE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE)
                     .strength(3F)
                     .noOcclusion()

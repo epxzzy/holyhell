@@ -1,6 +1,7 @@
 package com.dead_comedian.holyhell.server.entity.ai.task;
 
 import com.dead_comedian.holyhell.server.block.CandleholderBlock;
+import com.dead_comedian.holyhell.server.block.TallCandleholderBlock;
 import com.dead_comedian.holyhell.server.entity.RevenantEntity;
 import com.dead_comedian.holyhell.server.entity.ai.RevenantStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlocks;
@@ -33,10 +34,13 @@ public class PlaceWeapon extends Behavior<RevenantEntity> {
     protected void start(ServerLevel level, RevenantEntity entity, long gameTime) {
         super.start(level, entity, gameTime);
         level.setBlock(entity.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).get(),
-                HolyHellBlocks.CANDLEHOLDER.get().defaultBlockState().setValue(CandleholderBlock.HALF, DoubleBlockHalf.LOWER),
+                HolyHellBlocks.TALL_CANDLEHOLDER.get().defaultBlockState().setValue(TallCandleholderBlock.PIECE, 0),
                 3);
         level.setBlock(entity.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).get().above(),
-                HolyHellBlocks.CANDLEHOLDER.get().defaultBlockState().setValue(CandleholderBlock.HALF, DoubleBlockHalf.UPPER),
+                HolyHellBlocks.TALL_CANDLEHOLDER.get().defaultBlockState().setValue(TallCandleholderBlock.PIECE, 1),
+                3);
+        level.setBlock(entity.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).get().above(2),
+                HolyHellBlocks.TALL_CANDLEHOLDER.get().defaultBlockState().setValue(TallCandleholderBlock.PIECE, 2),
                 3);
         entity.setState(RevenantStates.UNARMED);
         entity.getBrain().eraseMemory(HolyHellMemoryModules.WEAPON_POS.get());
