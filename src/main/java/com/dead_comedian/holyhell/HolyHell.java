@@ -40,7 +40,7 @@ public class HolyHell {
         HolyHellDimensions.register(modEventBus);
         HolyHellFeatures.ConfiguredFeatures.register(modEventBus);
         HolyHellFeatures.PlacedFeatures.register(modEventBus);
-        HolyHellScreens.register(modEventBus);
+
         HolyHellStructurePlacements.register(modEventBus);
         HolyhellDataComps.register(modEventBus);
 

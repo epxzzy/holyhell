@@ -230,16 +230,6 @@ public class HolyHellEventBusEvents {
     public static void livingDamage(LivingDamageEvent.Pre event) {
         LivingEntity entity = event.getEntity();
 
-        //Jesistence
-        if (entity.getEffect(HolyHellEffects.JESISTANCE) != null) {
-            int duration = entity.getEffect(HolyHellEffects.JESISTANCE).getDuration();
-            int amp = entity.getEffect(HolyHellEffects.JESISTANCE).getAmplifier();
-
-            event.setNewDamage((float) (event.getOriginalDamage() - (event.getOriginalDamage() * (entity.getEffect(HolyHellEffects.JESISTANCE).getAmplifier() + 1) * 0.25)));
-            entity.removeEffect(HolyHellEffects.JESISTANCE);
-            entity.addEffect(new MobEffectInstance(HolyHellEffects.JESISTANCE, duration - (int) event.getNewDamage() * 10, amp));
-        }
-
         //Fall Damage
         if (entity.level().dimension() == HolyHellDimensions.ANGEL) {
             if (event.getSource().is(DamageTypes.FALL)) {

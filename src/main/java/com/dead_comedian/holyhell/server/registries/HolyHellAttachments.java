@@ -1,7 +1,6 @@
 package com.dead_comedian.holyhell.server.registries;
 
 import com.dead_comedian.holyhell.HolyHell;
-import com.dead_comedian.holyhell.server.data.PlayerCoffinStatus;
 import com.dead_comedian.holyhell.server.data.StoredInventory;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -22,7 +21,6 @@ public class HolyHellAttachments {
             () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL)
                     .sync(ByteBufCodecs.BOOL)
-                    .copyOnDeath()
                     .build()
     );
     public static final Supplier<AttachmentType<Boolean>> TP_TO_ANGEL = ATTACHMENT_TYPES.register(
@@ -30,7 +28,6 @@ public class HolyHellAttachments {
             () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL)
                     .sync(ByteBufCodecs.BOOL)
-                    .copyOnDeath()
                     .build()
     );
     public static final Supplier<AttachmentType<Boolean>> FLASHBANG = ATTACHMENT_TYPES.register(
@@ -38,7 +35,6 @@ public class HolyHellAttachments {
             () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL)
                     .sync(ByteBufCodecs.BOOL)
-                    .copyOnDeath()
                     .build()
     );
     public static final Supplier<AttachmentType<Boolean>> SHOULD_DISPLAY_TEXT = ATTACHMENT_TYPES.register(
@@ -46,7 +42,6 @@ public class HolyHellAttachments {
             () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL)
                     .sync(ByteBufCodecs.BOOL)
-                    .copyOnDeath()
                     .build()
     );
 
@@ -55,7 +50,6 @@ public class HolyHellAttachments {
             () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL)
                     .sync(ByteBufCodecs.BOOL)
-                    .copyOnDeath()
                     .build()
     );
 
@@ -64,23 +58,37 @@ public class HolyHellAttachments {
             () -> AttachmentType.builder(() -> false)
                     .serialize(Codec.BOOL)
                     .sync(ByteBufCodecs.BOOL)
+                    .build()
+    );
+
+
+    public static final Supplier<AttachmentType<Boolean>> HAS_COFFIN = ATTACHMENT_TYPES.register(
+            "has_coffin",
+            () -> AttachmentType.builder(() -> false)
+                    .serialize(Codec.BOOL)
+                    .sync(ByteBufCodecs.BOOL)
+                    .copyOnDeath()
+                    .build()
+    );
+
+    public static final Supplier<AttachmentType<Boolean>> DIED = ATTACHMENT_TYPES.register(
+            "died",
+            () -> AttachmentType.builder(() -> false)
+                    .serialize(Codec.BOOL)
+                    .sync(ByteBufCodecs.BOOL)
                     .copyOnDeath()
                     .build()
     );
 
 
-    public static final Supplier<AttachmentType<PlayerCoffinStatus>> COFFIN_STATUS = ATTACHMENT_TYPES.register(
-            "coffin_status",
-            () -> AttachmentType.builder(PlayerCoffinStatus::new)
-                    .serialize(PlayerCoffinStatus.CODEC)
-                    .build()
-    );
-    public static final Supplier<AttachmentType<StoredInventory>> STORED_INVENTORY = ATTACHMENT_TYPES.register(
-            "stored_inventory",
-            () -> AttachmentType.builder(StoredInventory::new)
-                    .serialize(StoredInventory.CODEC)
-                    .build()
-    );
+    public static final Supplier<AttachmentType<StoredInventory>> SAVED_INVENTORY =
+            ATTACHMENT_TYPES.register(
+                    "saved_inventory",
+                    () -> AttachmentType.builder(StoredInventory::new)
+                            .serialize(StoredInventory.MAP_CODEC.codec())
+                            .build()
+            );
+
 
 
     public static void register(IEventBus modBus) {

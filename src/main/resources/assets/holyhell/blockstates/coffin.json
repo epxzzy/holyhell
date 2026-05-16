@@ -18,21 +18,38 @@
     },
 
 
-    "facing=east,half=lower,activated=true": {
+    "facing=east,half=lower,activated=true,open=false": {
       "model": "holyhell:block/coffin/coffin_close_activated",
       "y": 90
     },
-    "facing=north,half=lower,activated=true": {
+    "facing=north,half=lower,activated=true,open=false": {
       "model": "holyhell:block/coffin/coffin_close_activated"
     },
-    "facing=south,half=lower,activated=true": {
+    "facing=south,half=lower,activated=true,open=false": {
       "model": "holyhell:block/coffin/coffin_close_activated",
       "y": 180
     },
-    "facing=west,half=lower,activated=true": {
+    "facing=west,half=lower,activated=true,open=false": {
       "model": "holyhell:block/coffin/coffin_close_activated",
       "y": 270
     },
+
+    "facing=east,half=lower,activated=true,open=true": {
+      "model": "holyhell:block/coffin/coffin_open_activated",
+      "y": 90
+    },
+    "facing=north,half=lower,activated=true,open=true": {
+      "model": "holyhell:block/coffin/coffin_open_activated"
+    },
+    "facing=south,half=lower,activated=true,open=true": {
+      "model": "holyhell:block/coffin/coffin_open_activated",
+      "y": 180
+    },
+    "facing=west,half=lower,activated=true,open=true": {
+      "model": "holyhell:block/coffin/coffin_open_activated",
+      "y": 270
+    },
+
 
 
 

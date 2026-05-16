@@ -1,52 +1,58 @@
 package com.dead_comedian.holyhell.server.data;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StoredInventory {
 
-    public ItemStack[] items = new ItemStack[36];
-    public ItemStack[] armor = new ItemStack[4];
-    public ItemStack[] offhand = new ItemStack[1];
+    List<InventoryCodec> slot;
 
-    public StoredInventory() {
-        Arrays.fill(items, ItemStack.EMPTY);
-        Arrays.fill(armor, ItemStack.EMPTY);
-        Arrays.fill(offhand, ItemStack.EMPTY);
+
+    public StoredInventory(List<InventoryCodec> list) {
+        slot = new ArrayList<>(list);
     }
 
-    public static final Codec<StoredInventory> CODEC =
-            RecordCodecBuilder.create(inst -> inst.group(
-                    ItemStack.CODEC.listOf().fieldOf("items").forGetter(i -> Arrays.asList(i.items)),
-                    ItemStack.CODEC.listOf().fieldOf("armor").forGetter(i -> Arrays.asList(i.armor)),
-                    ItemStack.CODEC.listOf().fieldOf("offhand").forGetter(i -> Arrays.asList(i.offhand))
-            ).apply(inst, (items, armor, offhand) -> {
-                StoredInventory inv = new StoredInventory();
+    public StoredInventory(IAttachmentHolder iAttachmentHolder) {
+    }
 
-                for (int i = 0; i < Math.min(items.size(), inv.items.length); i++) {
-                    if (items.get(i) != Items.AIR.getDefaultInstance()) {
-                        inv.items[i] = items.get(i);
-                    }
-                }
+    public static StoredInventory saveInventory(Inventory inventory) {
+        List<InventoryCodec> entries = new ArrayList<>();
 
-                for (int i = 0; i < Math.min(armor.size(), inv.armor.length); i++) {
-                    if (armor.get(i) != Items.AIR.getDefaultInstance()) {
-                        inv.armor[i] = armor.get(i);
-                    }
-                }
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty()) {
+                entries.add(new InventoryCodec(i, stack));
+            }
+        }
 
-                for (int i = 0; i < Math.min(offhand.size(), inv.offhand.length); i++) {
-                    if (offhand.get(i) != Items.AIR.getDefaultInstance()) {
-                        inv.offhand[i] = offhand.get(i);
-                    }
-                }
+        return new StoredInventory(entries);
+    }
 
-                return inv;
-            }));
+    public List<InventoryCodec> getSlot() {
+        return slot;
+    }
+
+    public static final MapCodec<StoredInventory> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                    InventoryCodec.INVENTORY_CODEC.listOf().fieldOf("slots").forGetter(data -> data.slot)
+            ).apply(instance, StoredInventory::new));
+
+
+    public record InventoryCodec(int slot, ItemStack stack) {
+
+        public static final Codec<InventoryCodec> INVENTORY_CODEC = RecordCodecBuilder.create(inst ->
+                inst.group(
+                        Codec.INT.fieldOf("slot").forGetter(InventoryCodec::slot),
+                        ItemStack.CODEC.fieldOf("stack").forGetter(InventoryCodec::stack)
+                ).apply(inst, InventoryCodec::new));
+
+    }
 
 }

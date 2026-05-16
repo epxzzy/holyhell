@@ -181,8 +181,9 @@ public class HolyHellModClient {
     public static void onKeyInput(InputEvent.Key event) {
         if (HolyHellKeyBinds.VISION_ABILITY_KEY.consumeClick()) {
             EyeTransitionOverlay.eyeTransitionCounter = 0;
-
-            Minecraft.getInstance().level.playLocalSound(Minecraft.getInstance().player, HolyHellSounds.BLINK.get(), SoundSource.PLAYERS, 1, 1);
+            if (Minecraft.getInstance().player.hasEffect(HolyHellEffects.ANGELIC_VISION)) {
+                Minecraft.getInstance().level.playLocalSound(Minecraft.getInstance().player, HolyHellSounds.BLINK.get(), SoundSource.PLAYERS, 1, 1);
+            }
             PacketDistributor.sendToServer(new ServerboundAngelShaderAbilityPacket());
         }
     }

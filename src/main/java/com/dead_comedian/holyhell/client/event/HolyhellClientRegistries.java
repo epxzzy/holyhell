@@ -6,8 +6,6 @@ import com.dead_comedian.holyhell.client.model.entity.*;
 import com.dead_comedian.holyhell.client.model.entity.non_living.AngelProjectileModel;
 import com.dead_comedian.holyhell.client.model.entity.non_living.GlobularDomeModel;
 import com.dead_comedian.holyhell.client.renderer.render_layer.LowerRingRenderLayer;
-
-import com.dead_comedian.holyhell.client.screen.CoffinScreen;
 import com.dead_comedian.holyhell.particle.KamikazeExplosionParticle;
 import com.dead_comedian.holyhell.particle.LightRingParticle;
 import com.dead_comedian.holyhell.particle.ObfuscationParticle;
@@ -26,7 +24,6 @@ import com.dead_comedian.holyhell.particle.stun_particles.StunParticle1;
 import com.dead_comedian.holyhell.particle.stun_particles.StunParticle2;
 import com.dead_comedian.holyhell.server.registries.HolyHellKeyBinds;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
-import com.dead_comedian.holyhell.server.registries.HolyHellScreens;
 import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.particle.AttackSweepParticle;
@@ -36,7 +33,10 @@ import net.minecraft.client.resources.PlayerSkin;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
 import java.io.IOException;
 
@@ -95,11 +95,6 @@ public class HolyhellClientRegistries {
         event.registerLayerDefinition(HolyHellModelLayers.HOLY_COW, HolyCowModel::createBodyLayer);
         event.registerLayerDefinition(HolyHellModelLayers.REVENANT, RevenantModel::createBodyLayer);
 
-    }
-
-    @SubscribeEvent
-    public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(HolyHellScreens.COFFIN_MENU.get(), CoffinScreen::new);
     }
 
     @SubscribeEvent

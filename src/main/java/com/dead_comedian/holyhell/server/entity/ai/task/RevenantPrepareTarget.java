@@ -29,6 +29,11 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
 
 
         if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
+
+            if(!owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get().isAlive()){
+                owner.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
+            }
+
             //checks if target is not player, thus can only be a mob to transcend
             if (!(owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get() instanceof Player)) {
                 if (owner.getState().getId() != 4) {

@@ -2,20 +2,15 @@ package com.dead_comedian.holyhell.server.entity;
 
 
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
-import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -214,7 +209,7 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
         } else if (source.getEntity() instanceof Player) {
             this.knockback(2, 1, 1);
             return false;
-        }else {
+        } else {
             return false;
         }
 
@@ -244,8 +239,9 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
     @Override
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        this.kill();
-
+        if (!(player.isCreative() || player.isSpectator())) {
+            this.kill();
+        }
     }
 
     @Override
@@ -323,7 +319,6 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
             super.tick();
             if (this.entity.getTarget() != null) {
                 if (entity.distanceTo(this.entity.getTarget()) > 8) {
-
 
 
                     if (navigation.isDone()) {
