@@ -3,9 +3,11 @@
   "display": {
     "icon": {
       "count": 1,
-      "id": "holyhell:saint_eye"
+      "id": "holyhell:kebab"
     },
-    "title": "advancements.holyhell.kebab.title",
+    "title": {
+      "translate": "advancements.holyhell.kebab.title"
+    },
     "description": {
       "translate": "advancements.holyhell.kebab.description"
     },
@@ -20,7 +22,7 @@
         "items": [
           {
             "items": [
-              "holyhell:blinding_bomb"
+              "holyhell:kebab"
             ]
           }
         ]

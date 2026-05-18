@@ -293,16 +293,15 @@ public class HolyHellEventBusEvents {
         if (event.getEntity() instanceof Player player) {
             DamageSource damageSource = event.getSource();
 
+
             if (damageSource.is(DamageTypes.FALLING_BLOCK)) {
                 Entity directEntity = damageSource.getDirectEntity();
 
                 if (directEntity instanceof FallingBlockEntity fallingBlock) {
-                    BlockState blockState = fallingBlock.getBlockState();
 
-                    if (blockState.getBlock() == HolyHellBlocks.FALLING_CROSS.get()) {
-                        if (player instanceof ServerPlayer) {
-                            HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) player));
-                        }
+                    if (player instanceof ServerPlayer) {
+
+
                     }
                 }
             }

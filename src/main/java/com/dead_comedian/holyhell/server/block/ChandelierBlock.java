@@ -3,6 +3,7 @@ package com.dead_comedian.holyhell.server.block;
 
 import com.dead_comedian.holyhell.server.block.entity.FallingSmashingBlockEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
+import com.dead_comedian.holyhell.server.registries.HolyHellCriteriaTriggers;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -80,7 +82,7 @@ public class ChandelierBlock extends BaseEntityBlock implements EntityBlock, Fal
 
         if (!ctx.getLevel().getBlockState(pos.above())
                 .isFaceSturdy(ctx.getLevel(), pos.above(), Direction.DOWN)) {
-            return null; // cancels placement
+            return null;
         }
 
         return this.defaultBlockState();
@@ -219,6 +221,7 @@ public class ChandelierBlock extends BaseEntityBlock implements EntityBlock, Fal
             pLevel.playSound((Player) null, pPos, HolyHellSounds.STONE_CRACK.get(), SoundSource.BLOCKS, 0.8f, 1);
         }
         for (Entity entity : wiw) {
+            HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
             entity.hurt(pLevel.damageSources().fallingBlock(entity), 20);
         }
         for (int i = 0; i < 20; i++) {
