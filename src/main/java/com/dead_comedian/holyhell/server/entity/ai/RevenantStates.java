@@ -14,12 +14,17 @@ public enum RevenantStates {
     ATTACK_UNARMED(6),
     ATTACK_ARMED(7);
 
-    public static final IntFunction<RevenantStates> BY_ID = ByIdMap.continuous(RevenantStates::getId, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
 
-    private final int id;
+
     RevenantStates(int index) {
         this.id = index;
     }
+
+
+
+    public static final IntFunction<RevenantStates> BY_ID = ByIdMap.continuous(RevenantStates::getId, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
+
+    private final int id;
 
     public int getId() {
         return this.id;

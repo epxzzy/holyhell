@@ -19,6 +19,10 @@ public class StatueData {
                         ).apply(instance, StatueCodec::new)
         );
     }
+
+
+
+    
     public record FullStatueCodec( List<StatueCodec> statuePairs) {
 
 
