@@ -109,13 +109,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @ModifyVariable(method = "hurt", at = @At(value = "HEAD"))
     private float modifyDamage(float value, DamageSource source) {
 
-
-        //Jesistence
-        if (source.getEntity() != null) {
-
-            return source.getEntity().getType().is(HolyHellTags.Entities.MAGIC_DEALING_MOBS) || source.is(HolyHellTags.DamageTypes.MAGIC_DAMAGE) ? 0 : value;
-        }
-
         //Globular Dome
         List<Entity> entityBelow = this.level().getEntities(this, this.getBoundingBox().inflate(-0.1));
         for (Entity entity : entityBelow) {

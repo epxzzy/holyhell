@@ -14,9 +14,6 @@ import net.minecraft.world.level.block.Block;
 public class HolyHellTags {
     public static class Entities{
 
-        public static final TagKey<EntityType<?>> MAGIC_DEALING_MOBS =
-                createTag("magic_dealing_mobs");
-
         public static final TagKey<EntityType<?>> MINIBOSS =
                 createTag("miniboss");
 
@@ -55,8 +52,6 @@ public class HolyHellTags {
 
     public static class DamageTypes{
 
-        public static final TagKey<DamageType> MAGIC_DAMAGE =
-                createTag("magic_damage");
 
         public static final TagKey<DamageType> DIVINE_PROTECTION_IGNORE =
                 createTag("divine_protection_ignore");
