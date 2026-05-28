@@ -26,6 +26,8 @@ public class HolyHell {
         modEventBus.addListener(HolyHellMessages::register);
         NeoForge.EVENT_BUS.register(this);
 
+
+
         HolyHellActivities.register(modEventBus);
         HolyHellAttachments.register(modEventBus);
         HolyHellBlockEntities.register(modEventBus);

@@ -1,5 +1,6 @@
 package com.dead_comedian.holyhell.server.block;
 
+import com.dead_comedian.holyhell.Config;
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
@@ -129,8 +130,6 @@ public class CoffinBlock extends BaseEntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
-
-
             if (stack.is(Items.GOLD_BLOCK) && !state.getValue(ACTIVATED)) {
                 if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
                     level.setBlock(pos, state.setValue(CoffinBlock.ACTIVATED, true), 3);
@@ -153,30 +152,51 @@ public class CoffinBlock extends BaseEntityBlock {
 
 
             if (stack.isEmpty()) {
-                if (state.getValue(HALF) == DoubleBlockHalf.LOWER
-                        && state.getValue(ACTIVATED)
-                        && player.getData(HolyHellAttachments.HAS_COFFIN)
-                        && level.getBlockEntity(pos) instanceof CoffinBlockEntity coffinBlockEntity
-                        && coffinBlockEntity.getStoredUUID() != null) {
+
+                if (Config.ENABLE_COFFINS.get()) {
+
+                    if (state.getValue(HALF) == DoubleBlockHalf.LOWER
+                            && state.getValue(ACTIVATED)
+                            && player.getData(HolyHellAttachments.HAS_COFFIN)
+                            && level.getBlockEntity(pos) instanceof CoffinBlockEntity coffinBlockEntity
+                            && coffinBlockEntity.getStoredUUID() != null) {
 
 
-                    if (coffinBlockEntity.getStoredUUID().equals(player.getUUID())) {
+                        if (coffinBlockEntity.getStoredUUID().equals(player.getUUID())) {
+                            level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
+                            level.setBlock(pos, state.setValue(OPEN, true), 3);
+                        }
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide());
+
+
+                    }
+                } else {
+
+
+                    if (state.getValue(HALF) == DoubleBlockHalf.LOWER && state.getValue(ACTIVATED)) {
                         level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                        level.setBlock(pos, state.setValue(OPEN, true), 3);
+                        level.setBlock(pos, state.setValue(ACTIVATED, false ), 3);
+
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide());
+
+
+                    } else if (state.getValue(HALF) == DoubleBlockHalf.UPPER
+                            && player.getData(HolyHellAttachments.HAS_COFFIN)
+                            && getLowerBlockEntity(pos, state, level) instanceof CoffinBlockEntity coffinBlockEntity) {
+
+
+                        BlockPos poss = getLowerBlockEntity(pos, state, level).getBlockPos();
+
+                        if (coffinBlockEntity.getStoredUUID().equals(player.getUUID()) & player.getData(HolyHellAttachments.DIED)) {
+                            level.playSound((Player) null, poss, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
+                            level.setBlock(poss, state.setValue(ACTIVATED, false), 3);
+                        }
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide());
                     }
-                    return ItemInteractionResult.sidedSuccess(level.isClientSide());
 
-
-                } else if (state.getValue(HALF) == DoubleBlockHalf.LOWER
-                        && player.getData(HolyHellAttachments.HAS_COFFIN)
-                        && getLowerBlockEntity(pos, state, level) instanceof CoffinBlockEntity coffinBlockEntity) {
-
-
-                    if (coffinBlockEntity.getStoredUUID().equals(player.getUUID())) {
-                        System.out.println(player.getData(HolyHellAttachments.SAVED_INVENTORY));
-                    }
 
                 }
+
             }
         }
         return ItemInteractionResult.FAIL;

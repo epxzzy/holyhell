@@ -17,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -224,8 +225,10 @@ public class BoneChandelierBlock extends BaseEntityBlock implements EntityBlock,
             pLevel.playSound((Player) null, pPos, HolyHellSounds.STONE_CRACK.get(), SoundSource.BLOCKS, 0.8f, 1);
         }
         for (Entity entity : wiw) {
-            entity.hurt(pLevel.damageSources().fallingBlock(entity), 20);
-            HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
+            if (entity instanceof LivingEntity) {
+                HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
+                entity.hurt(pLevel.damageSources().fallingBlock(entity), 20);
+            }
         }
         for (int i = 0; i < 20; i++) {
 

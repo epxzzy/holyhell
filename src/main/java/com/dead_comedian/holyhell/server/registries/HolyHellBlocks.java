@@ -3,25 +3,21 @@ package com.dead_comedian.holyhell.server.registries;
 
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.block.*;
-
 import com.dead_comedian.holyhell.server.item.custom.block_item.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.PushReaction;
-import net.neoforged.bus.api.IEventBus;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 
 import java.util.function.Supplier;
 
@@ -45,9 +41,8 @@ public class HolyHellBlocks {
             () -> new DiviningTableBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN)
                     .instrument(NoteBlockInstrument.BASS)
-                    .strength(3F)
+                    .strength(55.0F, 1200.0F)
                     .noOcclusion()
-                    .requiresCorrectToolForDrops()
                     .sound(SoundType.WOOD)
                     .ignitedByLava().randomTicks()));
 

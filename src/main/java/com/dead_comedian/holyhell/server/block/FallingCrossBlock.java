@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -48,8 +49,10 @@ public class FallingCrossBlock extends BaseEntityBlock implements EntityBlock, F
             pLevel.playSound((Player) null, pPos, HolyHellSounds.STONE_CRACK.get(), SoundSource.BLOCKS, 0.8f, 1);
         }
         for (Entity entity : wiw) {
-            HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
-            entity.hurt(pLevel.damageSources().fallingBlock(entity), 20);
+            if (entity instanceof LivingEntity) {
+                HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
+                entity.hurt(pLevel.damageSources().fallingBlock(entity), 20);
+            }
         }
         for (int i = 0; i < 20; i++) {
 

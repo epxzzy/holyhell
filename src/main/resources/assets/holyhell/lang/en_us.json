@@ -111,7 +111,7 @@
   "effect.holyhell.angelic_vision": "Angelic Vision",
   "effect.holyhell.paranoia": "Paranoia",
 
-
+"sounds.holyhell.divine_prot": "Armor summons a miracle",
 
   "sounds.holyhell.clarity_music": "Metal Detector Jingle",
   "sounds.holyhell.cross_fall": "Cross Lands",
@@ -164,6 +164,7 @@
 
   "sounds.holyhell.coffin_lid": "Lid is moved",
 
+  "sounds.holyhell.flashbang": "Player gets flashbanged",
 
   "sounds.holyhell.bell_ring": "Bell Rings",
   "sounds.holyhell.cherub_flutter": "Cherub Or Kamikaze Flies",

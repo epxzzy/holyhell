@@ -87,7 +87,7 @@ public class KamikazeEntity extends Monster implements FlyingAnimal {
             flutterLoop = 24;
         }
         if (!isAlive()) {
-            this.explode(2d);
+            this.explode(0.75d);
             this.level().addParticle(HolyHellParticles.KAMIKAZE_EXPLOSION.get(), this.getX(), this.getY(), this.getZ(), 0.1, 0.1, 0.1);
             AngelEntity angelEntity = new AngelEntity(HolyHellEntities.ANGEL.get(), this.level());
             this.level().addFreshEntity(angelEntity);

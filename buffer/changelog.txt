@@ -1,0 +1,7 @@
+Version 1.9.1:
+    - Divining table does not drop anymore and takes a while to break
+    - Fixed crash where FallingSmashingBlock tries to hurt non LivingEntity entity on landing
+    - Fixed crash when using projectile to kill with Blood Sacrifice effect on
+    - Removed the ability to set max hp to 8 hearts when using the katar
+    - Added config enable coffin
+    -

@@ -46,26 +46,26 @@ public class LowerRingRenderLayer<T extends LivingEntity> extends RenderLayer<T,
     }
 
     @Override
-    public void render(PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l) {
+    public void render(PoseStack poseStack, MultiBufferSource vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l) {
 
         if (livingEntity.getData(HolyHellAttachments.RENDER_RINGS)) {
             VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
 
             for (int m = 0; m < 1; ++m) {
-                matrixStack.pushPose();
+                poseStack.pushPose();
                 float n = j * (float) (-(10 + m));
-                matrixStack.mulPose(Axis.YP.rotationDegrees(-n));
+                poseStack.mulPose(Axis.YP.rotationDegrees(-n));
 
-                this.bb_main1.render(matrixStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
+                this.bb_main1.render(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
 
-                matrixStack.popPose();
+                poseStack.popPose();
 
-                matrixStack.pushPose();
-                matrixStack.mulPose(Axis.YP.rotationDegrees(n));
+                poseStack.pushPose();
+                poseStack.mulPose(Axis.YP.rotationDegrees(n));
 
-                this.bb_main.render(matrixStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
+                this.bb_main.render(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
 
-                matrixStack.popPose();
+                poseStack.popPose();
 
             }
 
