@@ -4,4 +4,4 @@ Version 1.9.1:
     - Fixed crash when using projectile to kill with Blood Sacrifice effect on
     - Removed the ability to set max hp to 8 hearts when using the katar
     - Added config enable coffin
-    -
+    - Made structures rarer
