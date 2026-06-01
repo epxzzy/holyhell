@@ -22,9 +22,9 @@ public class HolyHellItemProperties {
 
 
         ItemProperties.register(HolyHellItems.BAB.get(), ResourceLocation.withDefaultNamespace("level"), (stack, level, livingEntity, i) -> {
-            if (stack.get(DataComponents.CUSTOM_DATA) != null) {
+            if (stack.get(HolyhellDataComps.BAB_DATA) != null) {
 
-                return stack.get(DataComponents.CUSTOM_DATA).copyTag().getInt("level");
+                return stack.get(HolyhellDataComps.BAB_DATA).copy().getInt("level");
             }
             return 0;
         });

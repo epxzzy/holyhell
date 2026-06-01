@@ -54,7 +54,7 @@ public class AngelModel<T extends AngelEntity> extends HierarchicalModel<T> {
         this.root().getAllParts().forEach(ModelPart::resetPose);
 
 
-        this.animateWalk(ModAnimations.FLY_WALK, limbSwing, limbSwingAmount, 2f, 2.5f);
+        this.animateWalk(ModAnimations.FLY_WALK, limbSwing, limbSwingAmount, 3f, 2.5f);
         this.animate(entity.idleAnimationState, ModAnimations.FLY_IDLE, ageInTicks, 1f);
     }
 

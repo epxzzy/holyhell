@@ -5,6 +5,7 @@ import com.dead_comedian.holyhell.server.registries.HolyHellEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
@@ -32,33 +33,27 @@ public class SacrificialKatarEvents {
 
     @SubscribeEvent
     public static void giveBuffsFromKatar(LivingDeathEvent event) {
+        if (!(event.getSource().getDirectEntity() instanceof LivingEntity entity1)) return;
 
         LivingEntity victimEntity = event.getEntity();
-        LivingEntity entity1 = (LivingEntity) event.getSource().getDirectEntity();
-        if (victimEntity instanceof LivingEntity && entity1 != null && victimEntity != entity1) {
-            if (entity1.hasEffect(HolyHellEffects.BLOODLUST)) {
-                entity1.setHealth((float) (entity1.getHealth() + victimEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * 0.3F));
+        if (victimEntity == entity1) return;
 
+        if (!entity1.hasEffect(HolyHellEffects.BLOODLUST)) return;
 
-                if (victimEntity instanceof RangedAttackMob) {
-                    entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 1));
-
-                }
-                if (victimEntity instanceof FlyingAnimal) {
-                    entity1.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 1));
-
-                }
-                if (victimEntity instanceof Monster) {
-                    entity1.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
-
-                }
-                if (victimEntity instanceof Animal) {
-                    entity1.addEffect(new MobEffectInstance(MobEffects.SATURATION, 200, 1));
-
-                }
-            }
+        AttributeInstance maxHealth = victimEntity.getAttribute(Attributes.MAX_HEALTH);
+        if (maxHealth != null) {
+            float heal = (float)(maxHealth.getBaseValue() * 0.3F);
+            entity1.setHealth(Math.min(entity1.getHealth() + heal, entity1.getMaxHealth()));
         }
 
+        if (victimEntity instanceof RangedAttackMob)
+            entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 1));
+        if (victimEntity instanceof FlyingAnimal)
+            entity1.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 1));
+        if (victimEntity instanceof Monster)
+            entity1.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
+        if (victimEntity instanceof Animal)
+            entity1.addEffect(new MobEffectInstance(MobEffects.SATURATION, 200, 1));
     }
 
     @SubscribeEvent

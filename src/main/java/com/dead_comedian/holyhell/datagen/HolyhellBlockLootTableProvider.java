@@ -31,13 +31,7 @@ public class HolyhellBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(HolyHellBlocks.CHANDELIER.get());
 
-        dropSelf(HolyHellBlocks.DIVINING_TABLE.get());
         dropSelf(HolyHellBlocks.FALLING_CROSS.get());
-
-        dropSelf(HolyHellBlocks.COBBLED_MARBLE.get());
-        dropSelf(HolyHellBlocks.COBBLED_MARBLE_SLAB.get());
-        dropSelf(HolyHellBlocks.COBBLED_MARBLE_STAIRS.get());
-        dropSelf(HolyHellBlocks.COBBLED_MARBLE_WALL.get());
 
         dropSelf(HolyHellBlocks.MARBLE.get());
         dropSelf(HolyHellBlocks.MARBLE_SLAB.get());
@@ -54,7 +48,7 @@ public class HolyhellBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(HolyHellBlocks.CRACKED_MARBLE_BRICK_STAIRS.get());
         dropSelf(HolyHellBlocks.CRACKED_MARBLE_BRICK_WALL.get());
 
-        dropSelf(HolyHellBlocks.MARBLE_COLLUMN.get());
+        dropSelf(HolyHellBlocks.MARBLE_column.get());
 
 
         dropSelf(HolyHellBlocks.CARVED_PUMPKIN_CROSS.get());
@@ -79,6 +73,8 @@ public class HolyhellBlockLootTableProvider extends BlockLootSubProvider {
 
                 .filter(block -> block != HolyHellBlocks.COFFIN.get())
                 .filter(block -> block != HolyHellBlocks.STONE_CROSS.get())
+
+                .filter(block -> block != HolyHellBlocks.DIVINING_TABLE.get())
 
 
                 .filter(block -> block != HolyHellBlocks.CANDLEHOLDER.get())

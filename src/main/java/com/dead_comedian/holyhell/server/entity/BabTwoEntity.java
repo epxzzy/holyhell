@@ -4,6 +4,7 @@ package com.dead_comedian.holyhell.server.entity;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellItems;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
+import com.dead_comedian.holyhell.server.registries.HolyhellDataComps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -70,18 +71,24 @@ public class BabTwoEntity extends TamableAnimal {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
 
+
+
             ItemStack stack = new ItemStack(HolyHellItems.BAB.get());
             CompoundTag tag = new CompoundTag();
 
             tag.putInt("level", 2);
-            if (this.getOwnerUUID() != null) {
-                tag.putUUID("owner", this.getOwnerUUID());
-            }
-            tag.putBoolean("tamed", this.isTame());
 
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+            CompoundTag entityData = new CompoundTag();
+
+            this.save(entityData);
+            entityData.remove("UUID");
+            tag.put("entity_data",entityData);
+
+
+            stack.set(HolyhellDataComps.BAB_DATA, tag);
 
             player.addItem(stack);
+
 
 
             this.discard();

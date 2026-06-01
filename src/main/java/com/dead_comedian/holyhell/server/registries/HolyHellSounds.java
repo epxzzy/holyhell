@@ -45,6 +45,7 @@ public class HolyHellSounds {
     public static final Supplier<SoundEvent> HERETIC_DEATH = registerSoundEvents("heretic_death");
     public static final Supplier<SoundEvent> HERETIC_HURT = registerSoundEvents("heretic_hurt");
     public static final Supplier<SoundEvent> HERETIC_IDLE = registerSoundEvents("heretic_idle");
+    public static final Supplier<SoundEvent> HERETIC_SLAM = registerSoundEvents("heretic_slam");
 
     public static final Supplier<SoundEvent> BAB_WALK = registerSoundEvents("bab_walk");
     public static final Supplier<SoundEvent> BAB_LEG_WALK = registerSoundEvents("bab_leg_walk");

@@ -19,13 +19,14 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class HereticEntity extends Monster {
 
 
     ///////////////
     // VARIABLES //
-    /// ////////////
+    ///////////////
 
 
     public final AnimationState attackAnimationState = new AnimationState();
@@ -34,8 +35,7 @@ public class HereticEntity extends Monster {
 
     //////////
     // MISC //
-
-    /// ///////
+    //////////
     @Override
     public boolean isInvulnerableTo(DamageSource pSource) {
         if (pSource.getEntity() instanceof KamikazeEntity) {
@@ -78,6 +78,7 @@ public class HereticEntity extends Monster {
                 .add(Attributes.MOVEMENT_SPEED, 0.4f)
                 .add(Attributes.ARMOR, 1.7f)
                 .add(Attributes.ATTACK_DAMAGE, 8)
+                .add(Attributes.ATTACK_KNOCKBACK, 6)
                 .add(Attributes.FOLLOW_RANGE, 15);
     }
 
@@ -90,8 +91,7 @@ public class HereticEntity extends Monster {
 
     ///////////////
     // ANIMATION //
-
-    /// ////////////
+    ///////////////
 
 
     private void setupAnimationStates() {
@@ -122,8 +122,7 @@ public class HereticEntity extends Monster {
 
     ////////
     // AI //
-
-    /// /////
+    ////////
 
 
     public static class AttackGoal extends MeleeAttackGoal {
@@ -158,7 +157,8 @@ public class HereticEntity extends Monster {
 
                     if (!pEnemy.isBlocking()) {
                         this.mob.playSound(HolyHellSounds.STUN.get(),1F,1F);
-                        pEnemy.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 255));
+                        pEnemy.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 255));
+                        pEnemy.addDeltaMovement(new Vec3(0,1,0));
                         if (pEnemy.level() instanceof ServerLevel world) {
                             world.sendParticles(HolyHellParticles.STUN.get(),
                                     pEnemy.getX(),
@@ -210,6 +210,7 @@ public class HereticEntity extends Monster {
             this.resetAttackCooldown();
             this.mob.swing(InteractionHand.MAIN_HAND);
             this.mob.doHurtTarget(pEnemy);
+            this.mob.playSound(HolyHellSounds.HERETIC_SLAM.get());
         }
 
         @Override

@@ -52,10 +52,6 @@ public class HolyHellCreativeTab {
                         pOutput.accept(HolyHellItems.CHERUB_SPAWN_EGG.get());
                         pOutput.accept(HolyHellItems.REVENANT_SPAWN_EGG.get());
 
-                        pOutput.accept(HolyHellBlocks.COBBLED_MARBLE.get());
-                        pOutput.accept(HolyHellBlocks.COBBLED_MARBLE_WALL.get());
-                        pOutput.accept(HolyHellBlocks.COBBLED_MARBLE_SLAB.get());
-                        pOutput.accept(HolyHellBlocks.COBBLED_MARBLE_STAIRS.get());
                         pOutput.accept(HolyHellBlocks.MARBLE.get());
                         pOutput.accept(HolyHellBlocks.MARBLE_WALL.get());
                         pOutput.accept(HolyHellBlocks.MARBLE_SLAB.get());
@@ -68,7 +64,7 @@ public class HolyHellCreativeTab {
                         pOutput.accept(HolyHellBlocks.CRACKED_MARBLE_BRICK_WALL.get());
                         pOutput.accept(HolyHellBlocks.CRACKED_MARBLE_BRICK_SLAB.get());
                         pOutput.accept(HolyHellBlocks.CRACKED_MARBLE_BRICK_STAIRS.get());
-                        pOutput.accept(HolyHellBlocks.MARBLE_COLLUMN.get());
+                        pOutput.accept(HolyHellBlocks.MARBLE_column.get());
 
                         pOutput.accept(HolyHellBlocks.ATLAS_STATUE.get());
                         pOutput.accept(HolyHellBlocks.BAPHOMET_STATUE.get());

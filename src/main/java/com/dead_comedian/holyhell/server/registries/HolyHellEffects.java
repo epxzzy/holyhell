@@ -17,28 +17,28 @@ public class HolyHellEffects {
 
 
     public static final DeferredHolder<MobEffect, AngelicVisionEffect> ANGELIC_VISION = MOB_EFFECTS.register("angelic_vision",
-            () -> new AngelicVisionEffect(MobEffectCategory.BENEFICIAL, 0x36ebab));
+            () -> new AngelicVisionEffect(MobEffectCategory.BENEFICIAL, 0xf5ed7f));
 
     public static final DeferredHolder<MobEffect, ParanoiaEffect> PARANOIA = MOB_EFFECTS.register("paranoia",
-            () -> new ParanoiaEffect(MobEffectCategory.NEUTRAL, 0x36ebab));
+            () -> new ParanoiaEffect(MobEffectCategory.NEUTRAL, 0xa13232));
 
 
 
     public static final DeferredHolder<MobEffect, DivineProtectionEffect> DIVINE_PROTECTION = MOB_EFFECTS.register("divine_protection",
-            () -> new DivineProtectionEffect(MobEffectCategory.BENEFICIAL, 0x36ebab));
+            () -> new DivineProtectionEffect(MobEffectCategory.BENEFICIAL, 0xcba920));
 
 
     public static final DeferredHolder<MobEffect, DivineProtectionCooldownEffect> DIVINE_PROTECTION_COOLDOWN = MOB_EFFECTS.register("divine_protection_cooldown",
-            () -> new DivineProtectionCooldownEffect(MobEffectCategory.NEUTRAL, 0x36ebab));
+            () -> new DivineProtectionCooldownEffect(MobEffectCategory.NEUTRAL, 0xcba920));
 
     public static final DeferredHolder<MobEffect, ConfusionEffect> CONFUSION = MOB_EFFECTS.register("confusion",
-            () -> new ConfusionEffect(MobEffectCategory.NEUTRAL, 0x36ebab));
+            () -> new ConfusionEffect(MobEffectCategory.NEUTRAL, 0xfef800));
 
     public static final DeferredHolder<MobEffect, BloodlustEffect> BLOODLUST = MOB_EFFECTS.register("bloodlust",
-            () -> new BloodlustEffect(MobEffectCategory.NEUTRAL, 0x36ebab));
+            () -> new BloodlustEffect(MobEffectCategory.NEUTRAL, 0x730e00));
 
     public static final DeferredHolder<MobEffect, JesistenceEffect> JESISTANCE = MOB_EFFECTS.register("jesistance",
-            () -> new JesistenceEffect(MobEffectCategory.BENEFICIAL, 0x36ebab));
+            () -> new JesistenceEffect(MobEffectCategory.BENEFICIAL, 0x6c8c7e));
 
 
     public static void register(IEventBus eventBus) {

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "holyhell:block/marble/column/marble_column_end",
+    "side": "holyhell:block/marble/column/marble_column_mid"
+  }
+}

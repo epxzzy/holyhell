@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -15,8 +16,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -31,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class AngelProjectileEntity extends ThrowableProjectile {
+public class AngelProjectileEntity extends Projectile {
 
     private boolean hasBounced = false;
 
@@ -41,7 +42,6 @@ public class AngelProjectileEntity extends ThrowableProjectile {
     @Nullable
     private UUID targetId;
 
-    // --- Homing tuning ---
     private float sineTime = 0f;
     private static final float SPEED = 0.2f;
     private static final float TURN_RATE = 0.15f;
@@ -97,6 +97,15 @@ public class AngelProjectileEntity extends ThrowableProjectile {
     }
 
     @Override
+    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+        super.recreateFromPacket(packet);
+        double d0 = packet.getXa();
+        double d1 = packet.getYa();
+        double d2 = packet.getZa();
+        this.setDeltaMovement(d0, d1, d2);
+    }
+
+    @Override
     public boolean canBeCollidedWith() {
         return true;
     }
@@ -131,11 +140,15 @@ public class AngelProjectileEntity extends ThrowableProjectile {
         if (!this.level().isClientSide) {
             this.playSound(SoundEvents.SHULKER_BULLET_HURT, 1.0F, 1.0F);
             ((ServerLevel) this.level()).sendParticles(ParticleTypes.CRIT, this.getX(), this.getY(), this.getZ(), 15, 0.2, 0.2, 0.2, 0.0);
-            this.discard();
-            this.level().gameEvent(GameEvent.ENTITY_DAMAGE, this.position(), GameEvent.Context.of(this));
+            this.destroy();
         }
 
         return true;
+    }
+
+    private void destroy() {
+        this.discard();
+        this.level().gameEvent(GameEvent.ENTITY_DAMAGE, this.position(), GameEvent.Context.of(this));
     }
 
     @Override

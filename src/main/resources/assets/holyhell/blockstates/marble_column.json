@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "down=false,up=false": {
+      "model": "holyhell:block/marble/column/marble_column"
+    },
+    "down=false,up=true": {
+      "model": "holyhell:block/marble/column/marble_column_bot"
+    },
+    "down=true,up=true": {
+      "model": "holyhell:block/marble/column/marble_column_mid"
+    },
+    "down=true,up=false": {
+      "model": "holyhell:block/marble/column/marble_column_top"
+    }
+  }
+}

@@ -226,7 +226,6 @@ public class BoneChandelierBlock extends BaseEntityBlock implements EntityBlock,
         }
         for (Entity entity : wiw) {
             if (entity instanceof LivingEntity) {
-                HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
                 entity.hurt(pLevel.damageSources().fallingBlock(entity), 20);
             }
         }

@@ -35,7 +35,7 @@
   "block.holyhell.tall_candleholder": "Tall Candle Holder",
   "block.holyhell.chandelier": "Chandelier",
   "block.holyhell.stone_cross": "Stone Cross",
-  "block.holyhell.falling_cross": "Falling  Cross",
+  "block.holyhell.falling_cross": "Falling Cross",
 
   "block.holyhell.bone_pile": "Bone Pile",
   "block.holyhell.skull_pile": "Skull Pile",
@@ -49,12 +49,6 @@
 
   "block.holyhell.bone_chandelier": "Bone Chandelier",
 
-
-
-  "block.holyhell.cobbled_marble": "Cobbled Marble",
-  "block.holyhell.cobbled_marble_wall": "Cobbled Marble Wall",
-  "block.holyhell.cobbled_marble_slab": "Cobbled Marble Slab",
-  "block.holyhell.cobbled_marble_stairs": "Cobbled Marble Stairs",
 
 
   "block.holyhell.marble": "Marble",
@@ -81,7 +75,7 @@
   "block.holyhell.v1_statue": "V1 Statue",
 
 
-  "block.holyhell.marble_collumn": "Marble Collumn",
+  "block.holyhell.marble_column": "Marble Column",
 
 
 
@@ -140,6 +134,7 @@
   "sounds.holyhell.heretic_death": "Heretic Dies",
   "sounds.holyhell.heretic_hurt": "Heretic Hurts",
   "sounds.holyhell.heretic_idle": "Heretic Growls",
+  "sounds.holyhell.heretic_slam": "Heretic Slams Ground",
 
   "sounds.holyhell.bab_walk": "Bab Slithers",
   "sounds.holyhell.bab_leg_walk": "Bab Walks",
@@ -178,7 +173,7 @@
   "advancements.holyhell.blinding_bomb": "Obtain Blinding Bomb",
   "advancements.holyhell.falling_cross": "Get killed by a Falling Cross",
   "advancements.holyhell.find_church.description": "Enter a church",
-  "advancements.holyhell.find_church.title": "Grace Be Upon you",
+  "advancements.holyhell.find_church.title": "Grace Be Upon You",
   "advancements.holyhell.divine_retribution.title": "Divine Retribution",
   "advancements.holyhell.divine_retribution.description": "Hit a Cherub",
   "advancements.holyhell.evangelist_armor.title": "Garments of God",

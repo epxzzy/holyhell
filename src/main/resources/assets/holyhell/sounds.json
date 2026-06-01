@@ -171,7 +171,12 @@
     "sounds": [
       "holyhell:heretic/heretic_attack"
     ]
-  },
+  },  "heretic_slam": {
+  "subtitle": "sounds.holyhell.heretic_slam",
+  "sounds": [
+    "holyhell:heretic/heretic_slam"
+  ]
+},
   "heretic_death": {
     "subtitle": "sounds.holyhell.heretic_death",
     "sounds": [

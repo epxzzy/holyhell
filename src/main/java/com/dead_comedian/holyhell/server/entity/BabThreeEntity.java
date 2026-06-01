@@ -4,8 +4,8 @@ package com.dead_comedian.holyhell.server.entity;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellItems;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
+import com.dead_comedian.holyhell.server.registries.HolyhellDataComps;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,15 +15,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -32,7 +24,6 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,7 +35,7 @@ public class BabThreeEntity extends TamableAnimal {
 
     ///////////////
     // VARIABLES //
-    ///////////////
+    /// ////////////
 
     private static final Ingredient TEMPT_ITEMS = Ingredient.of(HolyHellItems.HOLY_TEAR.get());
     public final AnimationState Lvl3IdleAnimationState = new AnimationState();
@@ -54,7 +45,8 @@ public class BabThreeEntity extends TamableAnimal {
 
     ///////
     //NBT//
-    ///////
+
+    /// ////
     @Override
     public boolean isFood(ItemStack itemStack) {
         return false;
@@ -62,7 +54,8 @@ public class BabThreeEntity extends TamableAnimal {
 
     //////////
     // MISC //
-    //////////
+
+    /// ///////
 
     public BabThreeEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -104,7 +97,7 @@ public class BabThreeEntity extends TamableAnimal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(3,  new TemptGoal(this, 1.4D, TEMPT_ITEMS, false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.4D, TEMPT_ITEMS, false));
 
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
@@ -130,18 +123,23 @@ public class BabThreeEntity extends TamableAnimal {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
 
+
             ItemStack stack = new ItemStack(HolyHellItems.BAB.get());
             CompoundTag tag = new CompoundTag();
 
             tag.putInt("level", 3);
-            if (this.getOwnerUUID() != null) {
-                tag.putUUID("owner", this.getOwnerUUID());
-            }
-            tag.putBoolean("tamed", this.isTame());
 
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+            CompoundTag entityData = new CompoundTag();
+
+            this.save(entityData);
+            entityData.remove("UUID");
+            tag.put("entity_data", entityData);
+
+
+            stack.set(HolyhellDataComps.BAB_DATA, tag);
 
             player.addItem(stack);
+
 
 
             this.discard();
@@ -162,7 +160,8 @@ public class BabThreeEntity extends TamableAnimal {
 
     ///////////////
     // ANIMATION //
-    ///////////////
+
+    /// ////////////
 
 
     private void setupAnimationStates() {
@@ -197,7 +196,8 @@ public class BabThreeEntity extends TamableAnimal {
 
     ////////
     // AI //
-    ////////
+
+    /// /////
 
 
     public class BabThreeAttackGoal extends MeleeAttackGoal {
@@ -305,7 +305,7 @@ public class BabThreeEntity extends TamableAnimal {
             holySpiritEntity.setTarget(this.getTarget());
             holySpiritEntity.addDeltaMovement(this.getLookAngle());
             holySpiritEntity.moveTo(blockPos, holySpiritEntity.getYRot(), holySpiritEntity.getXRot());
-            this.playSound(HolyHellSounds.BAB_3_ATTACK.get(),1F,1F);
+            this.playSound(HolyHellSounds.BAB_3_ATTACK.get(), 1F, 1F);
         }
         setAggressive(true);
         return bl;
@@ -313,7 +313,8 @@ public class BabThreeEntity extends TamableAnimal {
 
     /////////
     //SOUND//
-    /////////
+
+    /// //////
 
     protected SoundEvent getStepSound() {
         return HolyHellSounds.BAB_LEG_WALK.get();
@@ -342,7 +343,8 @@ public class BabThreeEntity extends TamableAnimal {
 
     ///////////////
     // COLLISION //
-    ///////////////
+
+    /// ////////////
 
     public static boolean canCollide(Entity entity, Entity other) {
         return other instanceof BabThreeEntity;

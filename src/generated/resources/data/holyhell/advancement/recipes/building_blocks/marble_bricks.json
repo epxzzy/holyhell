@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cobbled_marble": {
+    "has_marble": {
       "conditions": {
         "items": [
           {
-            "items": "holyhell:cobbled_marble"
+            "items": "holyhell:marble"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_cobbled_marble"
+      "has_marble"
     ]
   ],
   "rewards": {

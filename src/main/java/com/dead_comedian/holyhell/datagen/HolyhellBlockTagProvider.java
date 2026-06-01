@@ -34,14 +34,9 @@ public class HolyhellBlockTagProvider extends BlockTagsProvider {
 
                 .add(HolyHellBlocks.CHANDELIER.get())
 
-                .add(HolyHellBlocks.DIVINING_TABLE.get())
                 .add(HolyHellBlocks.STONE_CROSS.get())
                 .add(HolyHellBlocks.FALLING_CROSS.get())
 
-                .add(HolyHellBlocks.COBBLED_MARBLE.get())
-                .add(HolyHellBlocks.COBBLED_MARBLE_SLAB.get())
-                .add(HolyHellBlocks.COBBLED_MARBLE_STAIRS.get())
-                .add(HolyHellBlocks.COBBLED_MARBLE_WALL.get())
 
                 .add(HolyHellBlocks.MARBLE.get())
                 .add(HolyHellBlocks.MARBLE_SLAB.get())
@@ -58,7 +53,7 @@ public class HolyhellBlockTagProvider extends BlockTagsProvider {
                 .add(HolyHellBlocks.CRACKED_MARBLE_BRICK_STAIRS.get())
                 .add(HolyHellBlocks.CRACKED_MARBLE_BRICK_WALL.get())
 
-                .add(HolyHellBlocks.MARBLE_COLLUMN.get())
+                .add(HolyHellBlocks.MARBLE_column.get())
 
                 .add(HolyHellBlocks.ATLAS_STATUE.get())
                 .add(HolyHellBlocks.BAPHOMET_STATUE.get())
@@ -69,10 +64,7 @@ public class HolyhellBlockTagProvider extends BlockTagsProvider {
 
 
         tag(HolyHellTags.Blocks.MARBLE)
-                .add(HolyHellBlocks.COBBLED_MARBLE.get())
-                .add(HolyHellBlocks.COBBLED_MARBLE_SLAB.get())
-                .add(HolyHellBlocks.COBBLED_MARBLE_STAIRS.get())
-                .add(HolyHellBlocks.COBBLED_MARBLE_WALL.get())
+
 
                 .add(HolyHellBlocks.MARBLE.get())
                 .add(HolyHellBlocks.MARBLE_SLAB.get())
@@ -89,7 +81,7 @@ public class HolyhellBlockTagProvider extends BlockTagsProvider {
                 .add(HolyHellBlocks.CRACKED_MARBLE_BRICK_STAIRS.get())
                 .add(HolyHellBlocks.CRACKED_MARBLE_BRICK_WALL.get())
 
-                .add(HolyHellBlocks.MARBLE_COLLUMN.get())
+                .add(HolyHellBlocks.MARBLE_column.get())
 
                 .add(HolyHellBlocks.ATLAS_STATUE.get())
                 .add(HolyHellBlocks.BAPHOMET_STATUE.get())

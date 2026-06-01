@@ -5,3 +5,21 @@ Version 1.9.1:
     - Removed the ability to set max hp to 8 hearts when using the katar
     - Added config enable coffin
     - Made structures rarer
+
+Version 1.9.2:
+    - Removed Cobbled Marble
+    - Retextured Marble
+    - Removed ability for Bab Items to drop the entity instead of the item
+    - Fixed crash where game attempts to award "CEASAAAR" achievement to non ServerPlayer Entities
+    - Changed rarity and size of marble patches
+    - Made churches slightly more common
+    - Actually made Divining Table unobtainable
+    - Bab items store data properly now
+    - Slight retexture decorational blocks
+    - Changed effect particle colors
+    - Reduced strength of marble
+    - Fixed shears making sound on every block right-clicked
+    - Fixed a bunch of typos
+    - Stonecutter marble slab recipes give you 2 slabs now
+    - Stonecutter marble bricks and cracked bricks recipes
+    - Angel has been transferred to Brain Ai

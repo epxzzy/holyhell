@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "holyhell:cobbled_marble_slab"
+      "item": "holyhell:marble_slab"
     }
   },
   "pattern": [
@@ -12,6 +12,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "holyhell:marble_collumn"
+    "id": "holyhell:marble_column"
   }
 }

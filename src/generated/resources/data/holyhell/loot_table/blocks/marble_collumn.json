@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "holyhell:marble_collumn"
+          "name": "holyhell:marble_column"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "holyhell:blocks/marble_collumn"
+  "random_sequence": "holyhell:blocks/marble_column"
 }

@@ -1,12 +1,8 @@
 package com.dead_comedian.holyhell.server.entity;
 
 
-import com.dead_comedian.holyhell.server.registries.HolyHellCriteriaTriggers;
-import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
-import com.dead_comedian.holyhell.server.registries.HolyHellItems;
-import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
+import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,20 +13,13 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -93,7 +82,7 @@ public class BabOneEntity extends TamableAnimal {
         for (Entity i : entityBelow) {
             if (i instanceof BabOneEntity) {
                 if (this.isTame() && (this.getOwner() == ((BabOneEntity) i).getOwner() || !((BabOneEntity) i).isTame())) {
-                    if (this.canCollideWith(i) && this.getOwner()!=null) {
+                    if (this.canCollideWith(i) && this.getOwner() != null) {
 
                         if (this.getOwner() instanceof ServerPlayer) {
                             HolyHellCriteriaTriggers.BAB_MERGE.get().trigger(((ServerPlayer) (Object) this.getOwner()));
@@ -140,16 +129,20 @@ public class BabOneEntity extends TamableAnimal {
 
         if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
 
+
             ItemStack stack = new ItemStack(HolyHellItems.BAB.get());
             CompoundTag tag = new CompoundTag();
 
             tag.putInt("level", 1);
-            if (this.getOwnerUUID() != null) {
-                tag.putUUID("owner", this.getOwnerUUID());
-            }
-            tag.putBoolean("tamed", this.isTame());
 
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+            CompoundTag entityData = new CompoundTag();
+
+            this.save(entityData);
+            entityData.remove("UUID");
+            tag.put("entity_data",entityData);
+
+
+            stack.set(HolyhellDataComps.BAB_DATA, tag);
 
             player.addItem(stack);
 

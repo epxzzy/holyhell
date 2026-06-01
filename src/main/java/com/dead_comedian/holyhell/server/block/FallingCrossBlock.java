@@ -50,7 +50,9 @@ public class FallingCrossBlock extends BaseEntityBlock implements EntityBlock, F
         }
         for (Entity entity : wiw) {
             if (entity instanceof LivingEntity) {
-                HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
+                if (entity instanceof ServerPlayer) {
+                    HolyHellCriteriaTriggers.KILLED_BY_CROSS.get().trigger(((ServerPlayer) (Object) entity));
+                }
                 entity.hurt(pLevel.damageSources().fallingBlock(entity), 20);
             }
         }

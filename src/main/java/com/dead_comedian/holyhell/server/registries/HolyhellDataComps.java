@@ -4,6 +4,7 @@ import com.dead_comedian.holyhell.HolyHell;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -22,6 +23,13 @@ public class HolyhellDataComps {
                             .networkSynchronized(ByteBufCodecs.INT)
                             .build());
 
+
+    public static final Supplier<DataComponentType<CompoundTag>> BAB_DATA =
+            DATA_COMPONENTS.register("bab_data",
+                    () -> DataComponentType.<CompoundTag>builder()
+                            .persistent(CompoundTag.CODEC)
+                            .networkSynchronized(ByteBufCodecs.COMPOUND_TAG)
+                            .build());
 
 
     public static void register(IEventBus eventBus) {

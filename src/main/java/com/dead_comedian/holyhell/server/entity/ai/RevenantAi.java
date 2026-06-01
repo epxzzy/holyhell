@@ -1,7 +1,7 @@
 package com.dead_comedian.holyhell.server.entity.ai;
 
 import com.dead_comedian.holyhell.server.entity.RevenantEntity;
-import com.dead_comedian.holyhell.server.entity.ai.task.*;
+import com.dead_comedian.holyhell.server.entity.ai.task.revenant.*;
 import com.dead_comedian.holyhell.server.registries.HolyHellActivities;
 import com.dead_comedian.holyhell.server.registries.HolyHellMemoryModules;
 import com.dead_comedian.holyhell.server.registries.HolyHellSensorTypes;
@@ -45,7 +45,7 @@ public class RevenantAi {
     public static final ImmutableList<SensorType<? extends Sensor<? super RevenantEntity>>> SENSORS = ImmutableList.of(
             SensorType.NEAREST_LIVING_ENTITIES,
             SensorType.HURT_BY,
-            HolyHellSensorTypes.ATTACKABLE_ENTITY.get(),
+            HolyHellSensorTypes.REVENANT_ATTACKABLE_ENTITY.get(),
             HolyHellSensorTypes.NEARBY_WEAPON.get(),
             HolyHellSensorTypes.IS_AWAKE_SENSOR.get()
 
@@ -114,10 +114,10 @@ public class RevenantAi {
                         Pair.of(1, new MoveToTargetSink()),
                         Pair.of(1, new RevenantPrepareTarget()),
                         Pair.of(2, new Ritual()),
-                        Pair.of(2,new PickUpWeapon()),
-                        Pair.of(2,new PlaceWeapon()),
-                        Pair.of(3,new UnarmedAttack()),
-                        Pair.of(3,new ArmedAttack()),
+                        Pair.of(2, new PickUpWeapon()),
+                        Pair.of(2, new PlaceWeapon()),
+                        Pair.of(3, new UnarmedAttack()),
+                        Pair.of(3, new ArmedAttack()),
                         Pair.of(4, new DealDashDamage())
 
                 ),

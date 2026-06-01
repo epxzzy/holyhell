@@ -1,7 +1,7 @@
 {
   "statue_pairs": [
     {
-      "top": "holyhell:cobbled_marble",
+      "top": "holyhell:marble_wall",
       "statue": "holyhell:atlas_statue"
     },
     {
@@ -17,7 +17,7 @@
       "statue": "holyhell:doomslayer_statue"
     },
     {
-      "top": "holyhell:cobbled_marble_stairs",
+      "top": "holyhell:marble_stairs",
       "statue": "holyhell:kratos_statue"
     },
     {
