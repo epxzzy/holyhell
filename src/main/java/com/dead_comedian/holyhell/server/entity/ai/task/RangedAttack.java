@@ -14,8 +14,9 @@ public class RangedAttack extends Behavior<LivingEntity> {
 
     public int cooldown;
     public int attackCooldownStored;
+    public int distanceToTarget;
 
-    public RangedAttack(int attackCooldown) {
+    public RangedAttack(int attackCooldown, int distanceToTarget) {
         super(ImmutableMap.of(
                 MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED,
                 MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED,
@@ -24,6 +25,7 @@ public class RangedAttack extends Behavior<LivingEntity> {
 
         this.cooldown = attackCooldown;
         this.attackCooldownStored = attackCooldown;
+        this.distanceToTarget = distanceToTarget;
     }
 
     @Override
@@ -33,14 +35,14 @@ public class RangedAttack extends Behavior<LivingEntity> {
         if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
             LivingEntity target = owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
 
-            if (owner.distanceTo(target) <= 5) {
+            if (owner.distanceTo(target) <= distanceToTarget) {
                 if (owner instanceof RangedAttackMob && cooldown <= 0) {
                     ((RangedAttackMob) owner).performRangedAttack(target, 2);
                     cooldown = attackCooldownStored;
                 }
 
             } else {
-                BehaviorUtils.setWalkAndLookTargetMemories(owner, target, 1.5f, 4);
+                BehaviorUtils.setWalkAndLookTargetMemories(owner, target, 1.5f, distanceToTarget-1);
             }
         }
 
