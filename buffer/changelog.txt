@@ -23,3 +23,4 @@ Version 1.9.2:
     - Stonecutter marble slab recipes give you 2 slabs now
     - Stonecutter marble bricks and cracked bricks recipes
     - Angel has been transferred to Brain Ai
+    - Kamikaze has been transferred to Brain Ai
