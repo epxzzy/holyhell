@@ -47,7 +47,7 @@ public class HolyhellClientRegistries {
     public static ShaderInstance ANGEL_RING_SHADER;
 
     @SubscribeEvent
-    public static void registerKey(EntityRenderersEvent.AddLayers event) {
+    public static void registerLayers(EntityRenderersEvent.AddLayers event) {
         for (PlayerSkin.Model skin : event.getSkins()) {
             PlayerRenderer renderer = event.getSkin(skin);
 
@@ -69,7 +69,7 @@ public class HolyhellClientRegistries {
     }
 
     @SubscribeEvent
-    public static void registerKey(RegisterKeyMappingsEvent event) {
+    public static void registerLayers(RegisterKeyMappingsEvent event) {
         event.register(HolyHellKeyBinds.VISION_ABILITY_KEY);
     }
 

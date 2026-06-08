@@ -128,6 +128,7 @@ public class HolyHellEventBusEvents {
 
         // TO-DO:  change music system
 
+        player.setData(HolyHellAttachments.RENDER_RINGS, player.hasEffect(HolyHellEffects.JESISTANCE));
 
         if (level.dimension() == HolyHellDimensions.ANGEL) {
 

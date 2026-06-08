@@ -16,11 +16,7 @@ public class JesistenceEffect extends MobEffect {
         super(statusEffectCategory, color);
     }
 
-    @Override
-    public void onMobRemoved(LivingEntity livingEntity, int amplifier, Entity.RemovalReason reason) {
-        livingEntity.setData(HolyHellAttachments.RENDER_RINGS, false);
-        super.onMobRemoved(livingEntity, amplifier, reason);
-    }
+
 
     @Override
     public void onEffectAdded(LivingEntity livingEntity, int amplifier) {

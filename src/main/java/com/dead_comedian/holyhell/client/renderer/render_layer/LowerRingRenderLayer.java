@@ -47,10 +47,8 @@ public class LowerRingRenderLayer<T extends LivingEntity> extends RenderLayer<T,
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l) {
-
         if (livingEntity.getData(HolyHellAttachments.RENDER_RINGS)) {
             VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
-
             for (int m = 0; m < 1; ++m) {
                 poseStack.pushPose();
                 float n = j * (float) (-(10 + m));
@@ -64,11 +62,8 @@ public class LowerRingRenderLayer<T extends LivingEntity> extends RenderLayer<T,
                 poseStack.mulPose(Axis.YP.rotationDegrees(n));
 
                 this.bb_main.render(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
-
                 poseStack.popPose();
-
             }
-
         }
     }
 }
