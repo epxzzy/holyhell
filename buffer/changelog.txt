@@ -28,3 +28,4 @@ Version 1.9.2:
     - Cherub Retexture
     - Recipe datagen
     - Holy Gold item used to now craft some decorative blocks
+    - Ring Renderer now stops properly
