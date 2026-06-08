@@ -1,12 +1,12 @@
 package com.dead_comedian.holyhell.server.entity;
 
 
+import com.dead_comedian.holyhell.server.entity.ai.BabBreedingGoal;
 import com.dead_comedian.holyhell.server.registries.HolyHellEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellItems;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyhellDataComps;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -16,13 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -30,13 +24,10 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class BabTwoEntity extends TamableAnimal {
 
@@ -69,30 +60,30 @@ public class BabTwoEntity extends TamableAnimal {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
+        if (player == this.getOwner()) {
+            if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
 
 
+                ItemStack stack = new ItemStack(HolyHellItems.BAB.get());
+                CompoundTag tag = new CompoundTag();
 
-            ItemStack stack = new ItemStack(HolyHellItems.BAB.get());
-            CompoundTag tag = new CompoundTag();
+                tag.putInt("level", 2);
 
-            tag.putInt("level", 2);
+                CompoundTag entityData = new CompoundTag();
 
-            CompoundTag entityData = new CompoundTag();
-
-            this.save(entityData);
-            entityData.remove("UUID");
-            tag.put("entity_data",entityData);
-
-
-            stack.set(HolyhellDataComps.BAB_DATA, tag);
-
-            player.addItem(stack);
+                this.save(entityData);
+                entityData.remove("UUID");
+                tag.put("entity_data", entityData);
 
 
+                stack.set(HolyhellDataComps.BAB_DATA, tag);
 
-            this.discard();
+                player.addItem(stack);
 
+
+                this.discard();
+
+            }
         }
 
         ItemStack stack = player.getItemInHand(hand);
@@ -131,26 +122,26 @@ public class BabTwoEntity extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
-
-        List<Entity> entityBelow = this.level().getEntities(this, this.getBoundingBox().inflate(0.1, 0.1, 0.1));
-        for (Entity i : entityBelow) {
-            if (i instanceof BabTwoEntity) {
-                if (this.isTame() && (this.getOwner() == ((BabTwoEntity) i).getOwner() || !((BabTwoEntity) i).isTame())) {
-                    if (this.canCollideWith(i) && this.getOwner()!=null) {
-
-                        BlockPos blockPos = this.blockPosition();
-                        BabThreeEntity babThreeEntity = new BabThreeEntity(HolyHellEntities.BAB_THREE.get(), this.level());
-                        this.level().addFreshEntity(babThreeEntity);
-                        babThreeEntity.setTame(true, false);
-                        babThreeEntity.tame((Player) this.getOwner());
-                        babThreeEntity.moveTo(blockPos, babThreeEntity.getYRot(), babThreeEntity.getXRot());
-                        this.discard();
-                        i.discard();
-                    }
-                }
-            }
-        }
-        entityBelow.removeAll(entityBelow);
+//
+//        List<Entity> entityBelow = this.level().getEntities(this, this.getBoundingBox().inflate(0.1, 0.1, 0.1));
+//        for (Entity i : entityBelow) {
+//            if (i instanceof BabTwoEntity babTwo) {
+//                if (this.getOwner() != null && (this.getOwner() != babTwo.getOwner() || !babTwo.isTame())) {
+//                    if (this.getBoundingBox().intersects(babTwo.getBoundingBox())) {
+//
+//                        BlockPos blockPos = this.blockPosition();
+//                        BabThreeEntity babThreeEntity = new BabThreeEntity(HolyHellEntities.BAB_THREE.get(), this.level());
+//                        this.level().addFreshEntity(babThreeEntity);
+//                        babThreeEntity.setTame(true, false);
+//                        babThreeEntity.tame((Player) this.getOwner());
+//                        babThreeEntity.moveTo(blockPos, babThreeEntity.getYRot(), babThreeEntity.getXRot());
+//                        this.discard();
+//                        babTwo.discard();
+//                    }
+//                }
+//            }
+//        }
+//        entityBelow.removeAll(entityBelow);
         if (this.level().isClientSide()) {
             setupAnimationStates();
         }
@@ -159,7 +150,7 @@ public class BabTwoEntity extends TamableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.4D, TEMPT_ITEMS, false));
-
+        this.goalSelector.addGoal(1, new BabBreedingGoal(this, HolyHellEntities.BAB_THREE.get(), 1.3, BabTwoEntity.class));
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
@@ -173,10 +164,10 @@ public class BabTwoEntity extends TamableAnimal {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 15)
+                .add(Attributes.MAX_HEALTH, 13)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .add(Attributes.ARMOR, 0.8f)
-                .add(Attributes.ATTACK_DAMAGE, 12.0)
+                .add(Attributes.ATTACK_DAMAGE, 8.0)
                 .add(Attributes.FOLLOW_RANGE, 10);
     }
 
@@ -249,24 +240,6 @@ public class BabTwoEntity extends TamableAnimal {
         this.entityData.set(TAMED, tame);
     }
 
-
-    ///////////////
-    // COLLISION //
-
-    /// ////////////
-
-    public static boolean canCollide(Entity entity, Entity other) {
-        return other instanceof BabTwoEntity;
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return true;
-    }
-
-    public boolean canCollideWith(Entity other) {
-        return canCollide(this, other);
-    }
     /////////
     //SOUND//
 
@@ -301,7 +274,7 @@ public class BabTwoEntity extends TamableAnimal {
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return false;
+        return itemStack.is(HolyHellItems.HOLY_TEAR.get());
     }
 }
 

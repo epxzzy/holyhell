@@ -21,6 +21,7 @@ public class HolyHellCreativeTab {
                     .displayItems((pParameters, pOutput) -> {
                             pOutput.accept(HolyHellItems.SAINT_EYE.get());
                         pOutput.accept(HolyHellItems.HOLY_TEAR.get());
+                        pOutput.accept(HolyHellItems.HOLY_GOLD.get());
                         pOutput.accept(HolyHellItems.BAPTIZED_PLATE.get());
                         pOutput.accept(HolyHellItems.ENHANCED_SILK.get());
 

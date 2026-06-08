@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:coarse_dirt"
+    },
+    "X": {
+      "item": "holyhell:holy_tear"
+    },
+    "Y": {
+      "item": "holyhell:saint_eye"
+    }
+  },
+  "pattern": [
+    "X#X",
+    "#Y#",
+    "X#X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "holyhell:globular_dome"
+  }
+}

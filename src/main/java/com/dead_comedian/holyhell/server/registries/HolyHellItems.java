@@ -60,6 +60,8 @@ public class HolyHellItems {
             Item(new Item.Properties()));
     public static final Supplier<Item> BAPTIZED_PLATE = ITEMS.register("baptized_plate", () -> new
             Item(new Item.Properties()));
+    public static final Supplier<Item> HOLY_GOLD = ITEMS.register("holy_gold", () -> new
+            Item(new Item.Properties()));
     public static final Supplier<Item> ENHANCED_SILK = ITEMS.register("enhanced_silk", () -> new
             Item(new Item.Properties()));
     public static final Supplier<Item> KEBAB = ITEMS.register("kebab", () -> new

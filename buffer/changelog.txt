@@ -24,3 +24,7 @@ Version 1.9.2:
     - Stonecutter marble bricks and cracked bricks recipes
     - Angel has been transferred to Brain Ai
     - Kamikaze has been transferred to Brain Ai
+    - Babs can now merge if two tamed Babs are fed Holy Tears
+    - Cherub Retexture
+    - Recipe datagen
+    - Holy Gold item used to now craft some decorative blocks

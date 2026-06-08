@@ -1,6 +1,7 @@
 package com.dead_comedian.holyhell.server.entity;
 
 
+import com.dead_comedian.holyhell.server.entity.ai.BabBreedingGoal;
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -78,29 +79,7 @@ public class BabOneEntity extends TamableAnimal {
     public void tick() {
         super.tick();
 
-        List<Entity> entityBelow = this.level().getEntities(this, this.getBoundingBox().inflate(0.1, 0.1, 0.1));
-        for (Entity i : entityBelow) {
-            if (i instanceof BabOneEntity) {
-                if (this.isTame() && (this.getOwner() == ((BabOneEntity) i).getOwner() || !((BabOneEntity) i).isTame())) {
-                    if (this.canCollideWith(i) && this.getOwner() != null) {
 
-                        if (this.getOwner() instanceof ServerPlayer) {
-                            HolyHellCriteriaTriggers.BAB_MERGE.get().trigger(((ServerPlayer) (Object) this.getOwner()));
-                        }
-
-                        BlockPos blockPos = this.blockPosition();
-                        BabTwoEntity babTwoEntity = new BabTwoEntity(HolyHellEntities.BAB_TWO.get(), this.level());
-                        this.level().addFreshEntity(babTwoEntity);
-                        babTwoEntity.setTame(true, false);
-                        babTwoEntity.tame((Player) this.getOwner());
-                        babTwoEntity.moveTo(blockPos, babTwoEntity.getYRot(), babTwoEntity.getXRot());
-                        this.discard();
-                        i.discard();
-                    }
-                }
-            }
-        }
-        entityBelow.removeAll(entityBelow);
         if (this.level().isClientSide()) {
             setupAnimationStates();
         }
@@ -109,8 +88,8 @@ public class BabOneEntity extends TamableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.4D, TEMPT_ITEMS, false));
-
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new BabBreedingGoal(this, HolyHellEntities.BAB_TWO.get(), 1.3, BabOneEntity.class));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1D));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 4f));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -126,30 +105,32 @@ public class BabOneEntity extends TamableAnimal {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
 
         ItemStack itemStack = player.getItemInHand(hand);
-
-        if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
-
-
-            ItemStack stack = new ItemStack(HolyHellItems.BAB.get());
-            CompoundTag tag = new CompoundTag();
-
-            tag.putInt("level", 1);
-
-            CompoundTag entityData = new CompoundTag();
-
-            this.save(entityData);
-            entityData.remove("UUID");
-            tag.put("entity_data",entityData);
+        if (player == this.getOwner()) {
+            if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
 
 
-            stack.set(HolyhellDataComps.BAB_DATA, tag);
+                ItemStack stack = new ItemStack(HolyHellItems.BAB.get());
+                CompoundTag tag = new CompoundTag();
 
-            player.addItem(stack);
+                tag.putInt("level", 1);
+
+                CompoundTag entityData = new CompoundTag();
+
+                this.save(entityData);
+                entityData.remove("UUID");
+                tag.put("entity_data", entityData);
 
 
-            this.discard();
+                stack.set(HolyhellDataComps.BAB_DATA, tag);
 
+                player.addItem(stack);
+
+
+                this.discard();
+
+            }
         }
+
 
         if (itemStack.is(Items.STICK) && !this.isTame()) {
             this.discard();
@@ -265,6 +246,6 @@ public class BabOneEntity extends TamableAnimal {
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return false;
+        return itemStack.is(HolyHellItems.HOLY_TEAR.get());
     }
 }

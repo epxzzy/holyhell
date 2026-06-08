@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "minecraft:candle"
+    },
+    "X": {
+      "item": "holyhell:holy_gold"
+    }
+  },
+  "pattern": [
+    "#",
+    "X",
+    "X"
+  ],
+  "result": {
+    "count": 4,
+    "id": "holyhell:tall_candelabra"
+  }
+}

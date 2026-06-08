@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "building",
   "key": {
-    "B": {
-      "item": "holyhell:baptized_plate"
+    "#": {
+      "item": "minecraft:candle"
     },
     "X": {
-      "item": "minecraft:candle"
+      "item": "holyhell:holy_gold"
     }
   },
   "pattern": [
-    "BBB",
-    "XBX",
-    " B "
+    "###",
+    "XXX",
+    " X "
   ],
   "result": {
-    "count": 1,
+    "count": 4,
     "id": "holyhell:tall_candleholder"
   }
 }

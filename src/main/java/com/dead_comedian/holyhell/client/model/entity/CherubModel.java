@@ -57,11 +57,13 @@ public class CherubModel<T extends CherubEntity> extends HierarchicalModel<T> {
 		PartDefinition bell = bottom.addOrReplaceChild("bell", CubeListBuilder.create().texOffs(44, 40).addBox(-3.5F, 5.0F, -2.0F, 5.0F, 7.0F, 5.0F, new CubeDeformation(0.0F))
 				.texOffs(44, 33).addBox(-3.5F, 10.0F, -2.0F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.3F)), PartPose.offset(1.0F, -3.0F, -0.4679F));
 
-		PartDefinition left_wind = bone2.addOrReplaceChild("left_wind", CubeListBuilder.create().texOffs(0, 12).addBox(0.0F, -7.0F, 0.5F, 15.0F, 12.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 3.0F, 2.0F));
 
-		PartDefinition right_wind = bone2.addOrReplaceChild("right_wind", CubeListBuilder.create().texOffs(0, 0).addBox(-15.0F, -7.0F, 0.5F, 15.0F, 12.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 3.0F, 2.0F));
+        PartDefinition left_wind = bone2.addOrReplaceChild("left_wind", CubeListBuilder.create().texOffs(0, 12).addBox(0.0F, -4.0F, 2.5F, 22.0F, 12.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		return LayerDefinition.create(meshdefinition, 64, 64);
+        PartDefinition right_wind = bone2.addOrReplaceChild("right_wind", CubeListBuilder.create().texOffs(0, 12).mirror().addBox(-22.0F, -4.0F, 2.5F, 22.0F, 12.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+
+        return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	@Override

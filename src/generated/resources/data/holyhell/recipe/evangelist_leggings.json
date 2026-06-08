@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "holyhell:baptized_plate"
+    },
+    "Y": {
+      "item": "holyhell:enhanced_silk"
+    }
+  },
+  "pattern": [
+    "###",
+    "Y Y",
+    "# #"
+  ],
+  "result": {
+    "count": 1,
+    "id": "holyhell:evangelist_leggings"
+  }
+}

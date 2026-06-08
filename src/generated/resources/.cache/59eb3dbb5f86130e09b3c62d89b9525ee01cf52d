@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-30T19:22:14.7002304	Loot Tables
+// 1.21.1	2026-06-07T20:06:52.4400954	Loot Tables
 a226d24b95a6514f08a2c2e57767515a6a8e1597 data/holyhell/loot_table/blocks/bone_chandelier.json
 6bbf14c6d501432c7b4c2c4388d569bcc8892f92 data/holyhell/loot_table/blocks/bone_pile.json
 3604c31166859e04160be4a7ec8f11c54cf2af0c data/holyhell/loot_table/blocks/carved_pumpkin_cross.json
@@ -16,7 +16,7 @@ f1b2b4b52cdbecafcb82f64f2230c793b6b84314 data/holyhell/loot_table/blocks/falling
 c46958d305d924828b2d2bd63db2654791112f21 data/holyhell/loot_table/blocks/marble_brick_slab.json
 3ddb0514a8da7c846367b83c02174a341cffb1b9 data/holyhell/loot_table/blocks/marble_brick_stairs.json
 88d0c7f38f178a713ab8a01aad7ce2d19217746a data/holyhell/loot_table/blocks/marble_brick_wall.json
-bc235554f99594fd854d8fbf3db92fbb105d72cb data/holyhell/loot_table/blocks/marble_column.json
+18447814d926c2e95b4f701bddbb6d1d4a5503b5 data/holyhell/loot_table/blocks/marble_column.json
 9fd02f9d49f88cfaa18572c8873fcae2a2d0b725 data/holyhell/loot_table/blocks/marble_slab.json
 8d11c73baf342682d106e97be8e35a2346ac935b data/holyhell/loot_table/blocks/marble_stairs.json
 405a30b9b8658b1ce62798d026be50218baba78c data/holyhell/loot_table/blocks/marble_wall.json
