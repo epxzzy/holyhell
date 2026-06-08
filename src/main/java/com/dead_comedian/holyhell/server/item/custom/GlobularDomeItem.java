@@ -28,7 +28,7 @@ public class GlobularDomeItem extends Item {
         GlobularDomeEntity globularDomeEntity = new GlobularDomeEntity(HolyHellEntities.GLOBULAR_DOME.get(), user.level());
         user.level().addFreshEntity(globularDomeEntity);
         globularDomeEntity.moveTo(blockPos, globularDomeEntity.getYRot(), globularDomeEntity.getXRot());
-        globularDomeEntity.setUser(owner);
+        globularDomeEntity.setUser(String.valueOf(user.getUUID()));
         user.getCooldowns().addCooldown(this, 200);
         world.playSound(user,user.blockPosition(), HolyHellSounds.STONE_CRACK.get(), SoundSource.PLAYERS,0.8f,1);
 

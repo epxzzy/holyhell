@@ -1,11 +1,8 @@
 package com.dead_comedian.holyhell.server.entity.non_living;
 
-import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
+import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.dead_comedian.holyhell.server.registries.HolyHellTags;
-
-import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,12 +10,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+
+import java.util.List;
+import java.util.UUID;
 
 public class GlobularDomeEntity extends Entity {
     private int ticksLeft;
@@ -110,20 +109,20 @@ public class GlobularDomeEntity extends Entity {
         double e = (this.getBoundingBox().minZ + this.getBoundingBox().maxZ) / 2.0;
 
         for (Entity entity : entities) {
-            if (!(entity instanceof Player)) {
+            if (this.userNBT != null) {
+                if (!entity.is(level().getPlayerByUUID(UUID.fromString(this.userNBT)))) {
 
 
-                double f = entity.getX() - d;
-                double g = entity.getZ() - e;
-                double h = Math.max(f * f + g * g, 0.1);
-                entity.push(f / h * 2, 0.4, g / h * 2);
+                    double f = entity.getX() - d;
+                    double g = entity.getZ() - e;
+                    double h = Math.max(f * f + g * g, 0.1);
+                    entity.push(f / h * 2, 0.4, g / h * 2);
 
-                this.level().addParticle(HolyHellParticles.LIGHT_RING.get(), this.getRandomX(0.1), this.getY(0.5), this.getRandomZ(0.1), 0.0, 0.0, 0.0);
-                this.level().playSound(this, this.blockPosition(), HolyHellSounds.STONE_CRACK.get(), SoundSource.PLAYERS, 0.5f, 1.4f);
+                    this.level().addParticle(HolyHellParticles.LIGHT_RING.get(), this.getRandomX(0.1), this.getY(0.5), this.getRandomZ(0.1), 0.0, 0.0, 0.0);
+                    this.level().playSound(this, this.blockPosition(), HolyHellSounds.STONE_CRACK.get(), SoundSource.PLAYERS, 0.5f, 1.4f);
 
+                }
             }
         }
-
-
     }
 }
