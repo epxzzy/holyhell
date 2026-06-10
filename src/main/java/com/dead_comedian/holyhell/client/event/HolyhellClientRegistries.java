@@ -5,6 +5,7 @@ import com.dead_comedian.holyhell.HolyHellModClient;
 import com.dead_comedian.holyhell.client.model.entity.*;
 import com.dead_comedian.holyhell.client.model.entity.non_living.AngelProjectileModel;
 import com.dead_comedian.holyhell.client.model.entity.non_living.GlobularDomeModel;
+import com.dead_comedian.holyhell.client.renderer.block_entity.CoffinRenderer;
 import com.dead_comedian.holyhell.client.renderer.render_layer.LowerRingRenderLayer;
 import com.dead_comedian.holyhell.particle.KamikazeExplosionParticle;
 import com.dead_comedian.holyhell.particle.LightRingParticle;
@@ -22,6 +23,7 @@ import com.dead_comedian.holyhell.particle.locator.PeacefulLocatorParticle;
 import com.dead_comedian.holyhell.particle.locator.PlayerLocatorParticle;
 import com.dead_comedian.holyhell.particle.stun_particles.StunParticle1;
 import com.dead_comedian.holyhell.particle.stun_particles.StunParticle2;
+import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellKeyBinds;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
 import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
@@ -77,6 +79,8 @@ public class HolyhellClientRegistries {
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(HolyHellModelLayers.RELIGIOUS_RINGS, LowerRingRenderLayer::getTexturedModelData);
 
+        event.registerLayerDefinition(HolyHellModelLayers.COFFIN, CoffinRenderer::createBodyLayer);
+
 
         event.registerLayerDefinition(HolyHellModelLayers.GLOBULAR_DOME, GlobularDomeModel::createBodyLayer);
         event.registerLayerDefinition(HolyHellModelLayers.ANGEL_PROJECTILE, AngelProjectileModel::createBodyLayer);
@@ -95,6 +99,12 @@ public class HolyhellClientRegistries {
         event.registerLayerDefinition(HolyHellModelLayers.HOLY_COW, HolyCowModel::createBodyLayer);
         event.registerLayerDefinition(HolyHellModelLayers.REVENANT, RevenantModel::createBodyLayer);
 
+    }
+
+    @SubscribeEvent
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(HolyHellBlockEntities.COFFIN_BLOCK_ENTITY.get(),CoffinRenderer::new
+        );
     }
 
     @SubscribeEvent

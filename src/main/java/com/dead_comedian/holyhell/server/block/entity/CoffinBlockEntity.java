@@ -3,6 +3,7 @@ package com.dead_comedian.holyhell.server.block.entity;
 import com.dead_comedian.holyhell.Config;
 import com.dead_comedian.holyhell.server.block.CoffinBlock;
 import com.dead_comedian.holyhell.server.data.StoredInventory;
+import com.dead_comedian.holyhell.server.helper.CoffinAnimationStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
@@ -90,7 +91,9 @@ public class CoffinBlockEntity extends BlockEntity implements Container {
 
             if (storedInventory == null) {
                 level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                level.setBlock(pos, state1.setValue(CoffinBlock.OPEN, false).setValue(CoffinBlock.ACTIVATED, false), 3);
+                level.setBlock(pos, state1.setValue(CoffinBlock.OPEN, false)
+                        .setValue(CoffinBlock.ACTIVATED, false)
+                        .setValue(CoffinBlock.STATE, CoffinAnimationStates.CLOSE.getId()), 3);
                 player.setData(HolyHellAttachments.HAS_COFFIN, false);
                 player.setData(HolyHellAttachments.DIED, false);
 
@@ -98,9 +101,14 @@ public class CoffinBlockEntity extends BlockEntity implements Container {
 
                 if (storedInventory.isEmpty()) {
                     level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                    level.setBlock(pos, state1.setValue(CoffinBlock.OPEN, false).setValue(CoffinBlock.ACTIVATED, false), 3);
+                    level.setBlock(pos, state1
+                            .setValue(CoffinBlock.OPEN, false)
+                            .setValue(CoffinBlock.ACTIVATED, false)
+                            .setValue(CoffinBlock.STATE, CoffinAnimationStates.CLOSE.getId()), 3);
+
                     player.setData(HolyHellAttachments.HAS_COFFIN, false);
                     player.setData(HolyHellAttachments.DIED, false);
+
                     this.setStoredUUID(null);
                     storedInventory.clear();
                 } else if (level.getGameTime() % 5 == 0 && !storedInventory.isEmpty()) {

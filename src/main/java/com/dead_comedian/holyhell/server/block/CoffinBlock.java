@@ -2,6 +2,7 @@ package com.dead_comedian.holyhell.server.block;
 
 import com.dead_comedian.holyhell.Config;
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
+import com.dead_comedian.holyhell.server.helper.CoffinAnimationStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
@@ -36,9 +37,12 @@ public class CoffinBlock extends BaseEntityBlock {
     public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
+    public static final IntegerProperty STATE = IntegerProperty.create("state", 0, 4);
+
+
     public CoffinBlock(Properties pProperties) {
         super(pProperties);
-        this.registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER).setValue(ACTIVATED, false));
+        this.registerDefaultState(this.defaultBlockState().setValue(STATE, 0).setValue(HALF, DoubleBlockHalf.LOWER).setValue(ACTIVATED, false));
     }
 
     @Override
@@ -48,7 +52,7 @@ public class CoffinBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(HALF, FACING, ACTIVATED, OPEN);
+        pBuilder.add(HALF, FACING, ACTIVATED, OPEN, STATE);
     }
 
     @Override
@@ -97,7 +101,9 @@ public class CoffinBlock extends BaseEntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return (this.defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
+        return (this.defaultBlockState().setValue(FACING, context.getHorizontalDirection())
+                .setValue(HALF, DoubleBlockHalf.LOWER)
+                .setValue(OPEN, false));
     }
 
     @Nullable
@@ -123,7 +129,7 @@ public class CoffinBlock extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
 
@@ -132,15 +138,22 @@ public class CoffinBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             if (stack.is(Items.GOLD_BLOCK) && !state.getValue(ACTIVATED)) {
                 if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-                    level.setBlock(pos, state.setValue(CoffinBlock.ACTIVATED, true), 3);
+                    level.setBlock(pos, state
+                                    .setValue(CoffinBlock.ACTIVATED, true)
+                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()),
+                            3);
+
                     player.setData(HolyHellAttachments.HAS_COFFIN, true);
+
                     if (level.getBlockEntity(pos) instanceof CoffinBlockEntity coffinBlockEntity) {
                         coffinBlockEntity.setStoredUUID(player.getUUID());
                     }
                 } else if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
                     level.setBlock(this.getLowerBlockEntity(pos, state, level).getBlockPos()
                             , this.getLowerBlockEntity(pos, state, level).getBlockState()
-                                    .setValue(CoffinBlock.ACTIVATED, true), 3);
+                                    .setValue(CoffinBlock.ACTIVATED, true)
+                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()),
+                            3);
 
                     ((CoffinBlockEntity) (Object) this.getLowerBlockEntity(pos, state, level)).setStoredUUID(player.getUUID());
                 }
@@ -164,7 +177,10 @@ public class CoffinBlock extends BaseEntityBlock {
 
                         if (coffinBlockEntity.getStoredUUID().equals(player.getUUID())) {
                             level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                            level.setBlock(pos, state.setValue(OPEN, true), 3);
+                            level.setBlock(pos, state
+                                    .setValue(OPEN, true)
+//                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.OPEN.getId())
+                                    , 3);
                         }
                         return ItemInteractionResult.sidedSuccess(level.isClientSide());
 
@@ -175,7 +191,10 @@ public class CoffinBlock extends BaseEntityBlock {
 
                     if (state.getValue(HALF) == DoubleBlockHalf.LOWER && state.getValue(ACTIVATED)) {
                         level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                        level.setBlock(pos, state.setValue(ACTIVATED, false ), 3);
+                        level.setBlock(pos, state
+                                        .setValue(ACTIVATED, false)
+                                        .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()),
+                                3);
 
                         return ItemInteractionResult.sidedSuccess(level.isClientSide());
 
@@ -189,7 +208,9 @@ public class CoffinBlock extends BaseEntityBlock {
 
                         if (coffinBlockEntity.getStoredUUID().equals(player.getUUID()) & player.getData(HolyHellAttachments.DIED)) {
                             level.playSound((Player) null, poss, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                            level.setBlock(poss, state.setValue(ACTIVATED, false), 3);
+                            level.setBlock(poss, state
+                                    .setValue(ACTIVATED, false)
+                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()), 3);
                         }
                         return ItemInteractionResult.sidedSuccess(level.isClientSide());
                     }
@@ -283,4 +304,6 @@ public class CoffinBlock extends BaseEntityBlock {
         }
     }
 
+
 }
+

@@ -1,72 +1,7 @@
 {
   "variants": {
-
-    "facing=east,half=lower,activated=false": {
-      "model": "holyhell:block/coffin/coffin_close",
-      "y": 90
-    },
-    "facing=north,half=lower,activated=false": {
-      "model": "holyhell:block/coffin/coffin_close"
-    },
-    "facing=south,half=lower,activated=false": {
-      "model": "holyhell:block/coffin/coffin_close",
-      "y": 180
-    },
-    "facing=west,half=lower,activated=false": {
-      "model": "holyhell:block/coffin/coffin_close",
-      "y": 270
-    },
-
-
-    "facing=east,half=lower,activated=true,open=false": {
-      "model": "holyhell:block/coffin/coffin_close_activated",
-      "y": 90
-    },
-    "facing=north,half=lower,activated=true,open=false": {
-      "model": "holyhell:block/coffin/coffin_close_activated"
-    },
-    "facing=south,half=lower,activated=true,open=false": {
-      "model": "holyhell:block/coffin/coffin_close_activated",
-      "y": 180
-    },
-    "facing=west,half=lower,activated=true,open=false": {
-      "model": "holyhell:block/coffin/coffin_close_activated",
-      "y": 270
-    },
-
-    "facing=east,half=lower,activated=true,open=true": {
-      "model": "holyhell:block/coffin/coffin_open_activated",
-      "y": 90
-    },
-    "facing=north,half=lower,activated=true,open=true": {
-      "model": "holyhell:block/coffin/coffin_open_activated"
-    },
-    "facing=south,half=lower,activated=true,open=true": {
-      "model": "holyhell:block/coffin/coffin_open_activated",
-      "y": 180
-    },
-    "facing=west,half=lower,activated=true,open=true": {
-      "model": "holyhell:block/coffin/coffin_open_activated",
-      "y": 270
-    },
-
-
-
-
-    "facing=east,half=upper": {
-      "model": "holyhell:block/coffin/coffin_back",
-      "y": 90
-    },
-    "facing=north,half=upper": {
-      "model": "holyhell:block/coffin/coffin_back"
-    },
-    "facing=south,half=upper": {
-      "model": "holyhell:block/coffin/coffin_back",
-      "y": 180
-    },
-    "facing=west,half=upper": {
-      "model": "holyhell:block/coffin/coffin_back",
-      "y": 270
+    "": {
+      "model": "holyhell:block/coffin"
     }
   }
 }

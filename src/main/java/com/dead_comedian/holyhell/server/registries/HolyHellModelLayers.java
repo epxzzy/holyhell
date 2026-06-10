@@ -29,4 +29,8 @@ public class HolyHellModelLayers {
 
     public static final ModelLayerLocation RELIGIOUS_RINGS = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "religious_rings"), "main");
 
+
+
+    public static final ModelLayerLocation COFFIN = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "coffin"), "main");
+
 }

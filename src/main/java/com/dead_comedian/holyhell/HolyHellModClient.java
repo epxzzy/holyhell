@@ -53,6 +53,7 @@ public class HolyHellModClient {
         HolyHellItemProperties.addCustomItemProperties();
 
 
+
         EntityRenderers.register(HolyHellEntities.ANGEL.get(), AngelRenderer::new);
         EntityRenderers.register(HolyHellEntities.BAB_ONE.get(), BabOneRenderer::new);
         EntityRenderers.register(HolyHellEntities.BAB_TWO.get(), BabTwoRenderer::new);
