@@ -5,6 +5,7 @@ import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.client.event.EndTextOverlay;
 import com.dead_comedian.holyhell.server.data.StatueData;
 import com.dead_comedian.holyhell.server.entity.*;
+import com.dead_comedian.holyhell.server.entity.non_living.GlobularDomeEntity;
 import com.dead_comedian.holyhell.server.registries.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -39,6 +40,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -125,6 +127,38 @@ public class HolyHellEventBusEvents {
     public static void playerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         Level level = event.getEntity().level();
+
+
+        //Globular Dome
+        List<Entity> entityBelow = level.getEntities(player, player.getBoundingBox().inflate(-0.1));
+        for (Entity entity : entityBelow) {
+            if (player.canCollideWith(entity) && entity instanceof GlobularDomeEntity) {
+                player.setSpeed(0);
+            }
+        }
+
+        //Religious Rings
+        if (player.hasEffect(HolyHellEffects.JESISTANCE)) {
+            MobEffectInstance effect = player.getEffect(HolyHellEffects.JESISTANCE);
+            if (effect.getDuration() >= 2000) {
+                player.level().playSound(player, player.blockPosition(), HolyHellSounds.RINGS_INTRO.get(), SoundSource.PLAYERS, 0.2f, 1);
+                return;
+            }
+            if (effect.getDuration() > 3.5 * 20) {
+                if (player.tickCount % 70 == 1) {
+                    player.level().playSound((Player) null, player.blockPosition(), HolyHellSounds.RINGS_HOLD.get(), SoundSource.PLAYERS, 0.2f, 1);
+                }
+                return;
+            }
+            if (effect.getDuration() < 3.5 * 20 && effect.getDuration() != 0) {
+                if (player.tickCount % 70 == 1) {
+                    player.level().playSound((Player) null, player.blockPosition(), HolyHellSounds.RINGS_OUTRO.get(), SoundSource.PLAYERS, 0.2f, 1);
+
+                }
+            }
+        }
+
+
 
         // TO-DO:  change music system
 

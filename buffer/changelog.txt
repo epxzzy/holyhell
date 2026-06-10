@@ -30,3 +30,6 @@ Version 1.9.2:
     - Holy Gold item used to now craft some decorative blocks
     - Ring Renderer now stops properly
     - Other Players no longer get stuck in globular dome
+    - Holy Shield charges up to repel enemies
+    - Retextures
+    - Fixed coffin day

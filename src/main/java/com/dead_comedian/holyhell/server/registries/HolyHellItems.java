@@ -32,7 +32,7 @@ public class HolyHellItems {
             HolyGrailItem(HolyHellToolMaterial.GRAIL, new Item.Properties().attributes(SacrificialKatarItem.createAttributes(HolyHellToolMaterial.GRAIL, 9, -2F))));
 
     public static final Supplier<ShieldItem> HOLY_SHIELD = ITEMS.register("holy_shield", () -> new
-            ShieldItem(new Item.Properties().durability(1000)));
+            HolyShieldItem(new Item.Properties().durability(1000)));
     public static final Supplier<ReligiousRingsItem> RELIGIOUS_RINGS = ITEMS.register("religious_rings", () -> new
             ReligiousRingsItem(new Item.Properties()));
     public static final Supplier<GlobularDomeItem> GLOBULAR_DOME = ITEMS.register("globular_dome", () -> new

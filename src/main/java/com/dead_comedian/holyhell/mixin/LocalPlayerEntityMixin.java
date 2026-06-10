@@ -24,7 +24,7 @@ public abstract class LocalPlayerEntityMixin extends LivingEntity {
 
 
     @Inject(method = "move", at = @At(value = "HEAD"), cancellable = true)
-    private void tick(CallbackInfo ci) {
+    private void move(CallbackInfo ci) {
 
         //Globular Dome
         LocalPlayer player = ((LocalPlayer) (Object) this);

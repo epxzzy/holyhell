@@ -83,35 +83,40 @@ public class CoffinBlockEntity extends BlockEntity implements Container {
         if (Config.ENABLE_COFFINS.get()) {
             if (!state1.getValue(CoffinBlock.OPEN)) return;
             if (getStoredUUID() == null) return;
-
+            if (level.getPlayerByUUID((getStoredUUID())) == null) return;
 
             Player player = level.getPlayerByUUID(getStoredUUID());
             List<StoredInventory.InventoryCodec> storedInventory = player.getData(HolyHellAttachments.SAVED_INVENTORY).getSlot();
 
-            if (storedInventory == null) return;
-
-            if (storedInventory.isEmpty()) {
+            if (storedInventory == null) {
                 level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
                 level.setBlock(pos, state1.setValue(CoffinBlock.OPEN, false).setValue(CoffinBlock.ACTIVATED, false), 3);
                 player.setData(HolyHellAttachments.HAS_COFFIN, false);
                 player.setData(HolyHellAttachments.DIED, false);
-                this.setStoredUUID(null);
-                storedInventory.clear();
-            } else if (level.getGameTime() % 5 == 0 && !storedInventory.isEmpty()) {
-                level.playSound((Player) null, pos, SoundEvents.TRIAL_SPAWNER_EJECT_ITEM, SoundSource.BLOCKS, 1, 1);
 
-                ItemStack itemStack = storedInventory.removeFirst().stack();
-                DefaultDispenseItemBehavior.spawnItem(
-                        level,
-                        itemStack,
-                        2,
-                        Direction.UP,
-                        Vec3.atBottomCenterOf(pos).add(0, 2, 0)
-                );
+            } else {
 
+                if (storedInventory.isEmpty()) {
+                    level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
+                    level.setBlock(pos, state1.setValue(CoffinBlock.OPEN, false).setValue(CoffinBlock.ACTIVATED, false), 3);
+                    player.setData(HolyHellAttachments.HAS_COFFIN, false);
+                    player.setData(HolyHellAttachments.DIED, false);
+                    this.setStoredUUID(null);
+                    storedInventory.clear();
+                } else if (level.getGameTime() % 5 == 0 && !storedInventory.isEmpty()) {
+                    level.playSound((Player) null, pos, SoundEvents.TRIAL_SPAWNER_EJECT_ITEM, SoundSource.BLOCKS, 1, 1);
+
+                    ItemStack itemStack = storedInventory.removeFirst().stack();
+                    DefaultDispenseItemBehavior.spawnItem(
+                            level,
+                            itemStack,
+                            2,
+                            Direction.UP,
+                            Vec3.atBottomCenterOf(pos).add(0, 2, 0)
+                    );
+
+                }
             }
-
-
         }
     }
 }
