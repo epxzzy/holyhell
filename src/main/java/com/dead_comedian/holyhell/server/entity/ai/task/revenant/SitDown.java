@@ -33,7 +33,7 @@ public class SitDown extends Behavior<RevenantEntity> {
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, RevenantEntity owner) {
-        return owner.getState().getId() == 3;
+        return owner.getState().getId() == 3 || (owner.getState().getId()==1 && owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty());
     }
 
     @Override

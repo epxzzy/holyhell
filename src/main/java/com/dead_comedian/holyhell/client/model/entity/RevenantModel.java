@@ -168,6 +168,30 @@ public class RevenantModel<T extends RevenantEntity> extends HierarchicalModel<T
             this.right_magic.yScale = 1.5F;
             this.right_magic.zScale = 1.5F;
 
+        } else {
+            this.weapon.yScale = 0;
+
+            this.torso.xRot = 0;
+            this.left_arm.xRot = 0;
+            this.left_arm.yRot = 0;
+            this.left_arm.zRot = 0;
+
+            this.right_arm.xRot = 0;
+            this.right_arm.yRot = 0;
+            this.right_arm.zRot = 0;
+
+
+            this.left_magic.yRot = 0;
+            this.left_magic.y = 0;
+            this.left_magic.xScale = 0;
+            this.left_magic.yScale = 0;
+            this.left_magic.zScale = 0;
+
+            this.right_magic.yRot = 0;
+            this.right_magic.y = 0;
+            this.right_magic.xScale = 0;
+            this.right_magic.yScale = 0;
+            this.right_magic.zScale = 0;
         }
     }
 }

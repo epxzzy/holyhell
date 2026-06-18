@@ -116,6 +116,7 @@ public class RevenantEntity extends Monster {
         if (this.level().isClientSide) {
             this.setupAnimationStates();
         }
+        System.out.println(this.getState().getId());
 
     }
 
@@ -141,7 +142,8 @@ public class RevenantEntity extends Monster {
             case 0:
                 this.catatonicAnimationState.startIfStopped(tickCount);
                 this.catatonicSitAnimationState.stop();
-
+                this.attackAnimationState.stop();
+                this.armedAttackAnimationState.stop();
                 break;
             case 1:
                 this.catatonicRiseAnimationState.startIfStopped(tickCount);

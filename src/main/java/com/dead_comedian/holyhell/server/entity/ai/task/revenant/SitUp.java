@@ -33,7 +33,7 @@ public class SitUp extends Behavior<RevenantEntity> {
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, RevenantEntity owner) {
-        return owner.getState().getId() == 0;
+        return owner.getState().getId() == 0 && owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent();
     }
 
     @Override

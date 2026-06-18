@@ -30,7 +30,7 @@ public class Ritual extends Behavior<RevenantEntity> {
         return owner.distanceTo(targetEntity) < 2 &&
                 owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET)
                         .get().getType().is(HolyHellTags.Entities.REVENANT_TRANSCENDS)
-                && owner.getState().getId() == 3;
+                && (owner.getState().getId() == 3 || owner.getState().getId() == 5);
     }
 
     @Override

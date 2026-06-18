@@ -27,42 +27,43 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
         //comments by me cuz i cant read me own code
 
 
-
         if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
 
-            if(!owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get().isAlive()){
-                owner.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
-            }
 
             //checks if target is not player, thus can only be a mob to transcend
-            if (!(owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get() instanceof Player)) {
+            if (!(owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get() instanceof Player) && owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
                 if (owner.getState().getId() != 4) {
                     BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
                 }
             } else {
+                owner.setState(RevenantStates.UNARMED);
+                if (owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
+                    // sets position target for unarmed attack
+                    if (owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isEmpty() && owner.getState().getId() == 3) {
+                        BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
 
-                // sets position target for unarmed attack
-                if (owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isEmpty() && owner.getState().getId() == 3) {
-                    BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 0);
+                        //sets position target to get weapon
+                    } else if (owner.getState().getId() == 3 && owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isPresent()) {
+                        owner.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(
+                                owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).get(),
+                                1F,
+                                1));
+                    }
 
-                    //sets position target to get weapon
-                } else if (owner.getState().getId() == 3 && owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).isPresent()) {
-                    owner.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(
-                            owner.getBrain().getMemory(HolyHellMemoryModules.WEAPON_POS.get()).get(),
-                            1F,
-                            1));
+                    //sets position target for armed attack
+                    if (owner.getState().getId() == 4) {
+                        BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 5);
+                    }
+
+                    //stops the mob from moving while performing weapon attacked
+                    if (owner.getState().getId() == 7) {
+                        owner.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+                    }
                 }
+            }
 
-                //sets position target for armed attack
-                if (owner.getState().getId() == 4) {
-                    BehaviorUtils.setWalkAndLookTargetMemories(owner, owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get(), 1, 5);
-                }
-
-                //stops the mob from moving while performing weapon attacked
-                if (owner.getState().getId() == 7) {
-                    owner.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
-                }
-
+            if (!owner.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get().isAlive()) {
+                owner.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
             }
         } else {
             // sets the position target for the revenant to go place the weapon back
@@ -75,10 +76,10 @@ public class RevenantPrepareTarget extends Behavior<RevenantEntity> {
             }
 
             //return to unarmed
-            if(owner.getState().getId()==6){
+            if (owner.getState().getId() == 6) {
                 owner.setState(RevenantStates.UNARMED);
             }
-            if(owner.getState().getId()==7){
+            if (owner.getState().getId() == 7) {
                 owner.setState(RevenantStates.ARMED);
             }
         }

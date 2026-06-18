@@ -32,4 +32,7 @@ Version 1.9.2:
     - Other Players no longer get stuck in globular dome
     - Holy Shield charges up to repel enemies
     - Retextures
-    - Fixed coffin day
+    - Fixed coffin
+    - Coffin moved to BERs with new animations and particles (still wip)
+    - Loot Table redo s
+    - Revenant Getting stuck in one state when leaving world fixed
