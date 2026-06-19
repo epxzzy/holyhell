@@ -37,9 +37,6 @@ public class HolyHellEffects {
     public static final DeferredHolder<MobEffect, BloodlustEffect> BLOODLUST = MOB_EFFECTS.register("bloodlust",
             () -> new BloodlustEffect(MobEffectCategory.NEUTRAL, 0x730e00));
 
-    public static final DeferredHolder<MobEffect, JesistenceEffect> JESISTANCE = MOB_EFFECTS.register("jesistance",
-            () -> new JesistenceEffect(MobEffectCategory.BENEFICIAL, 0x6c8c7e));
-
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

@@ -17,12 +17,6 @@
       "holyhell:rings/rings_intro"
     ]
   },
-  "rings_outro": {
-    "subtitle": "sounds.holyhell.rings_outro",
-    "sounds": [
-      "holyhell:rings/rings_outro"
-    ]
-  },
   "candelabra_place": {
     "subtitle": "sounds.holyhell.candelabra_place",
     "sounds": [
@@ -59,8 +53,6 @@
       "holyhell:stone_crack"
     ]
   },
-
-
   "angel_flutter": {
     "subtitle": "sounds.holyhell.angel_flutter",
     "sounds": [
@@ -85,9 +77,6 @@
       "holyhell:angel/angel_idle"
     ]
   },
-
-
-
   "bab_idle": {
     "subtitle": "sounds.holyhell.bab_idle",
     "sounds": [
@@ -142,9 +131,6 @@
       "holyhell:bab/bab_merge"
     ]
   },
-
-
-
   "bell_ring": {
     "subtitle": "sounds.holyhell.bell_ring",
     "sounds": [
@@ -163,20 +149,18 @@
       "holyhell:holy_spirit_death"
     ]
   },
-
-
-
   "heretic_attack": {
     "subtitle": "sounds.holyhell.heretic_attack",
     "sounds": [
       "holyhell:heretic/heretic_attack"
     ]
-  },  "heretic_slam": {
-  "subtitle": "sounds.holyhell.heretic_slam",
-  "sounds": [
-    "holyhell:heretic/heretic_slam"
-  ]
-},
+  },
+  "heretic_slam": {
+    "subtitle": "sounds.holyhell.heretic_slam",
+    "sounds": [
+      "holyhell:heretic/heretic_slam"
+    ]
+  },
   "heretic_death": {
     "subtitle": "sounds.holyhell.heretic_death",
     "sounds": [
@@ -195,11 +179,6 @@
       "holyhell:heretic/heretic_idle"
     ]
   },
-
-
-
-
-
   "stun": {
     "subtitle": "sounds.holyhell.stun",
     "sounds": [
@@ -236,8 +215,6 @@
       "holyhell:flashbang"
     ]
   },
-
-
   "revenant_walk": {
     "subtitle": "sounds.holyhell.revenant_walk",
     "sounds": [
@@ -256,9 +233,6 @@
       "holyhell:revenant/revenant_attack"
     ]
   },
-
-
-
   "metal_hurt": {
     "subtitle": "sounds.holyhell.metal_hurt",
     "sounds": [
@@ -294,5 +268,11 @@
     "sounds": [
       "holyhell:coffin_lid"
     ]
-  }
+  },
+   "coffin_charge": {
+  "subtitle": "sounds.holyhell.coffin_charge",
+  "sounds": [
+    "holyhell:coffin_charge"
+  ]
+}
 }

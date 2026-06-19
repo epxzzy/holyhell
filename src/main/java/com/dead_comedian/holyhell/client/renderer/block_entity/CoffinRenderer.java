@@ -3,7 +3,6 @@ package com.dead_comedian.holyhell.client.renderer.block_entity;
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.block.CoffinBlock;
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
-import com.dead_comedian.holyhell.server.helper.CoffinAnimationStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -18,8 +17,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityRenderer<T> {
@@ -28,16 +26,15 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
     private ResourceLocation ACTIVATED = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/blockentity/coffin_activated.png");
 
 
-    private ModelPart group;
-    private ModelPart model;
-    private ModelPart lid;
-    public int counter = 0;
+    private final ModelPart group;
+    private final ModelPart lid;
+    private final ModelPart coffin;
 
     public CoffinRenderer(BlockEntityRendererProvider.Context context) {
         ModelPart root = context.bakeLayer(HolyHellModelLayers.COFFIN);
         this.group = root.getChild("group");
-        this.model = this.group.getChild("model");
-        this.lid = this.model.getChild("lid");
+        this.lid = this.group.getChild("lid");
+        this.coffin = this.group.getChild("coffin");
     }
 
 
@@ -45,30 +42,85 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition group = partdefinition.addOrReplaceChild("group", CubeListBuilder.create(), PartPose.offset(0.0F, 7.0F, 16.0F));
+        PartDefinition group = partdefinition.addOrReplaceChild("group", CubeListBuilder.create(), PartPose.offset(6.0F, 11.9797F, -15.8228F));
 
-        PartDefinition model = group.addOrReplaceChild("model", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -7.0F, -16.0F, 16.0F, 11.0F, 32.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 0.0F, -16.0F));
+        PartDefinition lid = group.addOrReplaceChild("lid", CubeListBuilder.create().texOffs(0, 43).mirror().addBox(-8.0F, -1.5F, -16.0F, 16.0F, 3.0F, 32.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(8F, 12.5F, 0F));
 
-        PartDefinition lid = model.addOrReplaceChild("lid", CubeListBuilder.create().texOffs(0, 43).addBox(-8.0F, -1.5F, -16.0F, 16.0F, 3.0F, 32.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 5.5F, 0.0F));
+        PartDefinition coffin = group.addOrReplaceChild("coffin", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-8.0F, -5.5F, -16.0F, 16.0F, 11.0F, 32.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(8F, 5.5F, 0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
 
     @Override
-    public void render(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(CoffinBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(DEACTIVATED));
-        Level level = blockEntity.getLevel();
-        Block block = level.getBlockState(blockEntity.getBlockPos()).getBlock();
-        BlockState state = level.getBlockState(blockEntity.getBlockPos());
+        BlockState state = blockEntity.getBlockState();
 
+
+        //BASE RENDERING
 
         poseStack.pushPose();
-        if (block instanceof CoffinBlock) {
-            if (state.getValue(CoffinBlock.ACTIVATED)) {
-                vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(ACTIVATED));
-            }
+        if (state.getValue(CoffinBlock.ACTIVATED)) {
+            vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(ACTIVATED));
+        }
 
+        switch (state.getValue(CoffinBlock.FACING)) {
+            case Direction.SOUTH:
+                poseStack.mulPose(Axis.YN.rotationDegrees(180));
+                poseStack.translate(-1, 0, -1);
+                break;
+            case Direction.EAST:
+                poseStack.translate(1, 0, 0);
+                poseStack.mulPose(Axis.YN.rotationDegrees(90));
+                break;
+            case Direction.WEST:
+                poseStack.translate(0, 0, 1);
+                poseStack.mulPose(Axis.YN.rotationDegrees(270));
+                break;
+        }
+
+        if (state.getValue(CoffinBlock.STATE) == 1) {
+            if (blockEntity.renderCounter < 10) {
+                float f = (float) blockEntity.ticks + partialTick;
+                float f3 = Mth.sin(f * 3) / 20;
+                poseStack.mulPose(Axis.YP.rotation(f3));
+            } else {
+                poseStack.mulPose(Axis.YP.rotation(0));
+            }
+        }
+        coffin.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        poseStack.popPose();
+
+
+        //LID RENDERING
+
+        poseStack.pushPose();
+        if (state.getValue(CoffinBlock.ACTIVATED)) {
+            vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(ACTIVATED));
+        }
+
+        if (state.getValue(CoffinBlock.STATE) == 2) {
+
+            switch (state.getValue(CoffinBlock.FACING)) {
+                case Direction.SOUTH:
+                    poseStack.mulPose(Axis.YN.rotationDegrees(180));
+                    poseStack.translate(-1, 0, -2  );
+                    break;
+                case Direction.EAST:
+                    poseStack.translate(2, 0, 0);
+                    poseStack.mulPose(Axis.YN.rotationDegrees(90));
+                    break;
+                case Direction.WEST:
+                    poseStack.translate(-1, 0, 1);
+                    poseStack.mulPose(Axis.YN.rotationDegrees(270));
+                    break;
+                case Direction.NORTH:
+                    poseStack.translate(0, 0, -1);
+                    poseStack.mulPose(Axis.YN.rotationDegrees(0));
+                    break;
+            }
+        }else {
             switch (state.getValue(CoffinBlock.FACING)) {
                 case Direction.SOUTH:
                     poseStack.mulPose(Axis.YN.rotationDegrees(180));
@@ -82,25 +134,27 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
                     poseStack.translate(0, 0, 1);
                     poseStack.mulPose(Axis.YN.rotationDegrees(270));
                     break;
+                case Direction.NORTH:
+                    poseStack.translate(0, 0, 0);
+                    poseStack.mulPose(Axis.YN.rotationDegrees(0));
+                    break;
             }
-
-            if (state.getValue(CoffinBlock.STATE) == CoffinAnimationStates.NONE.getId()) {
-                counter = 0;
-            }
-            if (state.getValue(CoffinBlock.STATE) == CoffinAnimationStates.CHARGE.getId()) {
-                if (counter < 10) {
-                    counter++;
-                    poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.asin((float) 360 / counter)));
-                } else {
-                    state.setValue(CoffinBlock.STATE, CoffinAnimationStates.NONE.getId());
-                    counter = 0;
-                }
-
-            }
-
         }
-        group.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+
+
+        if (state.getValue(CoffinBlock.STATE) == 1) {
+            if (blockEntity.renderCounter < 10) {
+                float f = (float) blockEntity.ticks + partialTick;
+                float f3 = Mth.sin(f * 3) / 20;
+                poseStack.mulPose(Axis.YP.rotation(f3));
+            } else {
+                poseStack.mulPose(Axis.YP.rotation(0));
+            }
+        }
+        lid.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
+
+
     }
 
 

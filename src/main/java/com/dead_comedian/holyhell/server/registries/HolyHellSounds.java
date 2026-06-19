@@ -23,7 +23,6 @@ public class HolyHellSounds {
 
     public static final Supplier<SoundEvent> RINGS_HOLD = registerSoundEvents("rings_hold");
     public static final Supplier<SoundEvent> RINGS_INTRO = registerSoundEvents("rings_intro");
-    public static final Supplier<SoundEvent> RINGS_OUTRO = registerSoundEvents("rings_outro");
 
     public static final Supplier<SoundEvent> CANDELABRA_PLACE = registerSoundEvents("candelabra_place");
     public static final Supplier<SoundEvent> CANDELABRA_LIGHT = registerSoundEvents("candelabra_light");
@@ -78,6 +77,7 @@ public class HolyHellSounds {
     public static final Supplier<SoundEvent> DISSAPEAR = registerSoundEvents("dissapear");
 
     public static final Supplier<SoundEvent> COFFIN_LID = registerSoundEvents("coffin_lid");
+    public static final Supplier<SoundEvent> COFFIN_CHARGE = registerSoundEvents("coffin_charge");
 
 
     public static final Supplier<SoundEvent> STATIC_AMBIENT = registerSoundEvents("static_ambient");

@@ -1,6 +1,6 @@
 package com.dead_comedian.holyhell.server.event;
 
-import com.dead_comedian.holyhell.Config;
+import com.dead_comedian.holyhell.CommonConfig;
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.data.StoredInventory;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
@@ -16,7 +16,7 @@ public class CoffinEvents {
 
     @SubscribeEvent
     public static void deathEvent(LivingDeathEvent deathEvent) {
-        if (Config.ENABLE_COFFINS.get()) {
+        if (CommonConfig.ENABLE_COFFINS.get()) {
             if (deathEvent.getEntity() instanceof Player player && player.getData(HolyHellAttachments.HAS_COFFIN)) {
                 player.setData(HolyHellAttachments.SAVED_INVENTORY, StoredInventory.saveInventory(player.getInventory()));
                 player.getInventory().clearContent();
@@ -26,7 +26,7 @@ public class CoffinEvents {
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
-        if (Config.ENABLE_COFFINS.get()) {
+        if (CommonConfig.ENABLE_COFFINS.get()) {
             Player playerOld = event.getOriginal();
             Player playerNew = event.getEntity();
 

@@ -1,13 +1,15 @@
 package com.dead_comedian.holyhell.server.block;
 
-import com.dead_comedian.holyhell.Config;
+import com.dead_comedian.holyhell.CommonConfig;
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
-import com.dead_comedian.holyhell.server.helper.CoffinAnimationStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
+import com.dead_comedian.holyhell.server.registries.HolyHellParticles;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -38,6 +40,13 @@ public class CoffinBlock extends BaseEntityBlock {
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     public static final IntegerProperty STATE = IntegerProperty.create("state", 0, 4);
+
+    /*
+    0 = None
+    1 = Charge
+    2 = Open
+    3 = Closed
+     */
 
 
     public CoffinBlock(Properties pProperties) {
@@ -137,10 +146,16 @@ public class CoffinBlock extends BaseEntityBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             if (stack.is(Items.GOLD_BLOCK) && !state.getValue(ACTIVATED)) {
+
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(HolyHellParticles.LIGHT_RING.get(), pos.getX(), pos.getY() + 0.5, pos.getZ(), 1, 0, 0, 0, 0);
+                }
+                level.playSound((Player) null, pos, HolyHellSounds.COFFIN_CHARGE.get(), SoundSource.BLOCKS, 1.3f, 1);
+
                 if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
                     level.setBlock(pos, state
                                     .setValue(CoffinBlock.ACTIVATED, true)
-                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()),
+                                    .setValue(CoffinBlock.STATE, 1),
                             3);
 
                     player.setData(HolyHellAttachments.HAS_COFFIN, true);
@@ -152,10 +167,9 @@ public class CoffinBlock extends BaseEntityBlock {
                     level.setBlock(this.getLowerBlockEntity(pos, state, level).getBlockPos()
                             , this.getLowerBlockEntity(pos, state, level).getBlockState()
                                     .setValue(CoffinBlock.ACTIVATED, true)
-                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()),
+                                    .setValue(CoffinBlock.STATE, 1),
                             3);
-
-                    ((CoffinBlockEntity) (Object) this.getLowerBlockEntity(pos, state, level)).setStoredUUID(player.getUUID());
+                    level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
                 }
 
 
@@ -166,7 +180,7 @@ public class CoffinBlock extends BaseEntityBlock {
 
             if (stack.isEmpty()) {
 
-                if (Config.ENABLE_COFFINS.get()) {
+                if (CommonConfig.ENABLE_COFFINS.get()) {
 
                     if (state.getValue(HALF) == DoubleBlockHalf.LOWER
                             && state.getValue(ACTIVATED)
@@ -178,10 +192,14 @@ public class CoffinBlock extends BaseEntityBlock {
                         if (coffinBlockEntity.getStoredUUID().equals(player.getUUID())) {
                             level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
                             level.setBlock(pos, state
-                                    .setValue(OPEN, true)
-//                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.OPEN.getId())
+                                            .setValue(OPEN, true)
+                                            .setValue(CoffinBlock.STATE, 2)
                                     , 3);
                         }
+                        if (level instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE.getType(), pos.getX(), pos.getY(), pos.getZ(), 10, 0.5, 0.5, 0.5, 0.05);
+                        }
+
                         return ItemInteractionResult.sidedSuccess(level.isClientSide());
 
 
@@ -193,7 +211,7 @@ public class CoffinBlock extends BaseEntityBlock {
                         level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
                         level.setBlock(pos, state
                                         .setValue(ACTIVATED, false)
-                                        .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()),
+                                        .setValue(CoffinBlock.STATE, 1),
                                 3);
 
                         return ItemInteractionResult.sidedSuccess(level.isClientSide());
@@ -210,7 +228,7 @@ public class CoffinBlock extends BaseEntityBlock {
                             level.playSound((Player) null, poss, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
                             level.setBlock(poss, state
                                     .setValue(ACTIVATED, false)
-                                    .setValue(CoffinBlock.STATE, CoffinAnimationStates.CHARGE.getId()), 3);
+                                    .setValue(CoffinBlock.STATE, 1), 3);
                         }
                         return ItemInteractionResult.sidedSuccess(level.isClientSide());
                     }
@@ -234,10 +252,6 @@ public class CoffinBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> pBlockEntityType) {
-        if (level.isClientSide()) {
-            return null;
-        }
-
         return createTickerHelper(pBlockEntityType, HolyHellBlockEntities.COFFIN_BLOCK_ENTITY.get(),
                 (level1, pos, state1, pBlockEntity) -> pBlockEntity.tick(level1, pos, state1));
     }

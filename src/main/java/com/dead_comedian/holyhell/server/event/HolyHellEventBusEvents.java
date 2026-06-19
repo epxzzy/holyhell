@@ -40,7 +40,6 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
-import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -58,7 +57,11 @@ public class HolyHellEventBusEvents {
     private static int paranoiaTimer;
     private static int paranoiaAmp;
     private static int secTillText = 40;
+    private static int cooldown = 0;
 
+    public static void setCooldown(int cooldown) {
+        HolyHellEventBusEvents.cooldown = cooldown;
+    }
 
     @SubscribeEvent
     public static void block(LivingShieldBlockEvent event) {
@@ -138,31 +141,28 @@ public class HolyHellEventBusEvents {
         }
 
         //Religious Rings
-        if (player.hasEffect(HolyHellEffects.JESISTANCE)) {
-            MobEffectInstance effect = player.getEffect(HolyHellEffects.JESISTANCE);
-            if (effect.getDuration() >= 2000) {
-                player.level().playSound(player, player.blockPosition(), HolyHellSounds.RINGS_INTRO.get(), SoundSource.PLAYERS, 0.2f, 1);
-                return;
-            }
+        if (player.hasEffect(HolyHellEffects.DIVINE_PROTECTION)) {
+            MobEffectInstance effect = player.getEffect(HolyHellEffects.DIVINE_PROTECTION);
             if (effect.getDuration() > 3.5 * 20) {
                 if (player.tickCount % 70 == 1) {
                     player.level().playSound((Player) null, player.blockPosition(), HolyHellSounds.RINGS_HOLD.get(), SoundSource.PLAYERS, 0.2f, 1);
-                }
-                return;
-            }
-            if (effect.getDuration() < 3.5 * 20 && effect.getDuration() != 0) {
-                if (player.tickCount % 70 == 1) {
-                    player.level().playSound((Player) null, player.blockPosition(), HolyHellSounds.RINGS_OUTRO.get(), SoundSource.PLAYERS, 0.2f, 1);
-
                 }
             }
         }
 
 
-
         // TO-DO:  change music system
 
-        player.setData(HolyHellAttachments.RENDER_RINGS, player.hasEffect(HolyHellEffects.JESISTANCE));
+        player.setData(HolyHellAttachments.RENDER_RINGS, player.hasEffect(HolyHellEffects.DIVINE_PROTECTION));
+
+        if (player.hasEffect(HolyHellEffects.DIVINE_PROTECTION_COOLDOWN)){
+            cooldown++;
+            player.setData(HolyHellAttachments.RENDER_RINGS_BREAK, cooldown <= 20);
+
+        } else {
+            player.setData(HolyHellAttachments.RENDER_RINGS_BREAK, false);
+            setCooldown(0);
+        }
 
         if (level.dimension() == HolyHellDimensions.ANGEL) {
 

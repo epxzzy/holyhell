@@ -1,6 +1,7 @@
 package com.dead_comedian.holyhell.client.renderer.render_layer;
 
 
+import com.dead_comedian.holyhell.ClientConfig;
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
@@ -24,6 +25,7 @@ public class LowerRingRenderLayer<T extends LivingEntity> extends RenderLayer<T,
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/religious_rings.png");
     private final ModelPart bb_main;
     private final ModelPart bb_main1;
+    private int counter = 0;
 
     public LowerRingRenderLayer(RenderLayerParent<T, PlayerModel<T>> context, EntityModelSet loader) {
         super(context);
@@ -47,22 +49,57 @@ public class LowerRingRenderLayer<T extends LivingEntity> extends RenderLayer<T,
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l) {
+        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+
+
         if (livingEntity.getData(HolyHellAttachments.RENDER_RINGS)) {
-            VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
-            for (int m = 0; m < 1; ++m) {
+
+            if (ClientConfig.RING_SIZE != null) {
                 poseStack.pushPose();
-                float n = j * (float) (-(10 + m));
+                poseStack.scale(ClientConfig.RING_SIZE.get().floatValue(), ClientConfig.RING_SIZE.get().floatValue(), ClientConfig.RING_SIZE.get().floatValue());
+                poseStack.popPose();
+            }
+
+            poseStack.pushPose();
+            float n = j * (float) (-11);
+            poseStack.mulPose(Axis.YP.rotationDegrees(-n));
+            this.bb_main1.render(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
+            poseStack.popPose();
+
+            poseStack.pushPose();
+            poseStack.mulPose(Axis.YP.rotationDegrees(n));
+            this.bb_main.render(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
+            poseStack.popPose();
+
+        }
+        else if (livingEntity.getData(HolyHellAttachments.RENDER_RINGS_BREAK)) {
+            counter++;
+            if (counter <= 80) {
+                if (ClientConfig.RING_SIZE != null) {
+                    poseStack.pushPose();
+                    poseStack.scale(ClientConfig.RING_SIZE.get().floatValue(), ClientConfig.RING_SIZE.get().floatValue(), ClientConfig.RING_SIZE.get().floatValue());
+                    poseStack.popPose();
+                }
+                float size = 1 + (float) counter / 10;
+
+                poseStack.pushPose();
+
+                poseStack.scale(size, 1, size);
+                poseStack.translate(0, -0.6, 0);
+                float n = j * (float) (-11);
                 poseStack.mulPose(Axis.YP.rotationDegrees(-n));
-
                 this.bb_main1.render(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
-
                 poseStack.popPose();
 
                 poseStack.pushPose();
+                poseStack.scale(size, 1, size);
+                poseStack.translate(0, -0.4, 0);
                 poseStack.mulPose(Axis.YP.rotationDegrees(n));
-
                 this.bb_main.render(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
                 poseStack.popPose();
+
+            } else {
+                counter = 0;
             }
         }
     }

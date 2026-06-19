@@ -119,10 +119,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                     break;
 
             }
-            if (this.level() instanceof ServerLevel world) {
-                world.sendParticles(HolyHellParticles.LIGHT_RING.get(), this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0.1, 0, 0);
-
-            }
 
             cir.cancel();
 

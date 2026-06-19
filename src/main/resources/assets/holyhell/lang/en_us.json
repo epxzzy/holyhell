@@ -3,7 +3,6 @@
   "item.holyhell.sacrificial_katar" : "Sacrificial Katar",
   "item.holyhell.holy_grail" : "Holy Grail",
   "item.holyhell.holy_shield" : "Holy Shield",
-  "item.holyhell.religious_rings" : "Religious Rings",
   "item.holyhell.blinding_bomb": "Blinding Bomb",
   "item.holyhell.globular_dome": "Globular Dome",
 
@@ -98,7 +97,6 @@
   "entity.holyhell.fireball": "Holy Fireball",
 
   "effect.holyhell.clarity": "Clarity",
-  "effect.holyhell.jesistance": "Jesistance",
   "effect.holyhell.confusion": "Confusion",
   "effect.holyhell.bloodlust": "Bloodlust",
   "effect.holyhell.divine_protection": "Divine Protection",
@@ -115,7 +113,6 @@
 
   "sounds.holyhell.rings_hold": "Rings Hum",
   "sounds.holyhell.rings_intro": "Rings Fade In",
-  "sounds.holyhell.rings_outro": "Rings Fade Out",
 
   "sounds.holyhell.candelabra_place": "Candelabra Is Placed",
   "sounds.holyhell.candelabra_light": "Something Is Lit",

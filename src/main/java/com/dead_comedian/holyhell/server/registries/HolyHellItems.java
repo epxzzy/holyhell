@@ -33,8 +33,6 @@ public class HolyHellItems {
 
     public static final Supplier<ShieldItem> HOLY_SHIELD = ITEMS.register("holy_shield", () -> new
             HolyShieldItem(new Item.Properties().durability(1000)));
-    public static final Supplier<ReligiousRingsItem> RELIGIOUS_RINGS = ITEMS.register("religious_rings", () -> new
-            ReligiousRingsItem(new Item.Properties()));
     public static final Supplier<GlobularDomeItem> GLOBULAR_DOME = ITEMS.register("globular_dome", () -> new
             GlobularDomeItem(new Item.Properties()));
 

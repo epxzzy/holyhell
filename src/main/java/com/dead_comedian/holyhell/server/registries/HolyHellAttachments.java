@@ -23,6 +23,13 @@ public class HolyHellAttachments {
                     .sync(ByteBufCodecs.BOOL)
                     .build()
     );
+    public static final Supplier<AttachmentType<Boolean>> RENDER_RINGS_BREAK = ATTACHMENT_TYPES.register(
+            "render_rings_break",
+            () -> AttachmentType.builder(() -> false)
+                    .serialize(Codec.BOOL)
+                    .sync(ByteBufCodecs.BOOL)
+                    .build()
+    );
     public static final Supplier<AttachmentType<Boolean>> TP_TO_ANGEL = ATTACHMENT_TYPES.register(
             "tp_to_angel",
             () -> AttachmentType.builder(() -> false)

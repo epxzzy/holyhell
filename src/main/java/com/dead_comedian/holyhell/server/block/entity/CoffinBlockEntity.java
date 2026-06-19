@@ -1,15 +1,16 @@
 package com.dead_comedian.holyhell.server.block.entity;
 
-import com.dead_comedian.holyhell.Config;
+import com.dead_comedian.holyhell.CommonConfig;
 import com.dead_comedian.holyhell.server.block.CoffinBlock;
 import com.dead_comedian.holyhell.server.data.StoredInventory;
-import com.dead_comedian.holyhell.server.helper.CoffinAnimationStates;
 import com.dead_comedian.holyhell.server.registries.HolyHellAttachments;
 import com.dead_comedian.holyhell.server.registries.HolyHellBlockEntities;
 import com.dead_comedian.holyhell.server.registries.HolyHellSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -27,8 +28,14 @@ public class CoffinBlockEntity extends BlockEntity implements Container {
 
     public CoffinBlockEntity(BlockPos pos, BlockState state) {
         super(HolyHellBlockEntities.COFFIN_BLOCK_ENTITY.get(), pos, state);
-
+        this.ticks = 0;
     }
+
+    public int renderCounter = 0;
+
+    public boolean renderCounterToggle = true;
+
+    public int ticks;
 
     private UUID storedUUID;
 
@@ -80,9 +87,34 @@ public class CoffinBlockEntity extends BlockEntity implements Container {
     }
 
 
-    public void tick(Level level, BlockPos pos, BlockState state1) {
-        if (Config.ENABLE_COFFINS.get()) {
-            if (!state1.getValue(CoffinBlock.OPEN)) return;
+    public void tick(Level level, BlockPos pos, BlockState state) {
+
+        if (ticks < 100) {
+            ticks++;
+        } else {
+            ticks = 0;
+        }
+
+        if (state.getValue(CoffinBlock.STATE) == 1) {
+            if (renderCounter < 10 && renderCounterToggle) {
+                renderCounter++;
+                if (renderCounter >= 9) {
+                    renderCounterToggle = false;
+                }
+            } else if (renderCounter > 0 && !renderCounterToggle) {
+                renderCounter--;
+                if (renderCounter <= 1) {
+                    renderCounterToggle = true;
+                    renderCounter = 0;
+                    level.setBlock(pos, state.setValue(CoffinBlock.STATE, 0), 3);
+                }
+
+
+            }
+        }
+
+        if (CommonConfig.ENABLE_COFFINS.get()) {
+            if (!state.getValue(CoffinBlock.OPEN)) return;
             if (getStoredUUID() == null) return;
             if (level.getPlayerByUUID((getStoredUUID())) == null) return;
 
@@ -90,21 +122,32 @@ public class CoffinBlockEntity extends BlockEntity implements Container {
             List<StoredInventory.InventoryCodec> storedInventory = player.getData(HolyHellAttachments.SAVED_INVENTORY).getSlot();
 
             if (storedInventory == null) {
+
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE.getType(), pos.getX(), pos.getY(), pos.getZ(), 10, 0.5, 0.5, 0.5, 0.05);
+                }
+
                 level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                level.setBlock(pos, state1.setValue(CoffinBlock.OPEN, false)
+                level.setBlock(pos, state.setValue(CoffinBlock.OPEN, false)
                         .setValue(CoffinBlock.ACTIVATED, false)
-                        .setValue(CoffinBlock.STATE, CoffinAnimationStates.CLOSE.getId()), 3);
+                        .setValue(CoffinBlock.STATE, 1), 3);
                 player.setData(HolyHellAttachments.HAS_COFFIN, false);
                 player.setData(HolyHellAttachments.DIED, false);
 
             } else {
 
                 if (storedInventory.isEmpty()) {
+
+
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE.getType(), pos.getX(), pos.getY(), pos.getZ(), 10, 0.5, 0.5, 0.5, 0.05);
+                    }
+
                     level.playSound((Player) null, pos, HolyHellSounds.COFFIN_LID.get(), SoundSource.BLOCKS, 1, 1);
-                    level.setBlock(pos, state1
+                    level.setBlock(pos, state
                             .setValue(CoffinBlock.OPEN, false)
                             .setValue(CoffinBlock.ACTIVATED, false)
-                            .setValue(CoffinBlock.STATE, CoffinAnimationStates.CLOSE.getId()), 3);
+                            .setValue(CoffinBlock.STATE, 3), 3);
 
                     player.setData(HolyHellAttachments.HAS_COFFIN, false);
                     player.setData(HolyHellAttachments.DIED, false);
