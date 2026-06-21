@@ -3,6 +3,7 @@ package com.dead_comedian.holyhell.client.renderer.block_entity;
 import com.dead_comedian.holyhell.HolyHell;
 import com.dead_comedian.holyhell.server.block.CoffinBlock;
 import com.dead_comedian.holyhell.server.block.entity.CoffinBlockEntity;
+import com.dead_comedian.holyhell.server.block.property.CoffinState;
 import com.dead_comedian.holyhell.server.registries.HolyHellModelLayers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -17,14 +18,11 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityRenderer<T> {
-
-    private ResourceLocation DEACTIVATED = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/blockentity/coffin_deactivated.png");
-    private ResourceLocation ACTIVATED = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/blockentity/coffin_activated.png");
-
+    private static final ResourceLocation DEACTIVATED_TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/blockentity/coffin_deactivated.png");
+    private static final ResourceLocation ACTIVATED_TEXTURE = ResourceLocation.fromNamespaceAndPath(HolyHell.MOD_ID, "textures/entity/blockentity/coffin_activated.png");
 
     private final ModelPart group;
     private final ModelPart lid;
@@ -54,16 +52,16 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
 
     @Override
     public void render(CoffinBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(DEACTIVATED));
         BlockState state = blockEntity.getBlockState();
+        CoffinState coffinState = state.getValue(CoffinBlock.STATE);
 
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(
+                coffinState == CoffinState.ACTIVATED ? ACTIVATED_TEXTURE : DEACTIVATED_TEXTURE
+        ));
 
         //BASE RENDERING
 
         poseStack.pushPose();
-        if (state.getValue(CoffinBlock.ACTIVATED)) {
-            vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(ACTIVATED));
-        }
 
         switch (state.getValue(CoffinBlock.FACING)) {
             case Direction.SOUTH:
@@ -80,7 +78,8 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
                 break;
         }
 
-        if (state.getValue(CoffinBlock.STATE) == 1) {
+        /* TODO: charged data in block entity
+        if (state.getValue(CoffinBlock.STATE) == CoffinState.OPEN) {
             if (blockEntity.renderCounter < 10) {
                 float f = (float) blockEntity.ticks + partialTick;
                 float f3 = Mth.sin(f * 3) / 20;
@@ -89,6 +88,8 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
                 poseStack.mulPose(Axis.YP.rotation(0));
             }
         }
+        */
+
         coffin.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
 
@@ -96,31 +97,29 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
         //LID RENDERING
 
         poseStack.pushPose();
-        if (state.getValue(CoffinBlock.ACTIVATED)) {
-            vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(ACTIVATED));
-        }
 
-        if (state.getValue(CoffinBlock.STATE) == 2) {
+        if (coffinState == CoffinState.OPEN || coffinState == CoffinState.CLOSING) {
+            float animProgress = blockEntity.getLidSlidingAnimationProgress(partialTick);
 
             switch (state.getValue(CoffinBlock.FACING)) {
                 case Direction.SOUTH:
                     poseStack.mulPose(Axis.YN.rotationDegrees(180));
-                    poseStack.translate(-1, 0, -2  );
+                    poseStack.translate(-1, 0, -(1 + animProgress));
                     break;
                 case Direction.EAST:
-                    poseStack.translate(2, 0, 0);
+                    poseStack.translate(1 + animProgress, 0, 0);
                     poseStack.mulPose(Axis.YN.rotationDegrees(90));
                     break;
                 case Direction.WEST:
-                    poseStack.translate(-1, 0, 1);
+                    poseStack.translate(-animProgress, 0, 1);
                     poseStack.mulPose(Axis.YN.rotationDegrees(270));
                     break;
                 case Direction.NORTH:
-                    poseStack.translate(0, 0, -1);
+                    poseStack.translate(0, 0, -animProgress);
                     poseStack.mulPose(Axis.YN.rotationDegrees(0));
                     break;
             }
-        }else {
+        } else {
             switch (state.getValue(CoffinBlock.FACING)) {
                 case Direction.SOUTH:
                     poseStack.mulPose(Axis.YN.rotationDegrees(180));
@@ -141,8 +140,8 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
             }
         }
 
-
-        if (state.getValue(CoffinBlock.STATE) == 1) {
+        /* TODO: charge blokc entity shitz
+        if (state.getValue(CoffinBlock.STATE) == CoffinState.OPEN) {
             if (blockEntity.renderCounter < 10) {
                 float f = (float) blockEntity.ticks + partialTick;
                 float f3 = Mth.sin(f * 3) / 20;
@@ -151,12 +150,10 @@ public class CoffinRenderer<T extends CoffinBlockEntity> implements BlockEntityR
                 poseStack.mulPose(Axis.YP.rotation(0));
             }
         }
+        */
         lid.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
-
-
     }
-
 
     @Override
     public net.minecraft.world.phys.AABB getRenderBoundingBox(T blockEntity) {
