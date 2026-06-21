@@ -18,6 +18,7 @@ public class CoffinEvents {
     public static void deathEvent(LivingDeathEvent deathEvent) {
         if (CommonConfig.ENABLE_COFFINS.get()) {
             if (deathEvent.getEntity() instanceof Player player && player.getData(HolyHellAttachments.HAS_COFFIN)) {
+                player.setData(HolyHellAttachments.DIED, true);
                 player.setData(HolyHellAttachments.SAVED_INVENTORY, StoredInventory.saveInventory(player.getInventory()));
                 player.getInventory().clearContent();
             }
@@ -32,8 +33,8 @@ public class CoffinEvents {
 
             if (playerOld.getData(HolyHellAttachments.HAS_COFFIN.get()) && event.isWasDeath()) {
 
-                playerNew.setData(HolyHellAttachments.SAVED_INVENTORY.get(),
-                        playerOld.getData(HolyHellAttachments.SAVED_INVENTORY));
+                playerNew.setData(HolyHellAttachments.SAVED_INVENTORY, playerOld.getData(HolyHellAttachments.SAVED_INVENTORY));
+                playerNew.setData(HolyHellAttachments.DIED, playerOld.getData(HolyHellAttachments.DIED));
             }
         }
     }
